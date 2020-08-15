@@ -2,10 +2,12 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 
-import init from "../state/init/reducer";
+import auth from "./auth/reducer";
+import movies from "./movies/reducer";
 
 const reducer = combineReducers({
-  init,
+  auth,
+  movies,
 });
 
 export default (initialState) =>
