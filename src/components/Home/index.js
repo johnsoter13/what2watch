@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import {
   fetchMovieGenresAction,
   fetchMoviesByGenreAction,
@@ -9,21 +9,24 @@ import {
 } from "../../state/movies/actions";
 import { selectMovieGenres } from "../../state/movies/selectors";
 
-const Index = () => {
+const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const movieGenres = useSelector(selectMovieGenres);
 
-  console.log(movieGenres);
   useEffect(() => {
     // dispatch(fetchMovieGenresAction());
     // dispatch(fetchMoviesByGenreAction("adventure"));
-    dispatch(fetchMovieStreamingServicesAction("tt0107290"));
+    // dispatch(fetchMovieStreamingServicesAction("tt0107290"));
   }, []);
+
+  const navigateToStreamingServiceSelect = () => {};
 
   return (
     <View style={styles.container}>
-      <Text>Hey Cutie</Text>
-      <StatusBar style="auto" />
+      <Button
+        onPress={() => navigation.navigate("StreamingServiceList")}
+        title="Select Streaming Services"
+      />
     </View>
   );
 };
@@ -37,4 +40,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Index;
+export default Home;
