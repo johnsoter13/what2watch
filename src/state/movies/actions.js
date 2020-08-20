@@ -45,6 +45,16 @@ export const fetchMoviesByGenreAction = (genre) => (dispatch) => {
         status: SUCCESS,
         payload: { genre, moviesByGenre },
       });
+      return moviesByGenre;
+    })
+    .then((movies) => {
+      movies.forEach((movie) => {
+        const movieId = movie.slice(
+          movie.indexOf("tt"),
+          movie.lastIndexOf("/")
+        );
+        dispatch(fetchMovieStreamingServicesAction(movieId));
+      });
     })
     .catch((err) => {
       dispatch({

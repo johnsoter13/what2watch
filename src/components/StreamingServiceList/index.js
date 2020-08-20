@@ -1,47 +1,57 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, View, Button } from "react-native";
+import { View, Button } from "react-native";
+import { cloneDeep } from "lodash";
+
+import { updateStreamingServicesAction } from "../../state/streaming/actions";
+import { selectUserStreamingServices } from "../../state/streaming/selectors";
+import { HOME_SCREEN } from "../../constants/ROUTES";
 
 import { STREAMING_SERVICES } from "./constants";
 
-const StreamingServiceList = () => {
+const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
+  const userStreamingServices = useSelector(selectUserStreamingServices);
   const [selectedStreamingServices, setSelectedStreamingServices] = useState(
-    []
+    userStreamingServices
   );
 
-  const handleStreamingServiceSelection = (streamingService) => {
-    if (
-      selectedStreamingServices.some(
-        (service) => service === streamingService.name
-      )
-    ) {
-      setSelectedStreamingServices(
-        selectedStreamingServices.filter(
-          (service) => service !== streamingService.name
-        )
-      );
-    } else {
-      setSelectedStreamingServices([
-        ...selectedStreamingServices,
-        streamingService.name,
-      ]);
-    }
+  const saveStreamingServices = () => {
+    dispatch(updateStreamingServicesAction(selectedStreamingServices));
+    navigation.navigate(HOME_SCREEN);
   };
 
-  console.log(selectedStreamingServices);
+  const handleStreamingServiceSelection = (streamingService) => {
+    if (selectedStreamingServices[streamingService]) {
+      const stateCopy = cloneDeep(selectedStreamingServices);
 
-  return Object.keys(STREAMING_SERVICES).map((streamingService) => (
+      delete stateCopy[streamingService];
+      setSelectedStreamingServices(stateCopy);
+    } else {
+      setSelectedStreamingServices({
+        ...selectedStreamingServices,
+        [streamingService]: STREAMING_SERVICES[streamingService],
+      });
+    }
+  };
+  return (
     <View>
-      <Button
-        title={STREAMING_SERVICES[streamingService].name}
-        onPress={() =>
-          handleStreamingServiceSelection(STREAMING_SERVICES[streamingService])
-        }
-      />
+      {Object.keys(STREAMING_SERVICES).map((streamingService) => (
+        <View>
+          <Button
+            color={
+              selectedStreamingServices[streamingService]
+                ? "#008000"
+                : "#FF0000"
+            }
+            title={STREAMING_SERVICES[streamingService].name}
+            onPress={() => handleStreamingServiceSelection(streamingService)}
+          />
+        </View>
+      ))}
+      <Button title="Submit" onPress={saveStreamingServices} />
     </View>
-  ));
+  );
 };
 
 export default StreamingServiceList;
