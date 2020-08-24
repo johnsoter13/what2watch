@@ -5,7 +5,6 @@ import { PENDING, SUCCESS } from "../constants";
 const initialState = {
   genres: {},
   genreLoadingStatus: null,
-  moviesByGenre: {},
   moviesByGenreLoadingStatus: null,
   movieStreamingServices: {},
   movieStreamingServicesLoadingStatus: null,
@@ -68,11 +67,21 @@ export default produce((draft, action) => {
           draft.movieStreamingServicesLoadingStatus = PENDING;
           break;
         case SUCCESS:
-          draft.movieStreamingServices[
-            action.payload.movieId
-          ] = creteMovieStreamingServiceObj(
-            action.payload?.movieStreamServices
-          );
+          const {
+            genre,
+            movieId,
+            movieStreamServices,
+            movieTitle,
+          } = action.payload;
+          if (movieStreamServices) {
+            draft.movieStreamingServices[movieId] = {
+              genre,
+              movieTitle,
+              streamingServices: creteMovieStreamingServiceObj(
+                movieStreamServices
+              ),
+            };
+          }
           draft.movieStreamingServicesLoadingStatus = SUCCESS;
           break;
         default:

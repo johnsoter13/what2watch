@@ -37,23 +37,18 @@ export const fetchMoviesByGenreAction = (genre) => (dispatch) => {
   });
   return fetchMoviesByGenre(genre)
     .then((response) => response.text())
-    .then((text) => {
-      const moviesByGenre = JSON.parse(text);
-
-      dispatch({
-        type: MOVIES_BY_GENRE,
-        status: SUCCESS,
-        payload: { genre, moviesByGenre },
-      });
-      return moviesByGenre;
-    })
+    .then((text) => JSON.parse(text))
     .then((movies) => {
       movies.forEach((movie) => {
         const movieId = movie.slice(
           movie.indexOf("tt"),
           movie.lastIndexOf("/")
         );
-        dispatch(fetchMovieStreamingServicesAction(movieId));
+        dispatch(fetchMovieStreamingServicesAction(movieId, genre));
+      });
+      dispatch({
+        type: MOVIES_BY_GENRE,
+        status: SUCCESS,
       });
     })
     .catch((err) => {
@@ -64,7 +59,9 @@ export const fetchMoviesByGenreAction = (genre) => (dispatch) => {
     });
 };
 
-export const fetchMovieStreamingServicesAction = (movieId) => (dispatch) => {
+export const fetchMovieStreamingServicesAction = (movieId, genre) => (
+  dispatch
+) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
@@ -73,11 +70,12 @@ export const fetchMovieStreamingServicesAction = (movieId) => (dispatch) => {
     .then((response) => response.text())
     .then((text) => {
       const movieStreamServices = JSON.parse(text)?.collection?.locations;
+      const movieTitle = JSON.parse(text)?.collection?.name;
 
       dispatch({
         type: MOVIE_STREAMING_SERVICES,
         status: SUCCESS,
-        payload: { movieId, movieStreamServices },
+        payload: { movieId, genre, movieStreamServices, movieTitle },
       });
     })
     .catch((err) => {

@@ -18,8 +18,6 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
-    // dispatch(fetchMoviesByGenreAction("adventure"));
-    // dispatch(fetchMovieStreamingServicesAction("tt0107290"));
   }, []);
 
   return (

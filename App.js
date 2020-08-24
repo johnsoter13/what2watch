@@ -7,10 +7,12 @@ import createStore from "./src/state/store";
 import Home from "./src/components/Home";
 import StreamingServiceList from "./src/components/StreamingServiceList";
 import GenreList from "./src/components/GenreList";
+import MovieList from "./src/components/MovieList";
 import {
   HOME_SCREEN,
   STREAMING_SERVICES_SCREEN,
   GENRE_SCREEN,
+  MOVIE_SCREEN,
 } from "./src/constants/ROUTES";
 
 const store = createStore();
@@ -27,6 +29,7 @@ export default function App() {
             component={StreamingServiceList}
           />
           <Stack.Screen name={GENRE_SCREEN} component={GenreList} />
+          <Stack.Screen name={MOVIE_SCREEN} component={MovieList} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
