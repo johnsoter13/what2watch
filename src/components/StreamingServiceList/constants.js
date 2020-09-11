@@ -1,56 +1,56 @@
 export const STREAMING_SERVICES = {
-  netflix: {
+  NetflixIVAUS: {
     name: "Netflix",
   },
-  amazonPrimeVideo: {
+  AmazonPrimeVideoIVAUS: {
     name: "Amazon Prime Video",
   },
-  amazonInstantVideo: {
+  AmazonInstantVideoIVAUS: {
     name: "Amazon Instant Video",
   },
-  appleTv: {
+  AppleTvPlusIVAUS: {
     name: "Apple TV+",
   },
-  googlePlay: {
+  GooglePlayIVAUS: {
     name: "Google Play",
   },
-  iTunes: {
+  iTunesIVAUS: {
     name: "iTunes",
   },
   youTubePremium: {
     name: "YouTube Premium",
   },
-  disneyPlus: {
+  DisneyPlusIVAUS: {
     name: "Disney Plus",
   },
-  hulu: {
+  HuluIVAUS: {
     name: "Hulu",
   },
-  atomTickets: {
+  AtomTicketsIVAUS: {
     name: "Atom Tickets",
   },
-  cbs: {
+  CBSIVAUS: {
     name: "CBS",
   },
-  dcUniverse: {
+  DCUniverseIVAUS: {
     name: "DC Universe",
   },
-  hbo: {
+  HBOMaxIVAUS: {
     name: "HBO",
   },
-  discoveryChannel: {
+  DiscoveryChannelIVAUS: {
     name: "Discovery Channel",
   },
-  fandangoMovies: {
+  FandangoMoviesIVAUS: {
     name: "Fandango Movies",
   },
-  fox: {
+  FoxIVAUS: {
     name: "Fox",
   },
-  nbc: {
+  NBCIVAUS: {
     name: "NBC",
   },
-  nickelodeon: {
+  NickelodeonIVAUS: {
     name: "Nickelodeon",
   },
 };

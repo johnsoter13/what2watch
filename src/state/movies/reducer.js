@@ -24,9 +24,7 @@ const creteMovieStreamingServiceObj = (streamingServices) => {
   const movieStreamingServicesObj = {};
 
   streamingServices.map((streamingService) => {
-    movieStreamingServicesObj[
-      streamingService?.display_name
-    ] = streamingService;
+    movieStreamingServicesObj[streamingService?.name] = streamingService;
   });
 
   return movieStreamingServicesObj;
