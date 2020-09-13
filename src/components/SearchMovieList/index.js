@@ -4,9 +4,10 @@ import { View, Button, Title, Text } from "react-native";
 
 import { selectSearchResults } from "../../state/search/selectors";
 
-const SearchMovieList = ({ navigation, route }) => {
+const SearchMovieList = ({ query }) => {
+  console.log(query);
   const searchMovies = useSelector((state) =>
-    selectSearchResults(state, route.params.query)
+    selectSearchResults(state, query)
   );
 
   return (

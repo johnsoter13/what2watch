@@ -8,7 +8,7 @@ import Home from "./src/components/Home";
 import StreamingServiceList from "./src/components/StreamingServiceList";
 import GenreList from "./src/components/GenreList";
 import MovieList from "./src/components/MovieList";
-import SearchMovieList from "./src/components/SearchMovieList";
+import Search from "./src/components/Search";
 import {
   HOME_SCREEN,
   STREAMING_SERVICES_SCREEN,
@@ -25,16 +25,30 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name={HOME_SCREEN} component={Home} />
+          <Stack.Screen
+            name={HOME_SCREEN}
+            component={Home}
+            options={{ title: "What 2 Watch" }}
+          />
           <Stack.Screen
             name={STREAMING_SERVICES_SCREEN}
             component={StreamingServiceList}
+            options={{ title: "What 2 Watch" }}
           />
-          <Stack.Screen name={GENRE_SCREEN} component={GenreList} />
-          <Stack.Screen name={MOVIE_SCREEN} component={MovieList} />
+          <Stack.Screen
+            name={GENRE_SCREEN}
+            component={GenreList}
+            options={{ title: "What 2 Watch" }}
+          />
+          <Stack.Screen
+            name={MOVIE_SCREEN}
+            component={MovieList}
+            options={{ title: "What 2 Watch" }}
+          />
           <Stack.Screen
             name={SEARCH_MOVIE_SCREEN}
-            component={SearchMovieList}
+            component={Search}
+            options={{ title: "What 2 Watch" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -1,7 +1,7 @@
 import { PENDING, SUCCESS, FAILURE } from "../constants";
 import { fetchMovieFromSearch } from "../../lib/sdk";
 
-import { MOVIE_FROM_SEARCH } from "./constants";
+import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from "./constants";
 
 export const fetchMovieFromSearchAction = (query) => (dispatch) => {
   dispatch({
@@ -26,4 +26,12 @@ export const fetchMovieFromSearchAction = (query) => (dispatch) => {
         status: FAILURE,
       });
     });
+};
+
+export const setSearchQueryAction = (query) => (dispatch) => {
+  dispatch({
+    type: SEARCH_QUERY,
+    status: SUCCESS,
+    payload: { searchQuery: query },
+  });
 };

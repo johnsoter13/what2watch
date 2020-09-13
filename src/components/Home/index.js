@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { StyleSheet, View, Button, TextInput } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { fetchMovieGenresAction } from "../../state/movies/actions";
-import { fetchMovieFromSearchAction } from "../../state/search/actions";
 import {
   STREAMING_SERVICES_SCREEN,
   GENRE_SCREEN,
@@ -12,7 +12,6 @@ import {
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
-  const [value, onChangeText] = React.useState("");
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
@@ -20,20 +19,13 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        onChangeText={(text) => onChangeText(text)}
-        value={value}
-        placeholder="Search here..."
-      />
-      <Button
-        onPress={() => {
-          dispatch(fetchMovieFromSearchAction(value));
-          navigation.navigate(SEARCH_MOVIE_SCREEN, { query: value });
-          onChangeText("");
-        }}
-        title="Search"
-      />
-
+      {/* TODO: Move into header component and make icon */}
+      <View style={styles.searchContainer}>
+        <Button
+          onPress={() => navigation.navigate(SEARCH_MOVIE_SCREEN)}
+          title="Search here..."
+        />
+      </View>
       <Button
         onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
         title="Select Streaming Services"
@@ -50,9 +42,15 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#888888",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    paddingVertical: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  searchContainer: {
+    width: "100%",
   },
 });
 
