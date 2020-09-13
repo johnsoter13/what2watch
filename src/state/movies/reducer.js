@@ -20,7 +20,7 @@ const createGenresObj = (genres) => {
   return genresObj;
 };
 
-const creteMovieStreamingServiceObj = (streamingServices) => {
+const createMovieStreamingServiceObj = (streamingServices) => {
   const movieStreamingServicesObj = {};
 
   streamingServices.map((streamingService) => {
@@ -75,7 +75,7 @@ export default produce((draft, action) => {
             draft.movieStreamingServices[movieId] = {
               genre,
               movieTitle,
-              streamingServices: creteMovieStreamingServiceObj(
+              streamingServices: createMovieStreamingServiceObj(
                 movieStreamServices
               ),
             };

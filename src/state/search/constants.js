@@ -1,0 +1,1 @@
+export const MOVIE_FROM_SEARCH = "MOVIE_FROM_SEARCH";

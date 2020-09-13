@@ -71,4 +71,8 @@ export const STREAMING_SERVICES = {
     name: "NickelodeonIVAUS",
     displayName: "Nickelodeon",
   },
+  TubiIVAUS: {
+    name: "TubiIVAUS",
+    displayName: "Tubi",
+  },
 };

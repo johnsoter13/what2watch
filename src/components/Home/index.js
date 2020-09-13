@@ -1,20 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { StyleSheet, View, Button } from "react-native";
+import { StyleSheet, View, Button, TextInput } from "react-native";
 
-import {
-  fetchMovieGenresAction,
-  fetchMoviesByGenreAction,
-  fetchMovieStreamingServicesAction,
-} from "../../state/movies/actions";
+import { fetchMovieGenresAction } from "../../state/movies/actions";
+import { fetchMovieFromSearchAction } from "../../state/search/actions";
 import {
   STREAMING_SERVICES_SCREEN,
   GENRE_SCREEN,
+  SEARCH_MOVIE_SCREEN,
 } from "../../constants/ROUTES";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [value, onChangeText] = React.useState("");
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
@@ -22,6 +20,20 @@ const Home = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <TextInput
+        onChangeText={(text) => onChangeText(text)}
+        value={value}
+        placeholder="Search here..."
+      />
+      <Button
+        onPress={() => {
+          dispatch(fetchMovieFromSearchAction(value));
+          navigation.navigate(SEARCH_MOVIE_SCREEN, { query: value });
+          onChangeText("");
+        }}
+        title="Search"
+      />
+
       <Button
         onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
         title="Select Streaming Services"

@@ -6,7 +6,6 @@ import { selectMovieStreamingServicesByGenre } from "../../state/movies/selector
 import { selectUserStreamingServices } from "../../state/streaming/selectors";
 
 const MovieList = ({ navigation, route }) => {
-  const dispatch = useDispatch();
   const userStreamingServices = useSelector(selectUserStreamingServices);
   const movieStreamingServices = useSelector((state) =>
     selectMovieStreamingServicesByGenre(
@@ -15,7 +14,6 @@ const MovieList = ({ navigation, route }) => {
       userStreamingServices
     )
   );
-  console.log(movieStreamingServices);
 
   return (
     <View>
