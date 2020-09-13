@@ -15,6 +15,7 @@ const MovieList = ({ navigation, route }) => {
       userStreamingServices
     )
   );
+  console.log(movieStreamingServices);
 
   return (
     <View>
@@ -22,7 +23,7 @@ const MovieList = ({ navigation, route }) => {
         <>
           <Text>{movie.movieTitle}</Text>
           <View>
-            {Object.values(movie.streamingServices).map((streamingService) => (
+            {movie.movieStreamingPlatformsShared.map((streamingService) => (
               <Text>{streamingService.display_name}</Text>
             ))}
           </View>

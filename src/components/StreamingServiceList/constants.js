@@ -1,56 +1,74 @@
 export const STREAMING_SERVICES = {
   NetflixIVAUS: {
-    name: "Netflix",
+    name: "NetflixIVAUS",
+    displayName: "Netflix",
   },
   AmazonPrimeVideoIVAUS: {
-    name: "Amazon Prime Video",
+    name: "AmazonPrimeVideoIVAUS",
+    displayName: "Amazon Prime Video",
   },
   AmazonInstantVideoIVAUS: {
-    name: "Amazon Instant Video",
+    name: "AmazonInstantVideoIVAUS",
+    displayName: "Amazon Instant Video",
   },
   AppleTvPlusIVAUS: {
-    name: "Apple TV+",
+    name: "AppleTvPlusIVAUS",
+    displayName: "Apple TV+",
   },
   GooglePlayIVAUS: {
-    name: "Google Play",
+    name: "GooglePlayIVAUS",
+    displayName: "Google Play",
   },
   iTunesIVAUS: {
-    name: "iTunes",
+    name: "iTunesIVAUS",
+    displayName: "iTunes",
   },
-  youTubePremium: {
-    name: "YouTube Premium",
+  YoutubePremiumIVAUS: {
+    name: "YoutubePremiumIVAUS",
+    displayName: "YouTube Premium",
   },
   DisneyPlusIVAUS: {
-    name: "Disney Plus",
+    name: "DisneyPlusIVAUS",
+    displayName: "Disney Plus",
   },
   HuluIVAUS: {
-    name: "Hulu",
+    name: "HuluIVAUS",
+    displayName: "Hulu",
   },
   AtomTicketsIVAUS: {
-    name: "Atom Tickets",
+    name: "AtomTicketsIVAUSs",
+    displayName: "Atom Tickets",
   },
   CBSIVAUS: {
-    name: "CBS",
+    name: "CBSIVAUS",
+    displayName: "CBS",
   },
   DCUniverseIVAUS: {
-    name: "DC Universe",
+    name: "DCUniverseIVAUS",
+    displayName: "DC Universe",
   },
   HBOMaxIVAUS: {
-    name: "HBO",
+    name: "HBOMaxIVAUS",
+    displayName: "HBO",
   },
   DiscoveryChannelIVAUS: {
-    name: "Discovery Channel",
+    name: "DiscoveryChannelIVAUS",
+    displayName: "Discovery Channel",
   },
   FandangoMoviesIVAUS: {
-    name: "Fandango Movies",
+    name: "FandangoMoviesIVAUS",
+    displayName: "Fandango Movies",
   },
   FoxIVAUS: {
-    name: "Fox",
+    name: "FoxIVAUS",
+    displayName: "Fox",
   },
   NBCIVAUS: {
-    name: "NBC",
+    name: "NBCIVAUS",
+    displayName: "NBC",
   },
   NickelodeonIVAUS: {
-    name: "Nickelodeon",
+    name: "NickelodeonIVAUS",
+    displayName: "Nickelodeon",
   },
 };

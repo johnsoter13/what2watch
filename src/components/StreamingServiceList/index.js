@@ -44,7 +44,7 @@ const StreamingServiceList = ({ navigation }) => {
                 ? "#008000"
                 : "#FF0000"
             }
-            title={STREAMING_SERVICES[streamingService].name}
+            title={STREAMING_SERVICES[streamingService].displayName}
             onPress={() => handleStreamingServiceSelection(streamingService)}
           />
         </View>

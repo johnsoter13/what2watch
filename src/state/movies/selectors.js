@@ -10,19 +10,25 @@ export const selectMovieStreamingServicesByGenre = (
   userStreamingServices
 ) => {
   const movies = state.movies?.movieStreamingServices;
+  // const streamingServiceKeys = Object.keys();
 
-  const filteredMovies = Object.values(movies).forEach((movie) => {
+  const filteredMovies = Object.values(movies).reduce((acc, movie) => {
     if (movie.genre === genre) {
-      const movieStreamingPlatformsShared = Object.keys(
-        movie.streamingServices
-      ).forEach((streamingService) => {
+      const movieStreamingPlatformsShared = [];
+      Object.keys(movie.streamingServices).forEach((streamingService) => {
         if (userStreamingServices[streamingService]) {
-          movieStreamingPlatformsShared.push(streamingService);
+          movieStreamingPlatformsShared.push(
+            movie.streamingServices[streamingService]
+          );
         }
       });
-      return { ...movie, movieStreamingPlatformsShared };
+      if (movieStreamingPlatformsShared.length > 0) {
+        acc.push({ ...movie, movieStreamingPlatformsShared });
+      }
+      return acc;
     }
-  });
+    return acc;
+  }, []);
 
   return filteredMovies;
 };
