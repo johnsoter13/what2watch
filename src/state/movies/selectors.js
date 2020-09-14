@@ -11,16 +11,14 @@ export const selectMovieStreamingServicesByGenre = (
 
   const filteredMovies = Object.values(movies).reduce((acc, movie) => {
     if (movie.genre === genre) {
-      const movieStreamingPlatformsShared = [];
+      const locations = [];
       Object.keys(movie.streamingServices).forEach((streamingService) => {
         if (userStreamingServices[streamingService]) {
-          movieStreamingPlatformsShared.push(
-            movie.streamingServices[streamingService]
-          );
+          locations.push(movie.streamingServices[streamingService]);
         }
       });
-      if (movieStreamingPlatformsShared.length > 0) {
-        acc.push({ ...movie, movieStreamingPlatformsShared });
+      if (locations.length > 0) {
+        acc.push({ ...movie, locations });
       }
       return acc;
     }

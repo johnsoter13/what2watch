@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, View, TextInput, Button } from "react-native";
+import { StyleSheet, View, TextInput, Button, Text } from "react-native";
 import { debounce } from "lodash";
 import { useBackHandler } from "@react-native-community/hooks";
 
@@ -30,12 +30,15 @@ const Search = () => {
   const renderListOfPreviousSearches = () => {
     return (
       <View style={styles.previousSearchesContainer}>
+        {recentSearchQueries.length ? (
+          <Text style={styles.previousSearchesTitle}>Recent Searches</Text>
+        ) : null}
         {recentSearchQueries?.map((query) => (
-          <View>
+          <View style={styles.previousSearchesListItem}>
             <Button
               title={query}
               onPress={() => dispatch(setSearchQueryAction(query))}
-              style={styles.previouseSearchesButton}
+              style={styles.previousSearchesButton}
             />
           </View>
         ))}
@@ -44,7 +47,7 @@ const Search = () => {
   };
 
   const renderSearchResults = () => (
-    <View>
+    <View style={styles.searchList}>
       <SearchMovieList query={searchQuery} />
     </View>
   );
@@ -92,13 +95,23 @@ const styles = StyleSheet.create({
   search: {
     backgroundColor: "white",
     height: 35,
+    padding: 5,
   },
   previousSearchesContainer: {
     marginTop: 20,
     width: "100%",
   },
-  previouseSearchesButton: {
+  previousSearchesButton: {
     marginTop: 10,
+    width: "100%",
+  },
+  previousSearchesTitle: {
+    marginBottom: 5,
+  },
+  previousSearchesListItem: {
+    marginBottom: 10,
+  },
+  searchList: {
     width: "100%",
   },
 });

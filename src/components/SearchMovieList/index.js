@@ -1,29 +1,31 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Button, Title, Text } from "react-native";
+import { View, Button, Title, Text, StyleSheet } from "react-native";
 
 import { selectSearchResults } from "../../state/search/selectors";
+import MovieListItem from "../MovieListItem";
 
 const SearchMovieList = ({ query }) => {
-  console.log(query);
   const searchMovies = useSelector((state) =>
     selectSearchResults(state, query)
   );
 
   return (
-    <View>
+    <View style={styles.container}>
       {searchMovies?.map((movie) => (
-        <>
-          <Text>{movie.name}</Text>
-          <View>
-            {movie.locations.map((streamingService) => (
-              <Text>{streamingService.display_name}</Text>
-            ))}
-          </View>
-        </>
+        <MovieListItem movie={movie} />
       ))}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 20,
+    width: "100%",
+  },
+});
 
 export default SearchMovieList;

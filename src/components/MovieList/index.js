@@ -4,6 +4,7 @@ import { View, Button, Title, Text } from "react-native";
 
 import { selectMovieStreamingServicesByGenre } from "../../state/movies/selectors";
 import { selectUserStreamingServices } from "../../state/streaming/selectors";
+import MovieListItem from "../MovieListItem";
 
 const MovieList = ({ navigation, route }) => {
   const userStreamingServices = useSelector(selectUserStreamingServices);
@@ -18,14 +19,7 @@ const MovieList = ({ navigation, route }) => {
   return (
     <View>
       {movieStreamingServices?.map((movie) => (
-        <>
-          <Text>{movie.movieTitle}</Text>
-          <View>
-            {movie.movieStreamingPlatformsShared.map((streamingService) => (
-              <Text>{streamingService.display_name}</Text>
-            ))}
-          </View>
-        </>
+        <MovieListItem movie={movie} />
       ))}
     </View>
   );

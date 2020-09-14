@@ -26,15 +26,22 @@ const Home = ({ navigation }) => {
           title="Search here..."
         />
       </View>
-      <Button
-        onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
-        title="Select Streaming Services"
-      />
-      {/* TODO: make sure user has at least one streaming service */}
-      <Button
-        onPress={() => navigation.navigate(GENRE_SCREEN)}
-        title="Find A Movie"
-      />
+      <View style={styles.actionsContainer}>
+        <View style={styles.actionsButton}>
+          <Button
+            onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
+            title="Select Streaming Services"
+          />
+        </View>
+        <View style={styles.actionsButton}>
+          {/* TODO: make sure user has at least one streaming service */}
+          <Button
+            onPress={() => navigation.navigate(GENRE_SCREEN)}
+            title="Find A Movie"
+            style={styles.actionsButton}
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -51,6 +58,16 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     width: "100%",
+  },
+  actionsContainer: {
+    width: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionsButton: {
+    width: "100%",
+    marginBottom: 30,
   },
 });
 
