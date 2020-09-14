@@ -36,7 +36,6 @@ const Search = () => {
               title={query}
               onPress={() => dispatch(setSearchQueryAction(query))}
               style={styles.previouseSearchesButton}
-              color="#fff"
             />
           </View>
         ))}
