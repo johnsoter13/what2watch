@@ -71,11 +71,12 @@ export const fetchMovieStreamingServicesAction = (movieId, genre) => (
     .then((text) => {
       const movieStreamServices = JSON.parse(text)?.collection?.locations;
       const movieTitle = JSON.parse(text)?.collection?.name;
+      const moviePicture = JSON.parse(text)?.collection?.picture
 
       dispatch({
         type: MOVIE_STREAMING_SERVICES,
         status: SUCCESS,
-        payload: { movieId, genre, movieStreamServices, movieTitle },
+        payload: { movieId, genre, movieStreamServices, movieTitle, moviePicture },
       });
     })
     .catch((err) => {
