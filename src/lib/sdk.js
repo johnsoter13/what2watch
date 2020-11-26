@@ -1,16 +1,26 @@
 export const fetchMovieGenres = () => {
-  return fetch("http://localhost:8081/fetchMovieGenres", {
-    method: "GET"
-  });
+  return fetch("https://imdb8.p.rapidapi.com/title/list-popular-genres", {
+    method: "GET",
+    headers: {	
+      "x-rapidapi-host": "imdb8.p.rapidapi.com",	
+      "x-rapidapi-key": "c50c4c9db7mshcf4126835ef9018p19fd07jsn885511f89022",	
+      useQueryString: true,	
+      "Content-Type": "application/json; charset=utf-8",	
+    },	
+  });	  
 };
 
 export const fetchMoviesByGenre = (genre) => {
   return fetch(
-    `http://localhost:8081/fetchMoviesByGenre?genre=${genre}`,
-    {
+    `https://imdb8.p.rapidapi.com/title/get-popular-movies-by-genre?genre=${genre}`, {
       method: "GET",
-    }
-  );
+      headers: {	
+        "x-rapidapi-host": "imdb8.p.rapidapi.com",	
+        "x-rapidapi-key": "c50c4c9db7mshcf4126835ef9018p19fd07jsn885511f89022",	
+        useQueryString: true,	
+        "Content-Type": "application/json; charset=utf-8",	
+      },
+    });
 };
 
 export const fetchMovieStreamingServices = (movieId) => {
@@ -31,9 +41,16 @@ export const fetchMovieStreamingServices = (movieId) => {
 
 export const fetchMovieFromSearch = (query) => {
   return fetch(
-    `http://localhost:8081/fetchMovieFromSearch?query=${query}`,
+    `https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=${query}`,
     {
       method: "GET",
+      headers: {
+        "x-rapidapi-host":
+          "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com",
+        "x-rapidapi-key": "c50c4c9db7mshcf4126835ef9018p19fd07jsn885511f89022",
+        useQueryString: true,
+        "Content-Type": "application/json; charset=utf-8",
+      },
     }
   );
 };
