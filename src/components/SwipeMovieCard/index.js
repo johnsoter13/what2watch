@@ -8,11 +8,12 @@ import {
   GENRE_SCREEN,
   SEARCH_MOVIE_SCREEN,
 } from "../../constants/ROUTES";
-import { selectMovieStreamingServicesById } from "../../state/movies/selectors";
+import { selectMovieStreamingServicesById, selectMovieStreamingServicesLoadingStatus } from "../../state/movies/selectors";
 import {movieListIndexAction, fetchMovieStreamingServicesAction} from '../../state/movies/actions';
+import { FAILURE } from "../../state/constants";
 
 
-const SwipeMovieCard = ({ userStreamingServices, movieId }) => {
+const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
   const dispatch = useDispatch();
   const movie = useSelector((state) =>
   selectMovieStreamingServicesById(
@@ -23,9 +24,9 @@ const SwipeMovieCard = ({ userStreamingServices, movieId }) => {
 
   useEffect(() => {
     if (!movie) {
-      dispatch(fetchMovieStreamingServicesAction(movieId))
+      dispatch(fetchMovieStreamingServicesAction(movieId));
     }
-  }, [movie, dispatch, fetchMovieStreamingServicesAction])
+  }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction])
 
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
@@ -66,7 +67,7 @@ const SwipeMovieCard = ({ userStreamingServices, movieId }) => {
       </View>
       <View>
         <Button 
-          onPress={() => dispatch(movieListIndexAction())}
+          onPress={() => dispatch(movieListIndexAction(genre))}
           title="Next Movie" 
         />
       </View>

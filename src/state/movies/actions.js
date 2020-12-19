@@ -30,12 +30,12 @@ export const fetchMovieGenresAction = () => (dispatch) => {
     });
 };
 
-export const fetchMoviesByGenreAction = (genre) => (dispatch) => {
+export const fetchMoviesByGenreAction = (genre, endpoint) => (dispatch) => {
   dispatch({
     type: MOVIES_BY_GENRE,
     status: PENDING,
   });
-  return fetchMoviesByGenre(genre)
+  return fetchMoviesByGenre(endpoint)
     .then((response) => response.text())
     .then((text) => JSON.parse(text))
     .then((moviesByGenre) => {
@@ -95,9 +95,10 @@ export const fetchMovieStreamingServicesAction = (movieId) => (
     });
 };
 
-export const movieListIndexAction = () => (dispatch) => {
+export const movieListIndexAction = (genre) => (dispatch) => {
   return dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
+    payload: {genre}
   });
 };

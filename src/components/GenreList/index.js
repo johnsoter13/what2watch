@@ -4,15 +4,15 @@ import { View, Button } from "react-native";
 
 import { selectMovieGenres } from "../../state/movies/selectors";
 import { fetchMoviesByGenreAction } from "../../state/movies/actions";
-import { HOME_SCREEN } from "../../constants/ROUTES";
+import { MOVIE_SCREEN } from "../../constants/ROUTES";
 
 const GenreList = ({ navigation }) => {
   const dispatch = useDispatch();
   const movieGenres = useSelector(selectMovieGenres);
 
   const handleStreamingServiceSelection = (genre) => {
-    dispatch(fetchMoviesByGenreAction(movieGenres[genre].description));
-    navigation.navigate(HOME_SCREEN, { genre });
+    dispatch(fetchMoviesByGenreAction(movieGenres[genre].description, movieGenres[genre].endpoint));
+    navigation.navigate(MOVIE_SCREEN, { genre });
   };
 
   return (
