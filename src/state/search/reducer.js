@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from "./constants";
-import { PENDING, SUCCESS } from "../constants";
+import { FAILURE, PENDING, SUCCESS } from "../constants";
 
 const initialState = {
   moviesFromSearch: {},
@@ -23,7 +23,7 @@ export default produce((draft, action) => {
           draft.moviesFromSearchLoadingStatus = SUCCESS;
           break;
         default:
-          draft.moviesFromSearchLoadingStatus = PENDING;
+          draft.moviesFromSearchLoadingStatus = FAILURE;
       }
       break;
     case SEARCH_QUERY:
