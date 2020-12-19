@@ -1,13 +1,15 @@
 import { produce } from "immer";
-import { GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES } from "./constants";
+import { GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX } from "./constants";
 import { PENDING, SUCCESS } from "../constants";
 
 const initialState = {
   genres: {},
+  moviesByGenre: {},
   genreLoadingStatus: null,
   moviesByGenreLoadingStatus: null,
   movieStreamingServices: {},
   movieStreamingServicesLoadingStatus: null,
+  movieIndex: 0,
 };
 
 const createGenresObj = (genres) => {
@@ -45,20 +47,28 @@ export default produce((draft, action) => {
           draft.genreLoadingStatus = PENDING;
       }
       break;
-    case MOVIES_BY_GENRE:
+    case MOVIE_INDEX:
       switch (action.status) {
-        case PENDING:
-          draft.moviesByGenreLoadingStatus = PENDING;
-          break;
         case SUCCESS:
-          draft.moviesByGenre[action.payload.genre] =
-            action.payload?.moviesByGenre;
-          draft.moviesByGenreLoadingStatus = SUCCESS;
+          const newMovieIndex = draft.movieIndex + 1;
+          draft.movieIndex = newMovieIndex;
           break;
-        default:
-          draft.moviesByGenreLoadingStatus = PENDING;
       }
       break;
+      case MOVIES_BY_GENRE:
+        switch (action.status) {
+          case PENDING:
+            draft.moviesByGenreLoadingStatus = PENDING;
+            break;
+          case SUCCESS:
+            draft.moviesByGenre[action.payload.genre] =
+              action.payload?.moviesByGenre;
+            draft.moviesByGenreLoadingStatus = SUCCESS;
+            break;
+          default:
+            draft.moviesByGenreLoadingStatus = PENDING;
+        }
+        break;
     case MOVIE_STREAMING_SERVICES:
       switch (action.status) {
         case PENDING:
@@ -66,7 +76,6 @@ export default produce((draft, action) => {
           break;
         case SUCCESS:
           const {
-            genre,
             movieId,
             movieStreamServices,
             movieTitle,
@@ -74,7 +83,6 @@ export default produce((draft, action) => {
           } = action.payload;
           if (movieStreamServices) {
             draft.movieStreamingServices[movieId] = {
-              genre,
               movieTitle,
               picture: moviePicture,
               streamingServices: createMovieStreamingServiceObj(
