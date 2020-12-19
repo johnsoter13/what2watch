@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { View, Button } from "react-native";
+import { StyleSheet, View, Button, Alert } from "react-native";
 import { cloneDeep } from "lodash";
 
 import { updateStreamingServicesAction } from "../../state/streaming/actions";
@@ -17,9 +17,33 @@ const StreamingServiceList = ({ navigation }) => {
   );
 
   const saveStreamingServices = () => {
-    dispatch(updateStreamingServicesAction(selectedStreamingServices));
-    navigation.navigate(GENRE_SCREEN);
+    if (selectedStreamingServices) {
+      dispatch(updateStreamingServicesAction(selectedStreamingServices));
+      navigation.navigate(GENRE_SCREEN);
+    } else {
+      console.log("SELECT SOMETHIGN");
+    }
   };
+
+  const noStreamingServiceAlert = () => {
+    Alert.alert(
+      "Oops!",
+      "You have to select at least one streaming service.",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel pressed"),
+          style: "cancel"
+        },
+        {
+          text: "Okay",
+          onPress: () => console.log("Okay pressed"),
+          style: "default"
+        }
+      ],
+      { cancelable: false }
+    );
+  }
 
   const handleStreamingServiceSelection = (streamingService) => {
     if (selectedStreamingServices[streamingService]) {
@@ -37,7 +61,8 @@ const StreamingServiceList = ({ navigation }) => {
   return (
     <View>
       {Object.keys(STREAMING_SERVICES).map((streamingService) => (
-        <View>
+        <View key={streamingService}
+              style={styles.highlightsButton}>
           <Button
             color={
               selectedStreamingServices[streamingService]
@@ -53,5 +78,14 @@ const StreamingServiceList = ({ navigation }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  highlightsButton: {
+    
+  },
+});
 
 export default StreamingServiceList;
