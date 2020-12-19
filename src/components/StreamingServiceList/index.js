@@ -5,7 +5,7 @@ import { cloneDeep } from "lodash";
 
 import { updateStreamingServicesAction } from "../../state/streaming/actions";
 import { selectUserStreamingServices } from "../../state/streaming/selectors";
-import { HOME_SCREEN } from "../../constants/ROUTES";
+import { GENRE_SCREEN } from "../../constants/ROUTES";
 
 import { STREAMING_SERVICES } from "./constants";
 
@@ -18,7 +18,7 @@ const StreamingServiceList = ({ navigation }) => {
 
   const saveStreamingServices = () => {
     dispatch(updateStreamingServicesAction(selectedStreamingServices));
-    navigation.navigate(HOME_SCREEN);
+    navigation.navigate(GENRE_SCREEN);
   };
 
   const handleStreamingServiceSelection = (streamingService) => {

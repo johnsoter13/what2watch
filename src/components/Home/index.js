@@ -33,14 +33,14 @@ const Home = ({ navigation }) => {
             title="Select Streaming Services"
           />
         </View>
-        <View style={styles.actionsButton}>
+        {/* <View style={styles.actionsButton}> */}
           {/* TODO: make sure user has at least one streaming service */}
-          <Button
+          {/* <Button
             onPress={() => navigation.navigate(GENRE_SCREEN)}
             title="Find A Movie"
             style={styles.actionsButton}
           />
-        </View>
+        </View> */}
       </View>
     </View>
   );

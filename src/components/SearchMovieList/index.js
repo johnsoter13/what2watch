@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { View, Button, Title, Text, StyleSheet } from "react-native";
+import { useSelector } from "react-redux";
+import { View, StyleSheet } from "react-native";
 
 import { selectSearchResults } from "../../state/search/selectors";
 import MovieListItem from "../MovieListItem";
