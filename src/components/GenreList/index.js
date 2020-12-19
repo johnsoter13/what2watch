@@ -11,7 +11,7 @@ const GenreList = ({ navigation }) => {
   const movieGenres = useSelector(selectMovieGenres);
 
   const handleStreamingServiceSelection = (genre) => {
-    dispatch(fetchMoviesByGenreAction(movieGenres[genre].description));
+    dispatch(fetchMoviesByGenreAction(movieGenres[genre].description, movieGenres[genre].endpoint));
     navigation.navigate(MOVIE_SCREEN, { genre });
   };
 

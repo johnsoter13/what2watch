@@ -6,11 +6,10 @@ import { selectMovieIndex, selectMovieStreamingServicesByGenre, selectMoviesByGe
 import { selectUserStreamingServices } from "../../state/streaming/selectors";
 import SwipeMovieCard from "../SwipeMovieCard";
 import { SUCCESS } from "../../state/constants";
-import {movieListIndexAction, fetchMovieStreamingServicesAction} from '../../state/movies/actions';
 
 const MovieList = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const movieIndex = useSelector(selectMovieIndex);
+  const movieIndex = useSelector((state) => selectMovieIndex(state, route.params.genre));
   const moviesByGenre = useSelector((state) => selectMoviesByGenre(state, route.params.genre));
   const userStreamingServices = useSelector(selectUserStreamingServices);
   const moviesByGenreLoadingStatus = useSelector(selectMoviesByGenreLoadingStatus);
@@ -18,7 +17,7 @@ const MovieList = ({ navigation, route }) => {
   return (
     <View>
       {moviesByGenreLoadingStatus === SUCCESS && moviesByGenre &&
-        <SwipeMovieCard userStreamingServices={userStreamingServices} movieId={moviesByGenre[movieIndex]} />
+        <SwipeMovieCard genre={route.params.genre} userStreamingServices={userStreamingServices} movieId={moviesByGenre[movieIndex]} />
       }
     </View>
   );

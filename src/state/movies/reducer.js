@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX } from "./constants";
-import { PENDING, SUCCESS } from "../constants";
+import { FAILURE, PENDING, SUCCESS } from "../constants";
 
 const initialState = {
   genres: {},
@@ -9,7 +9,7 @@ const initialState = {
   moviesByGenreLoadingStatus: null,
   movieStreamingServices: {},
   movieStreamingServicesLoadingStatus: null,
-  movieIndex: 0,
+  movieIndexes: {},
 };
 
 const createGenresObj = (genres) => {
@@ -50,8 +50,9 @@ export default produce((draft, action) => {
     case MOVIE_INDEX:
       switch (action.status) {
         case SUCCESS:
-          const newMovieIndex = draft.movieIndex + 1;
-          draft.movieIndex = newMovieIndex;
+          const {genre} = action.payload
+          const newMovieIndex = draft.movieIndexes[genre] ? draft.movieIndexes[genre] + 1 : 1;
+          draft.movieIndexes[genre] = newMovieIndex;
           break;
       }
       break;
@@ -89,11 +90,15 @@ export default produce((draft, action) => {
                 movieStreamServices
               ),
             };
+          } else {
+            draft.movieStreamingServices[movieId] = {
+              
+            }
           }
           draft.movieStreamingServicesLoadingStatus = SUCCESS;
           break;
         default:
-          draft.movieStreamingServicesLoadingStatus = PENDING;
+          draft.movieStreamingServicesLoadingStatus = FAILURE;
       }
       break;
     default:
