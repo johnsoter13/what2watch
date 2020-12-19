@@ -9,7 +9,7 @@ import {
   SEARCH_MOVIE_SCREEN,
 } from "../../constants/ROUTES";
 import { selectMovieStreamingServicesById } from "../../state/movies/selectors";
-import {movieListIndexAction, fetchMovieStreamingServicesAction} from '../../state/movies/actions';
+import { movieListIndexAction, fetchMovieStreamingServicesAction} from '../../state/movies/actions';
 
 
 const SwipeMovieCard = ({ userStreamingServices, movieId }) => {

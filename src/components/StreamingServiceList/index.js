@@ -17,7 +17,7 @@ const StreamingServiceList = ({ navigation }) => {
   );
 
   const saveStreamingServices = () => {
-    if (selectedStreamingServices) {
+    if (Object.keys(selectedStreamingServices).length != 0) {
       dispatch(updateStreamingServicesAction(selectedStreamingServices));
       navigation.navigate(GENRE_SCREEN);
     } else {
