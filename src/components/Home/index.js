@@ -1,17 +1,24 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { StyleSheet, View, Button, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { fetchMovieGenresAction } from "../../state/movies/actions";
 import {
   STREAMING_SERVICES_SCREEN,
-  GENRE_SCREEN,
   SEARCH_MOVIE_SCREEN,
+  LOGIN
 } from "../../constants/ROUTES";
+import { selectUserIsLoggedIn } from "../../state/auth/selectors";
+import { logUserOut } from "../../state/auth/actions";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
+  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
+  const logOut = () => {
+    console.log("logging out");
+    dispatch(logUserOut());
+  }
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
@@ -32,6 +39,15 @@ const Home = ({ navigation }) => {
             onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
             title="Select Streaming Services"
           />
+        </View>
+        <View>
+        {/* show logout button when logged in */}
+          <View style={styles.actionButton}>
+            <Button
+              onPress={() => {isUserLoggedIn ? logOut() : navigation.navigate(LOGIN)}}
+              title={isUserLoggedIn ? "Logout" : "Login"}
+            />
+          </View>
         </View>
         {/* <View style={styles.actionsButton}> */}
           {/* TODO: make sure user has at least one streaming service */}

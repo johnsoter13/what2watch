@@ -1,3 +1,5 @@
+import Firebase from "../../config/Firebase";
+
 export const fetchMovieGenres = () => {
   return fetch("https://imdb8.p.rapidapi.com/title/list-popular-genres", {
     method: "GET",
@@ -54,3 +56,6 @@ export const fetchMovieFromSearch = (query) => {
     }
   );
 };
+
+export const createUserWithEmailAndPassword = (email, password) =>
+ Firebase.auth().createUserWithEmailAndPassword(email, password)
