@@ -1,14 +1,12 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { View, StyleSheet } from "react-native";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { View, StyleSheet } from 'react-native';
 
-import { selectSearchResults } from "../../state/search/selectors";
-import MovieListItem from "../MovieListItem";
+import { selectSearchResults } from '../../state/search/selectors';
+import MovieListItem from '../MovieListItem';
 
 const SearchMovieList = ({ query }) => {
-  const searchMovies = useSelector((state) =>
-    selectSearchResults(state, query)
-  );
+  const searchMovies = useSelector((state) => selectSearchResults(state, query));
 
   return (
     <View style={styles.container}>
@@ -22,9 +20,9 @@ const SearchMovieList = ({ query }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center',
     paddingVertical: 20,
-    width: "100%",
+    width: '100%',
   },
 });
 

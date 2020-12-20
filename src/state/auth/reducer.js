@@ -1,11 +1,11 @@
-import { produce } from "immer";
-import { FAILURE, SUCCESS } from "../constants";
-import { SET_LOGIN_STATE } from "./constants";
+import { produce } from 'immer';
+import { FAILURE, SUCCESS } from '../constants';
+import { SET_LOGIN_STATE } from './constants';
 
 const initialState = {
   userLogin: {
-      isLoggedIn: false,
-      userId: ""
+    isLoggedIn: false,
+    userId: ''
   },
 };
 
@@ -17,7 +17,7 @@ export default produce((draft, action) => {
           draft.userLogin.isLoggedIn = action.payload?.isLoggedIn;
           break;
         case FAILURE:
-            draft.userLogin.isLoggedIn = action.payload?.isLoggedIn;
+          draft.userLogin.isLoggedIn = action.payload?.isLoggedIn;
       }
       break;
     default:

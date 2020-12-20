@@ -1,7 +1,7 @@
-import { FAILURE, SUCCESS } from "../constants";
+import { FAILURE, SUCCESS } from '../constants';
 
-import { SET_LOGIN_STATE } from "./constants";
-import {createUserWithEmailAndPassword} from '../../lib/sdk';
+import { SET_LOGIN_STATE } from './constants';
+import { createUserWithEmailAndPassword } from '../../lib/sdk';
 
 export const updateUserLogin = (isLoggedIn) => (
   dispatch
@@ -13,28 +13,25 @@ export const updateUserLogin = (isLoggedIn) => (
   });
 };
 
-export const createUserAction = (email, password) => (dispatch) => {
-    return createUserWithEmailAndPassword(email, password)
-    .then((user) => {
-        dispatch({
-            type: SET_LOGIN_STATE,
-            status: SUCCESS,
-            payload: { isLoggedIn: true },
-        });
-    })
-    .catch((error) =>{
-        dispatch({
-            type: SET_LOGIN_STATE,
-            status: FAILURE,
-            payload: { isLoggedIn: false },
-        });
-    })
-}
-
-export const logUserOut = () => (dispatch) => {
-    return dispatch({
+export const createUserAction = (email, password) => (dispatch) => 
+  createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      dispatch({
         type: SET_LOGIN_STATE,
         status: SUCCESS,
+        payload: { isLoggedIn: true },
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: SET_LOGIN_STATE,
+        status: FAILURE,
         payload: { isLoggedIn: false },
+      });
     });
-}
+
+export const logUserOut = () => (dispatch) => dispatch({
+  type: SET_LOGIN_STATE,
+  status: SUCCESS,
+  payload: { isLoggedIn: false },
+});

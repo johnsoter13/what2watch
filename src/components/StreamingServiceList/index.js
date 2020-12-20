@@ -1,20 +1,22 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, View, Text, Alert, TouchableHighlight } from "react-native";
-import { cloneDeep } from "lodash";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  StyleSheet, View, Text, Alert, TouchableHighlight,
+} from 'react-native';
+import { cloneDeep } from 'lodash';
 
-import { updateStreamingServicesAction } from "../../state/streaming/actions";
-import { selectUserStreamingServices } from "../../state/streaming/selectors";
-import { GENRE_SCREEN } from "../../constants/ROUTES";
+import { updateStreamingServicesAction } from '../../state/streaming/actions';
+import { selectUserStreamingServices } from '../../state/streaming/selectors';
+import { GENRE_SCREEN } from '../../constants/ROUTES';
 import * as baseStyles from '../../styles/styles';
 
-import { STREAMING_SERVICES } from "./constants";
+import { STREAMING_SERVICES } from './constants';
 
 const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
   const userStreamingServices = useSelector(selectUserStreamingServices);
   const [selectedStreamingServices, setSelectedStreamingServices] = useState(
-    userStreamingServices
+    userStreamingServices,
   );
 
   const saveStreamingServices = () => {
@@ -22,29 +24,29 @@ const StreamingServiceList = ({ navigation }) => {
       dispatch(updateStreamingServicesAction(selectedStreamingServices));
       navigation.navigate(GENRE_SCREEN);
     } else {
-      console.log("SELECT SOMETHING");
+      console.log('SELECT SOMETHING');
     }
   };
 
   const noStreamingServiceAlert = () => {
     Alert.alert(
-      "Oops!",
-      "You have to select at least one streaming service.",
+      'Oops!',
+      'You have to select at least one streaming service.',
       [
         {
-          text: "Cancel",
-          onPress: () => console.log("Cancel pressed"),
-          style: "cancel"
+          text: 'Cancel',
+          onPress: () => console.log('Cancel pressed'),
+          style: 'cancel',
         },
         {
-          text: "Okay",
-          onPress: () => console.log("Okay pressed"),
-          style: "default"
-        }
+          text: 'Okay',
+          onPress: () => console.log('Okay pressed'),
+          style: 'default',
+        },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
-  }
+  };
 
   const handleStreamingServiceSelection = (streamingService) => {
     if (selectedStreamingServices[streamingService]) {
@@ -62,17 +64,22 @@ const StreamingServiceList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-      {Object.keys(STREAMING_SERVICES).map((streamingService) => (
-        <View key={streamingService}
-              style={styles.serviceButtonContainer}>
-          <TouchableHighlight
-            style={selectedStreamingServices[streamingService] ? styles.serviceButtonActive : styles.serviceButton}
-            onPress={() => handleStreamingServiceSelection(streamingService)}
+        {Object.keys(STREAMING_SERVICES).map((streamingService) => (
+          <View
+            key={streamingService}
+            style={styles.serviceButtonContainer}
           >
-            <Text style={styles.buttonText}>{STREAMING_SERVICES[streamingService].displayName}</Text>
-          </TouchableHighlight>
-        </View>
-      ))}
+            <TouchableHighlight
+              style={selectedStreamingServices[streamingService] ? 
+                styles.serviceButtonActive : styles.serviceButton}
+              onPress={() => handleStreamingServiceSelection(streamingService)}
+            >
+              <Text style={styles.buttonText}>
+                {STREAMING_SERVICES[streamingService].displayName}
+              </Text>
+            </TouchableHighlight>
+          </View>
+        ))}
       </View>
       <View style={styles.submitButtonContainer}>
         <TouchableHighlight style={styles.submitButton} onPress={saveStreamingServices}>
@@ -91,25 +98,25 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   buttonContainer: {
-    overflow: "auto",
-    width: "100%",
+    overflow: 'auto',
+    width: '100%',
     flex: 1,
   },
   serviceButtonContainer: {
-    height: "5%",
-    marginBottom: "20px",
+    height: '5%',
+    marginBottom: '20px',
   },
   serviceButton: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
     backgroundColor: baseStyles.CANCEL_BUTTON_COLOR,
   },
   serviceButtonActive: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
     backgroundColor: baseStyles.CONTINUE_BUTTON_COLOR,
   },
@@ -117,17 +124,17 @@ const styles = StyleSheet.create({
     color: baseStyles.BUTTON_TEXT_COLOR,
   },
   submitButton: {
-    height: "50%",
+    height: '50%',
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
     backgroundColor: baseStyles.BUTTON_COLOR,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  
+
   submitButtonContainer: {
-    height: "10%",
-    justifyContent: "center"
-  }
+    height: '10%',
+    justifyContent: 'center',
+  },
 });
 
 export default StreamingServiceList;

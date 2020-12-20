@@ -1,5 +1,7 @@
-import React from "react";
-import { View, Button, Linking, Text, StyleSheet, Image } from "react-native";
+import React from 'react';
+import {
+  View, Button, Linking, Text, StyleSheet, Image
+} from 'react-native';
 
 const MovieListItem = ({ movie }) => {
   const handleNavigateToLink = (url) => {
@@ -7,7 +9,7 @@ const MovieListItem = ({ movie }) => {
       if (supported) {
         Linking.openURL(url);
       } else {
-        console.log("Don't know how to open URI: " + url);
+        console.log(`Don't know how to open URI: ${url}`);
       }
     });
   };
@@ -40,37 +42,37 @@ const MovieListItem = ({ movie }) => {
 const styles = StyleSheet.create({
   movieContainer: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginBottom: 20,
-    width: "85%",
+    width: '85%',
     minHeight: 200,
-    overflow: "auto",
+    overflow: 'auto',
     paddingTop: 5,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: '#fff',
   },
   movieBodyContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   movieImage: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
   movieRowContainer: {
-    width: "50%",
+    width: '50%',
     flex: 1,
   },
   movieTitle: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
-    width: "100%",
+    width: '100%',
     marginBottom: 5,
   },
   movieRowAvailable: {
-    alignSelf: "center",
-    textDecorationLine: "underline",
+    alignSelf: 'center',
+    textDecorationLine: 'underline',
     marginBottom: 5,
   },
   movieStreamingService: {
