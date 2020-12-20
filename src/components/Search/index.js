@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  StyleSheet, View, TextInput, Button, Text
-} from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
 import { debounce } from 'lodash';
 import { useBackHandler } from '@react-native-community/hooks';
 
@@ -70,7 +68,7 @@ const Search = () => {
         <TextInput
           onChangeText={handleSearch}
           value={searchQuery}
-          placeholder="Search here..."
+          placeholder='Search here...'
           style={styles.search}
         />
       </View>

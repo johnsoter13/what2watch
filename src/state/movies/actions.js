@@ -1,5 +1,8 @@
 import {
-  GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX
+  GENRES,
+  MOVIES_BY_GENRE,
+  MOVIE_STREAMING_SERVICES,
+  MOVIE_INDEX,
 } from './constants';
 import { PENDING, SUCCESS, FAILURE } from '../constants';
 import {
@@ -34,14 +37,15 @@ export const fetchMovieGenresAction = () => (dispatch) => {
     });
 };
 
-export const fetchMoviesByGenreAction = (genre, endpoint) => (dispatch, getState) => {
+export const fetchMoviesByGenreAction = (genre, endpoint) => (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: MOVIES_BY_GENRE,
     status: PENDING,
   });
-
   const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre);
-
   if (moviesByGenreExist) {
     return dispatch({
       type: MOVIES_BY_GENRE,
@@ -66,9 +70,7 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (dispatch, getState
     });
 };
 
-export const fetchMovieStreamingServicesAction = (movieId) => (
-  dispatch
-) => {
+export const fetchMovieStreamingServicesAction = (movieId) => (dispatch) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
@@ -90,7 +92,10 @@ export const fetchMovieStreamingServicesAction = (movieId) => (
         type: MOVIE_STREAMING_SERVICES,
         status: SUCCESS,
         payload: {
-          movieId, movieStreamServices, movieTitle, moviePicture
+          movieId,
+          movieStreamServices,
+          movieTitle,
+          moviePicture,
         },
       });
     })
@@ -103,8 +108,9 @@ export const fetchMovieStreamingServicesAction = (movieId) => (
     });
 };
 
-export const movieListIndexAction = (genre) => (dispatch) => dispatch({
-  type: MOVIE_INDEX,
-  status: SUCCESS,
-  payload: { genre }
-});
+export const movieListIndexAction = (genre) => (dispatch) =>
+  dispatch({
+    type: MOVIE_INDEX,
+    status: SUCCESS,
+    payload: { genre },
+  });

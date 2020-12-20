@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  StyleSheet, View, Button, Text, Image, Linking
-} from 'react-native';
+import { StyleSheet, View, Button, Text, Image, Linking } from 'react-native';
 
 import { selectMovieStreamingServicesById } from '../../state/movies/selectors';
-import { movieListIndexAction, fetchMovieStreamingServicesAction } from '../../state/movies/actions';
+import {
+  movieListIndexAction,
+  fetchMovieStreamingServicesAction,
+} from '../../state/movies/actions';
 import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
 
 const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
   const dispatch = useDispatch();
   const [sharedServices, setSharedServices] = useState([]);
-  const movie = useSelector((state) => selectMovieStreamingServicesById(
-    state,
-    movieId
-  ));
+  const movie = useSelector((state) =>
+    selectMovieStreamingServicesById(state, movieId)
+  );
 
   useEffect(() => {
     // if not in store, fetch movie
@@ -25,7 +25,10 @@ const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
       dispatch(movieListIndexAction(genre));
       // check if we have shared streaming services
     } else {
-      const sharedServicesForMovie = checkIfMovieIsAvailableToUser(userStreamingServices, movie);
+      const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
+        userStreamingServices,
+        movie
+      );
 
       // if yes, set shared services
       if (sharedServicesForMovie.length) {
@@ -53,27 +56,35 @@ const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
         <>
           <View style={styles.movieContainer}>
             {movie && sharedServices && (
-            <View style={styles.movieBodyContainer}>
-              <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
               <View style={styles.movieBodyContainer}>
-                <View style={styles.imageContainer}>
-                  <Image style={styles.movieImage} source={{ uri: movie.picture }} />
-                </View>
-                <View style={styles.movieRowContainer}>
-                  <Text style={styles.movieRowAvailable}>Available on:</Text>
-                  <View style={styles.movieStreamingServices}>
-                    {sharedServices.map((streamingService) => (
-                      <View key={streamingService} style={styles.movieStreamingService}>
-                        <Button
-                          onPress={() => handleNavigateToLink(streamingService.url)}
-                          title={streamingService.display_name}
-                        />
-                      </View>
-                    ))}
+                <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
+                <View style={styles.movieBodyContainer}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      style={styles.movieImage}
+                      source={{ uri: movie.picture }}
+                    />
+                  </View>
+                  <View style={styles.movieRowContainer}>
+                    <Text style={styles.movieRowAvailable}>Available on:</Text>
+                    <View style={styles.movieStreamingServices}>
+                      {sharedServices.map((streamingService) => (
+                        <View
+                          key={streamingService}
+                          style={styles.movieStreamingService}
+                        >
+                          <Button
+                            onPress={() =>
+                              handleNavigateToLink(streamingService.url)
+                            }
+                            title={streamingService.display_name}
+                          />
+                        </View>
+                      ))}
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
             )}
           </View>
         </>
@@ -86,7 +97,7 @@ const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '80%'
+    height: '80%',
   },
   movieContainer: {
     flex: 1,
@@ -118,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: '100%',
     marginBottom: 5,
-    height: '5%'
+    height: '5%',
   },
   movieRowAvailable: {
     alignSelf: 'center',
@@ -131,7 +142,7 @@ const styles = StyleSheet.create({
   movieStreamingServices: {
     flex: 1,
     overflow: 'auto',
-  }
+  },
 });
 
 export default SwipeMovieCard;

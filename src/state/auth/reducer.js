@@ -5,7 +5,7 @@ import { SET_LOGIN_STATE } from './constants';
 const initialState = {
   userLogin: {
     isLoggedIn: false,
-    userId: ''
+    userId: '',
   },
 };
 

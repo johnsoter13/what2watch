@@ -1,8 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  StyleSheet, View, TouchableOpacity, Text
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 import { selectMovieGenres } from '../../state/movies/selectors';
 import { fetchMoviesByGenreAction } from '../../state/movies/actions';
@@ -14,7 +12,12 @@ const GenreList = ({ navigation }) => {
   const movieGenres = useSelector(selectMovieGenres);
 
   const handleStreamingServiceSelection = (genre) => {
-    dispatch(fetchMoviesByGenreAction(movieGenres[genre].description, movieGenres[genre].endpoint));
+    dispatch(
+      fetchMoviesByGenreAction(
+        movieGenres[genre].description,
+        movieGenres[genre].endpoint
+      )
+    );
     navigation.navigate(MOVIE_SCREEN, { genre });
   };
 
@@ -26,7 +29,9 @@ const GenreList = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => handleStreamingServiceSelection(genre)}
             >
-              <Text style={styles.genreButtonText}>{movieGenres[genre].description}</Text>
+              <Text style={styles.genreButtonText}>
+                {movieGenres[genre].description}
+              </Text>
             </TouchableOpacity>
           </View>
         ))}
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
   },
   genreButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
-  }
+  },
 });
 
 export default GenreList;
