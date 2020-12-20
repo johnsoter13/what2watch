@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
-import { StyleSheet, View, Button, TextInput } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, View, Button, TouchableOpacity, Text} from "react-native";
 
+import * as baseStyles from '../../styles/styles';
 import { fetchMovieGenresAction } from "../../state/movies/actions";
 import {
   STREAMING_SERVICES_SCREEN,
@@ -28,17 +28,21 @@ const Home = ({ navigation }) => {
     <View style={styles.container}>
       {/* TODO: Move into header component and make icon */}
       <View style={styles.searchContainer}>
-        <Button
+        <TouchableOpacity
+          style={styles.searchButton}
           onPress={() => navigation.navigate(SEARCH_MOVIE_SCREEN)}
-          title="Search here..."
-        />
+        >
+          <Text  style={styles.searchButtonText}>Already have a movie in mind?</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.actionsContainer}>
-        <View style={styles.actionsButton}>
-          <Button
+        <View style={styles.actionsButtonContainer}>
+          <TouchableOpacity
+            style={styles.actionsButton}
             onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
-            title="Select Streaming Services"
-          />
+          >
+            <Text style={styles.actionsText}>Match with a Movie!</Text>
+          </TouchableOpacity>
         </View>
         <View>
         {/* show logout button when logged in */}
@@ -49,14 +53,6 @@ const Home = ({ navigation }) => {
             />
           </View>
         </View>
-        {/* <View style={styles.actionsButton}> */}
-          {/* TODO: make sure user has at least one streaming service */}
-          {/* <Button
-            onPress={() => navigation.navigate(GENRE_SCREEN)}
-            title="Find A Movie"
-            style={styles.actionsButton}
-          />
-        </View> */}
       </View>
     </View>
   );
@@ -74,6 +70,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     width: "100%",
+    height: "5%",
   },
   actionsContainer: {
     width: "100%",
@@ -81,10 +78,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  actionsButton: {
+  actionsButtonContainer: {
     width: "100%",
-    marginBottom: 30,
+    height: "50%",
   },
+  actionsButton: {
+    height: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: baseStyles.BUTTON_COLOR,
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+  },
+  actionsText: {
+    color: baseStyles.BUTTON_TEXT_COLOR,
+    fontSize: "2rem"
+  },
+  searchButton: {
+    height: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: baseStyles.BUTTON_COLOR,
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+  },
+  searchButtonText: {
+    color: baseStyles.BUTTON_TEXT_COLOR,
+  }
 });
 
 export default Home;
