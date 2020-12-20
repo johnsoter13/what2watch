@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  StyleSheet, View, Text, Alert, TouchableHighlight,
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  TouchableHighlight,
 } from 'react-native';
 import { cloneDeep } from 'lodash';
 
@@ -16,7 +20,7 @@ const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
   const userStreamingServices = useSelector(selectUserStreamingServices);
   const [selectedStreamingServices, setSelectedStreamingServices] = useState(
-    userStreamingServices,
+    userStreamingServices
   );
 
   const saveStreamingServices = () => {
@@ -44,7 +48,7 @@ const StreamingServiceList = ({ navigation }) => {
           style: 'default',
         },
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
   };
 
@@ -65,13 +69,13 @@ const StreamingServiceList = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         {Object.keys(STREAMING_SERVICES).map((streamingService) => (
-          <View
-            key={streamingService}
-            style={styles.serviceButtonContainer}
-          >
+          <View key={streamingService} style={styles.serviceButtonContainer}>
             <TouchableHighlight
-              style={selectedStreamingServices[streamingService] ? 
-                styles.serviceButtonActive : styles.serviceButton}
+              style={
+                selectedStreamingServices[streamingService]
+                  ? styles.serviceButtonActive
+                  : styles.serviceButton
+              }
               onPress={() => handleStreamingServiceSelection(streamingService)}
             >
               <Text style={styles.buttonText}>
@@ -82,7 +86,10 @@ const StreamingServiceList = ({ navigation }) => {
         ))}
       </View>
       <View style={styles.submitButtonContainer}>
-        <TouchableHighlight style={styles.submitButton} onPress={saveStreamingServices}>
+        <TouchableHighlight
+          style={styles.submitButton}
+          onPress={saveStreamingServices}
+        >
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableHighlight>
       </View>

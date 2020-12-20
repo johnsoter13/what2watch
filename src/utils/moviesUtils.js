@@ -4,7 +4,9 @@ export const checkIfMovieIsAvailableToUser = (userStreamingServices, movie) => {
 
   movieStreamingServices.forEach((streamingService) => {
     if (userStreamingServices[streamingService]) {
-      sharedMovieStreamingServices.push(movie.streamingServices[streamingService]);
+      sharedMovieStreamingServices.push(
+        movie.streamingServices[streamingService]
+      );
     }
   });
 

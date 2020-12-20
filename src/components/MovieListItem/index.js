@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  View, Button, Linking, Text, StyleSheet, Image
-} from 'react-native';
+import { View, Button, Linking, Text, StyleSheet, Image } from 'react-native';
 
 const MovieListItem = ({ movie }) => {
   const handleNavigateToLink = (url) => {

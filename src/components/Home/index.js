@@ -1,18 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  StyleSheet, View, Button, TouchableOpacity, Text
-} from 'react-native';
+import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 
 import * as baseStyles from '../../styles/styles';
 import { fetchMovieGenresAction } from '../../state/movies/actions';
 import {
   STREAMING_SERVICES_SCREEN,
   SEARCH_MOVIE_SCREEN,
-  LOGIN
-} from "../../constants/ROUTES";
-import { selectUserIsLoggedIn } from "../../state/auth/selectors";
-import { logUserOutAction } from "../../state/auth/actions";
+  LOGIN,
+} from '../../constants/ROUTES';
+import { selectUserIsLoggedIn } from '../../state/auth/selectors';
+import { logUserOutAction } from '../../state/auth/actions';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -22,7 +20,7 @@ const Home = ({ navigation }) => {
   const logOut = () => {
     // console.log("logging out");
     dispatch(logUserOutAction());
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
@@ -36,7 +34,9 @@ const Home = ({ navigation }) => {
           style={styles.searchButton}
           onPress={() => navigation.navigate(SEARCH_MOVIE_SCREEN)}
         >
-          <Text style={styles.searchButtonText}>Already have a movie in mind?</Text>
+          <Text style={styles.searchButtonText}>
+            Already have a movie in mind?
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.actionsContainer}>
@@ -52,7 +52,9 @@ const Home = ({ navigation }) => {
           {/* show logout button when logged in */}
           <View style={styles.actionButton}>
             <Button
-              onPress={() => { isUserLoggedIn ? logOut() : navigation.navigate(LOGIN); }}
+              onPress={() => {
+                isUserLoggedIn ? logOut() : navigation.navigate(LOGIN);
+              }}
               title={isUserLoggedIn ? 'Logout' : 'Login'}
             />
           </View>
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   },
   actionsText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
-    fontSize: '2rem'
+    fontSize: '2rem',
   },
   searchButton: {
     height: '100%',
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
   },
   searchButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
-  }
+  },
 });
 
 export default Home;

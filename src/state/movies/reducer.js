@@ -1,6 +1,9 @@
 import { produce } from 'immer';
 import {
-  GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX
+  GENRES,
+  MOVIES_BY_GENRE,
+  MOVIE_STREAMING_SERVICES,
+  MOVIE_INDEX,
 } from './constants';
 import { FAILURE, PENDING, SUCCESS } from '../constants';
 
@@ -18,7 +21,7 @@ const createGenresObj = (genres) => {
   const genresObj = {};
 
   // eslint-disable-next-line no-return-assign
-  genres.map((genre) => genresObj[genre.description] = genre);
+  genres.map((genre) => (genresObj[genre.description] = genre));
 
   return genresObj;
 };
@@ -57,7 +60,9 @@ export default produce((draft, action) => {
           if (reset) {
             draft.movieIndexes = {};
           } else {
-            const newMovieIndex = draft.movieIndexes[genre] ? draft.movieIndexes[genre] + 1 : 1;
+            const newMovieIndex = draft.movieIndexes[genre]
+              ? draft.movieIndexes[genre] + 1
+              : 1;
             draft.movieIndexes[genre] = newMovieIndex;
           }
           break;
@@ -69,7 +74,8 @@ export default produce((draft, action) => {
           draft.moviesByGenreLoadingStatus = PENDING;
           break;
         case SUCCESS:
-          draft.moviesByGenre[action.payload?.genre] = action.payload?.moviesByGenre;
+          draft.moviesByGenre[action.payload?.genre] =
+            action.payload?.moviesByGenre;
           draft.moviesByGenreLoadingStatus = SUCCESS;
           break;
         default:

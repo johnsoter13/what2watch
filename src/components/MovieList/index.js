@@ -1,9 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import {
-  StyleSheet, View, TouchableOpacity, Text,
-} from 'react-native';
-import { selectMovieIndex, selectMoviesByGenre, selectMoviesByGenreLoadingStatus } from '../../state/movies/selectors';
+  selectMovieIndex,
+  selectMoviesByGenre,
+  selectMoviesByGenreLoadingStatus,
+} from '../../state/movies/selectors';
 import { selectUserStreamingServices } from '../../state/streaming/selectors';
 import SwipeMovieCard from '../SwipeMovieCard';
 import { SUCCESS } from '../../state/constants';
@@ -12,29 +14,33 @@ import * as baseStyles from '../../styles/styles';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
-  const movieIndex = useSelector((state) => selectMovieIndex(state, route.params.genre));
-  const moviesByGenre = useSelector((state) => selectMoviesByGenre(state, route.params.genre));
+  const movieIndex = useSelector((state) =>
+    selectMovieIndex(state, route.params.genre)
+  );
+  const moviesByGenre = useSelector((state) =>
+    selectMoviesByGenre(state, route.params.genre)
+  );
   const userStreamingServices = useSelector(selectUserStreamingServices);
-  const moviesByGenreLoadingStatus = useSelector(selectMoviesByGenreLoadingStatus);
+  const moviesByGenreLoadingStatus = useSelector(
+    selectMoviesByGenreLoadingStatus
+  );
 
   return (
     <View style={styles.container}>
-      {moviesByGenreLoadingStatus === SUCCESS && moviesByGenre
-      && (
-      <>
-        <SwipeMovieCard
-          genre={route.params.genre}
-          userStreamingServices={userStreamingServices}
-          movieId={moviesByGenre[movieIndex]}/>
-        <TouchableOpacity
-          style={styles.nextMovieButton}
-          onPress={() => dispatch(movieListIndexAction(route.params.genre))}
-        >
-          <Text style={styles.nextMovieButtonText}>
-            Next Movie
-          </Text>
-        </TouchableOpacity>
-      </>
+      {moviesByGenreLoadingStatus === SUCCESS && moviesByGenre && (
+        <>
+          <SwipeMovieCard
+            genre={route.params.genre}
+            userStreamingServices={userStreamingServices}
+            movieId={moviesByGenre[movieIndex]}
+          />
+          <TouchableOpacity
+            style={styles.nextMovieButton}
+            onPress={() => dispatch(movieListIndexAction(route.params.genre))}
+          >
+            <Text style={styles.nextMovieButtonText}>Next Movie</Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );
