@@ -1,4 +1,4 @@
-import { FAILURE, SUCCESS } from "../constants";
+import { FAILURE, SUCCESS } from '../constants';
 
 import { SET_LOGIN_STATE } from "./constants";
 import {
@@ -82,4 +82,5 @@ export const loginUserAction = (email, password) => (dispatch) => {
         },
       });
     });
-}
+};
+

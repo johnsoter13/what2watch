@@ -1,18 +1,20 @@
-import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, View, TextInput, Button, Text } from "react-native";
-import { debounce } from "lodash";
-import { useBackHandler } from "@react-native-community/hooks";
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  StyleSheet, View, TextInput, Button, Text
+} from 'react-native';
+import { debounce } from 'lodash';
+import { useBackHandler } from '@react-native-community/hooks';
 
 import {
   fetchMovieFromSearchAction,
   setSearchQueryAction,
-} from "../../state/search/actions";
+} from '../../state/search/actions';
 import {
   selectRecentSearchQueries,
   selectSearchQuery,
-} from "../../state/search/selectors";
-import SearchMovieList from "../SearchMovieList";
+} from '../../state/search/selectors';
+import SearchMovieList from '../SearchMovieList';
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -20,31 +22,29 @@ const Search = () => {
   const searchQuery = useSelector(selectSearchQuery);
 
   useBackHandler(() => {
-    dispatch(setSearchQueryAction(""));
+    dispatch(setSearchQueryAction(''));
   });
 
   useEffect(() => {
-    dispatch(setSearchQueryAction(""));
+    dispatch(setSearchQueryAction(''));
   }, []);
 
-  const renderListOfPreviousSearches = () => {
-    return (
-      <View style={styles.previousSearchesContainer}>
-        {recentSearchQueries.length ? (
-          <Text style={styles.previousSearchesTitle}>Recent Searches</Text>
-        ) : null}
-        {recentSearchQueries?.map((query) => (
-          <View style={styles.previousSearchesListItem}>
-            <Button
-              title={query}
-              onPress={() => dispatch(setSearchQueryAction(query))}
-              style={styles.previousSearchesButton}
-            />
-          </View>
-        ))}
-      </View>
-    );
-  };
+  const renderListOfPreviousSearches = () => (
+    <View style={styles.previousSearchesContainer}>
+      {recentSearchQueries.length ? (
+        <Text style={styles.previousSearchesTitle}>Recent Searches</Text>
+      ) : null}
+      {recentSearchQueries?.map((query) => (
+        <View style={styles.previousSearchesListItem}>
+          <Button
+            title={query}
+            onPress={() => dispatch(setSearchQueryAction(query))}
+            style={styles.previousSearchesButton}
+          />
+        </View>
+      ))}
+    </View>
+  );
 
   const renderSearchResults = () => (
     <View style={styles.searchList}>
@@ -82,28 +82,28 @@ const Search = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#888888",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    backgroundColor: '#888888',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     paddingVertical: 20,
     paddingLeft: 10,
     paddingRight: 10,
   },
   searchContainer: {
-    width: "100%",
+    width: '100%',
   },
   search: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     height: 35,
     padding: 5,
   },
   previousSearchesContainer: {
     marginTop: 20,
-    width: "100%",
+    width: '100%',
   },
   previousSearchesButton: {
     marginTop: 10,
-    width: "100%",
+    width: '100%',
   },
   previousSearchesTitle: {
     marginBottom: 5,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   searchList: {
-    width: "100%",
+    width: '100%',
   },
 });
 

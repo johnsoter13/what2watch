@@ -1,12 +1,14 @@
-import { GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX } from "./constants";
-import { PENDING, SUCCESS, FAILURE } from "../constants";
+import {
+  GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX
+} from './constants';
+import { PENDING, SUCCESS, FAILURE } from '../constants';
 import {
   fetchMovieGenres,
   fetchMoviesByGenre,
   fetchMovieStreamingServices,
-} from "../../lib/sdk";
+} from '../../lib/sdk';
 
-import {selectMoviesByGenreExists} from './selectors';
+import { selectMoviesByGenreExists } from './selectors';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -24,7 +26,7 @@ export const fetchMovieGenresAction = () => (dispatch) => {
         payload: genres,
       });
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch({
         type: GENRES,
         status: FAILURE,
@@ -53,10 +55,10 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (dispatch, getState
       dispatch({
         type: MOVIES_BY_GENRE,
         status: SUCCESS,
-        payload: {genre, moviesByGenre},
+        payload: { genre, moviesByGenre },
       });
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch({
         type: MOVIES_BY_GENRE,
         status: FAILURE,
@@ -73,8 +75,8 @@ export const fetchMovieStreamingServicesAction = (movieId) => (
   });
 
   const actualMovieId = movieId.slice(
-    movieId.indexOf("tt"),
-    movieId.lastIndexOf("/")
+    movieId.indexOf('tt'),
+    movieId.lastIndexOf('/')
   );
 
   return fetchMovieStreamingServices(actualMovieId)
@@ -82,12 +84,14 @@ export const fetchMovieStreamingServicesAction = (movieId) => (
     .then((text) => {
       const movieStreamServices = JSON.parse(text)?.collection?.locations;
       const movieTitle = JSON.parse(text)?.collection?.name;
-      const moviePicture = JSON.parse(text)?.collection?.picture
+      const moviePicture = JSON.parse(text)?.collection?.picture;
 
       dispatch({
         type: MOVIE_STREAMING_SERVICES,
         status: SUCCESS,
-        payload: { movieId, movieStreamServices, movieTitle, moviePicture },
+        payload: {
+          movieId, movieStreamServices, movieTitle, moviePicture
+        },
       });
     })
     .catch((err) => {
@@ -99,10 +103,8 @@ export const fetchMovieStreamingServicesAction = (movieId) => (
     });
 };
 
-export const movieListIndexAction = (genre) => (dispatch) => {
-  return dispatch({
-    type: MOVIE_INDEX,
-    status: SUCCESS,
-    payload: {genre}
-  });
-};
+export const movieListIndexAction = (genre) => (dispatch) => dispatch({
+  type: MOVIE_INDEX,
+  status: SUCCESS,
+  payload: { genre }
+});

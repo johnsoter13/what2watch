@@ -1,7 +1,7 @@
-import { produce } from "immer";
-import { SUCCESS } from "../constants";
+import { produce } from 'immer';
+import { SUCCESS } from '../constants';
 
-import { UPDATE_STREAMING_SERVICES } from "./constants";
+import { UPDATE_STREAMING_SERVICES } from './constants';
 
 const initialState = {
   userStreamingServices: {},

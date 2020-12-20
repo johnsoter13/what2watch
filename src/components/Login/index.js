@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, View, Button, TextInput } from "react-native";
-import { HOME_SCREEN } from "../../constants/ROUTES";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  StyleSheet, View, Button, TextInput
+} from 'react-native';
+import { HOME_SCREEN } from '../../constants/ROUTES';
 import {
   createUserAction,
   loginUserAction
-} from "../../state/auth/actions"
-import { selectUserIsLoggedIn } from "../../state/auth/selectors";
+} from '../../state/auth/actions';
+import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -36,7 +38,7 @@ const Login = ({ navigation }) => {
           style={StyleSheet.TextInput}
           placeholder="Email"
           placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
+          onChangeText={(emailText) => setEmail(emailText)}
           keyboardType="email-address"
           autoCorrect={false}
         />
@@ -46,8 +48,8 @@ const Login = ({ navigation }) => {
           style={StyleSheet.TextInput}
           placeholder="Password"
           placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
+          secureTextEntry
+          onChangeText={(passwordText) => setPassword(passwordText)}
         />
       </View>
       <View style={styles.actionButton}>
@@ -68,16 +70,16 @@ const Login = ({ navigation }) => {
                 </TouchableOpacity>
             </View> */}
     </View>
-  )
+  );
 };
 
 const styles = StyleSheet.create({
   actionField: {
     borderRadius: 30,
-    width: "80%",
+    width: '80%',
     height: 45,
     marginTop: 20,
-    alignItems: "center",
+    alignItems: 'center',
   },
   TextInput: {
     height: 50,
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   actionsButton: {
-    width: "100%",
+    width: '100%',
     marginTop: 20,
   },
   forgotButton: {

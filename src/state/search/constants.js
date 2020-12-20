@@ -1,2 +1,2 @@
-export const MOVIE_FROM_SEARCH = "MOVIE_FROM_SEARCH";
-export const SEARCH_QUERY = "SEARCH_QUERY";
+export const MOVIE_FROM_SEARCH = 'MOVIE_FROM_SEARCH';
+export const SEARCH_QUERY = 'SEARCH_QUERY';
