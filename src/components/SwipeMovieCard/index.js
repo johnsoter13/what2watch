@@ -62,37 +62,27 @@ const SwipeMovieCard = ({ movie, sharedServices }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.movieContainer}>
-        <View style={styles.movieBodyContainer}>
-          <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
-          <View style={styles.movieBodyContainer}>
-            <View style={styles.imageContainer}>
-              <Image
-                style={styles.movieImage}
-                source={{ uri: movie.picture }}
-              />
-            </View>
-            <View style={styles.movieRowContainer}>
-              <Text style={styles.movieRowAvailable}>Available on:</Text>
-              <View style={styles.movieStreamingServices}>
-                {sharedServices.map((streamingService) => (
-                  <View
-                    key={streamingService}
-                    style={styles.movieStreamingService}
-                  >
-                    <Button
-                      onPress={() => handleNavigateToLink(streamingService.url)}
-                      title={streamingService.display_name}
-                    />
-                  </View>
-                ))}
+    <>
+      <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
+      <View style={styles.movieBodyContainer}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.movieImage} source={{ uri: movie.picture }} />
+        </View>
+        <View style={styles.movieRowContainer}>
+          <Text style={styles.movieRowAvailable}>Available on:</Text>
+          <View style={styles.movieStreamingServices}>
+            {sharedServices.map((streamingService) => (
+              <View key={streamingService} style={styles.movieStreamingService}>
+                <Button
+                  onPress={() => handleNavigateToLink(streamingService.url)}
+                  title={streamingService.display_name}
+                />
               </View>
-            </View>
+            ))}
           </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 

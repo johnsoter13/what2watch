@@ -16,7 +16,7 @@ import {
 } from '../../state/movies/selectors';
 import { selectUserStreamingServices } from '../../state/streaming/selectors';
 import SwipeMovieCard from '../SwipeMovieCard';
-import { PENDING } from '../../state/constants';
+import { PENDING, SUCCESS } from '../../state/constants';
 import {
   movieListIndexAction,
   fetchMovieStreamingServicesAction,
@@ -72,24 +72,33 @@ const MovieList = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {moviesByGenreLoadingStatus === PENDING ||
-      movieStreamingServicesLoadingStatus === PENDING ||
-      !sharedServices ||
-      !movie ? (
-        <View>
-          <ActivityIndicator size='large' />
+      <View style={styles.swipeContainer}>
+        <View style={styles.movieContainer}>
+          <View style={styles.movieBodyContainer}>
+            {moviesByGenreLoadingStatus === PENDING ||
+            movieStreamingServicesLoadingStatus === PENDING ||
+            !sharedServices ||
+            !movie ? (
+              <ActivityIndicator style={styles.loading} size='large' />
+            ) : (
+              <>
+                <SwipeMovieCard sharedServices={sharedServices} movie={movie} />
+              </>
+            )}
+          </View>
         </View>
-      ) : (
-        <>
-          <SwipeMovieCard sharedServices={sharedServices} movie={movie} />
+      </View>
+      {moviesByGenreLoadingStatus === SUCCESS &&
+        movieStreamingServicesLoadingStatus === SUCCESS &&
+        sharedServices &&
+        movie && (
           <TouchableOpacity
             style={styles.nextMovieButton}
             onPress={() => dispatch(movieListIndexAction(genre))}
           >
             <Text style={styles.nextMovieButtonText}>Next Movie</Text>
           </TouchableOpacity>
-        </>
-      )}
+        )}
     </View>
   );
 };
@@ -98,6 +107,26 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     justifyContent: 'center',
+  },
+  swipeContainer: {
+    height: '80%',
+  },
+  loading: {
+    flex: 1,
+  },
+  movieContainer: {
+    flex: 1,
+    height: '100%',
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    overflow: 'auto',
+    paddingTop: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#fff',
+  },
+  movieBodyContainer: {
+    flex: 1,
   },
   nextMovieButton: {
     alignItems: 'center',
