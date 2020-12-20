@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
@@ -15,6 +15,8 @@ import { GENRE_SCREEN } from '../../constants/ROUTES';
 import * as baseStyles from '../../styles/styles';
 
 import { STREAMING_SERVICES } from './constants';
+import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
+import { Firebase, db } from '../../../config/Firebase';
 
 const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -22,10 +24,18 @@ const StreamingServiceList = ({ navigation }) => {
   const [selectedStreamingServices, setSelectedStreamingServices] = useState(
     userStreamingServices
   );
+  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
+  const uid = useSelector(selectUserId);
 
   const saveStreamingServices = () => {
     if (Object.keys(selectedStreamingServices).length !== 0) {
-      dispatch(updateStreamingServicesAction(selectedStreamingServices));
+      dispatch(
+        updateStreamingServicesAction(
+          selectedStreamingServices,
+          isUserLoggedIn,
+          uid
+        )
+      );
       navigation.navigate(GENRE_SCREEN);
     } else {
       console.log('SELECT SOMETHING');
@@ -65,6 +75,7 @@ const StreamingServiceList = ({ navigation }) => {
       });
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>

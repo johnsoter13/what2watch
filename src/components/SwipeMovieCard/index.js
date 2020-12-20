@@ -87,20 +87,6 @@ const SwipeMovieCard = ({ movie, sharedServices }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: '80%',
-  },
-  movieContainer: {
-    flex: 1,
-    height: '100%',
-    backgroundColor: '#fff',
-    marginBottom: 20,
-    overflow: 'auto',
-    paddingTop: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#fff',
-  },
   movieBodyContainer: {
     flex: 1,
   },

@@ -1,4 +1,4 @@
-import Firebase from '../../config/Firebase';
+import Firebase, { db } from '../../config/Firebase';
 
 export const fetchMovieGenres = () =>
   fetch('https://imdb8.p.rapidapi.com/title/list-popular-genres', {
@@ -60,3 +60,7 @@ export const createUserWithEmailAndPassword = (email, password) =>
 
 export const loginUserWithEmailandPassword = (email, password) =>
   Firebase.auth().signInWithEmailAndPassword(email, password);
+
+export const saveToUserDatabase = (uid) => db.ref('/users/' + uid);
+
+export const fetchUserDatabase = (uid) => db.ref('/users/' + uid);
