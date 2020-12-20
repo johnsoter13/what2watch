@@ -6,6 +6,8 @@ import {
   fetchMovieStreamingServices,
 } from "../../lib/sdk";
 
+import {selectMoviesByGenreExists} from './selectors';
+
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
     type: GENRES,
@@ -30,22 +32,24 @@ export const fetchMovieGenresAction = () => (dispatch) => {
     });
 };
 
-export const fetchMoviesByGenreAction = (genre, endpoint) => (dispatch) => {
+export const fetchMoviesByGenreAction = (genre, endpoint) => (dispatch, getState) => {
   dispatch({
     type: MOVIES_BY_GENRE,
     status: PENDING,
   });
+
+  const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre);
+
+  if (moviesByGenreExist) {
+    return dispatch({
+      type: MOVIES_BY_GENRE,
+      status: SUCCESS,
+    });
+  }
   return fetchMoviesByGenre(endpoint)
     .then((response) => response.text())
     .then((text) => JSON.parse(text))
     .then((moviesByGenre) => {
-      // movies.forEach((movie) => {
-      //   const movieId = movie.slice(
-      //     movie.indexOf("tt"),
-      //     movie.lastIndexOf("/")
-      //   );
-      //   dispatch(fetchMovieStreamingServicesAction(movieId, genre));
-      // });
       dispatch({
         type: MOVIES_BY_GENRE,
         status: SUCCESS,
