@@ -5,7 +5,7 @@ import { SET_LOGIN_STATE } from './constants';
 const initialState = {
   userLogin: {
     isLoggedIn: false,
-    uid: ''
+    uid: '',
   },
 };
 
@@ -14,7 +14,7 @@ export default produce((draft, action) => {
     case SET_LOGIN_STATE:
       switch (action.status) {
         case SUCCESS:
-          draft.userLogin.isLoggedIn = action.payload?.isLoggedIn
+          draft.userLogin.isLoggedIn = action.payload?.isLoggedIn;
           draft.userLogin.uid = action.payload.uid;
           break;
         case FAILURE:

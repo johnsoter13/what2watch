@@ -6,7 +6,9 @@ import { selectSearchResults } from '../../state/search/selectors';
 import MovieListItem from '../MovieListItem';
 
 const SearchMovieList = ({ query }) => {
-  const searchMovies = useSelector((state) => selectSearchResults(state, query));
+  const searchMovies = useSelector((state) =>
+    selectSearchResults(state, query)
+  );
 
   return (
     <View style={styles.container}>

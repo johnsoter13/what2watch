@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  StyleSheet, View, Button, TextInput
-} from 'react-native';
+import { StyleSheet, View, Button, TextInput } from 'react-native';
 import { HOME_SCREEN } from '../../constants/ROUTES';
-import {
-  createUserAction,
-  loginUserAction
-} from '../../state/auth/actions';
+import { createUserAction, loginUserAction } from '../../state/auth/actions';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 
 const Login = ({ navigation }) => {
@@ -19,50 +14,44 @@ const Login = ({ navigation }) => {
 
   const handleSignup = () => {
     dispatch(createUserAction(email, password));
-  }
+  };
 
   const handleLogin = () => {
     dispatch(loginUserAction(email, password));
-  }
+  };
 
   useEffect(() => {
     if (isUserLoggedIn) {
       navigation.navigate(HOME_SCREEN);
     }
-  }, [isUserLoggedIn])
+  }, [isUserLoggedIn]);
 
   return (
     <View>
       <View style={styles.actionField}>
         <TextInput
           style={StyleSheet.TextInput}
-          placeholder="Email"
-          placeholderTextColor="#003f5c"
+          placeholder='Email'
+          placeholderTextColor='#003f5c'
           onChangeText={(emailText) => setEmail(emailText)}
-          keyboardType="email-address"
+          keyboardType='email-address'
           autoCorrect={false}
         />
       </View>
       <View style={styles.actionField}>
         <TextInput
           style={StyleSheet.TextInput}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
+          placeholder='Password'
+          placeholderTextColor='#003f5c'
           secureTextEntry
           onChangeText={(passwordText) => setPassword(passwordText)}
         />
       </View>
       <View style={styles.actionButton}>
-        <Button
-          onPress={handleSignup}
-          title="Create Account"
-        />
+        <Button onPress={handleSignup} title='Create Account' />
       </View>
       <View style={styles.actionButton}>
-        <Button
-          onPress={handleLogin}
-          title="Login"
-        />
+        <Button onPress={handleLogin} title='Login' />
       </View>
       {/* <View>
                 <TouchableOpacity>
@@ -85,7 +74,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
-    marginLeft: 20
+    marginLeft: 20,
   },
   actionsButton: {
     width: '100%',
@@ -93,8 +82,8 @@ const styles = StyleSheet.create({
   },
   forgotButton: {
     height: 30,
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });
 
 export default Login;

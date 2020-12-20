@@ -13,9 +13,7 @@ const loginPayload = (isLoggedIn, uid) => {
   }
 }
 
-export const updateUserLogin = (isLoggedIn) => (
-  dispatch
-) => {
+export const updateUserLogin = (isLoggedIn) => (dispatch) => {
   dispatch({
     type: SET_LOGIN_STATE,
     status: SUCCESS,
@@ -84,3 +82,12 @@ export const loginUserAction = (email, password) => (dispatch) => {
     });
 };
 
+<<<<<<< HEAD
+export const logUserOut = () => (dispatch) =>
+  dispatch({
+    type: SET_LOGIN_STATE,
+    status: SUCCESS,
+    payload: { isLoggedIn: false },
+  });
+=======
+>>>>>>> 28f9720d3fa757b1abb9477cb813a21e6f8100d9
