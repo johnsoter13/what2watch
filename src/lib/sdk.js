@@ -58,4 +58,7 @@ export const fetchMovieFromSearch = (query) => {
 };
 
 export const createUserWithEmailAndPassword = (email, password) =>
- Firebase.auth().createUserWithEmailAndPassword(email, password)
+  Firebase.auth().createUserWithEmailAndPassword(email, password)
+
+export const loginUserWithEmailandPassword = (email, password) => 
+  Firebase.auth().signInWithEmailAndPassword(email, password)

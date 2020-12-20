@@ -10,14 +10,16 @@ import {
   LOGIN
 } from "../../constants/ROUTES";
 import { selectUserIsLoggedIn } from "../../state/auth/selectors";
-import { logUserOut } from "../../state/auth/actions";
+import { logUserOutAction } from "../../state/auth/actions";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
+
+  // logs user out
   const logOut = () => {
-    console.log("logging out");
-    dispatch(logUserOut());
+    // console.log("logging out");
+    dispatch(logUserOutAction());
   }
 
   useEffect(() => {
@@ -45,7 +47,6 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View>
-        {/* show logout button when logged in */}
           <View style={styles.actionButton}>
             <Button
               onPress={() => {isUserLoggedIn ? logOut() : navigation.navigate(LOGIN)}}
