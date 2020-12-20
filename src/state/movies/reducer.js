@@ -50,9 +50,14 @@ export default produce((draft, action) => {
     case MOVIE_INDEX:
       switch (action.status) {
         case SUCCESS:
-          const {genre} = action.payload
-          const newMovieIndex = draft.movieIndexes[genre] ? draft.movieIndexes[genre] + 1 : 1;
-          draft.movieIndexes[genre] = newMovieIndex;
+          const {genre, reset} = action.payload;
+
+          if (reset) {
+            draft.movieIndexes = {};
+          } else {
+            const newMovieIndex = draft.movieIndexes[genre] ? draft.movieIndexes[genre] + 1 : 1;
+            draft.movieIndexes[genre] = newMovieIndex;
+          }
           break;
       }
       break;
@@ -62,7 +67,7 @@ export default produce((draft, action) => {
             draft.moviesByGenreLoadingStatus = PENDING;
             break;
           case SUCCESS:
-            draft.moviesByGenre[action.payload.genre] =
+            draft.moviesByGenre[action.payload?.genre] =
               action.payload?.moviesByGenre;
             draft.moviesByGenreLoadingStatus = SUCCESS;
             break;
@@ -91,9 +96,7 @@ export default produce((draft, action) => {
               ),
             };
           } else {
-            draft.movieStreamingServices[movieId] = {
-              
-            }
+            draft.movieStreamingServices[movieId] = 'not available'
           }
           draft.movieStreamingServicesLoadingStatus = SUCCESS;
           break;

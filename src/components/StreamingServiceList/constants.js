@@ -35,10 +35,6 @@ export const STREAMING_SERVICES = {
     name: "HuluIVAUS",
     displayName: "Hulu",
   },
-  AtomTicketsIVAUS: {
-    name: "AtomTicketsIVAUSs",
-    displayName: "Atom Tickets",
-  },
   CBSIVAUS: {
     name: "CBSIVAUS",
     displayName: "CBS",
@@ -66,13 +62,5 @@ export const STREAMING_SERVICES = {
   NBCIVAUS: {
     name: "NBCIVAUS",
     displayName: "NBC",
-  },
-  NickelodeonIVAUS: {
-    name: "NickelodeonIVAUS",
-    displayName: "Nickelodeon",
-  },
-  TubiIVAUS: {
-    name: "TubiIVAUS",
-    displayName: "Tubi",
   },
 };
