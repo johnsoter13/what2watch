@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View, Button, TextInput } from 'react-native';
 import { HOME_SCREEN } from '../../constants/ROUTES';
-import { createUserAction } from '../../state/auth/actions';
+import { createUserAction, loginUserAction } from '../../state/auth/actions';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 
 const Login = ({ navigation }) => {
@@ -14,6 +14,10 @@ const Login = ({ navigation }) => {
 
   const handleSignup = () => {
     dispatch(createUserAction(email, password));
+  };
+
+  const handleLogin = () => {
+    dispatch(loginUserAction(email, password));
   };
 
   useEffect(() => {
@@ -47,10 +51,7 @@ const Login = ({ navigation }) => {
         <Button onPress={handleSignup} title='Create Account' />
       </View>
       <View style={styles.actionButton}>
-        <Button
-          onPress={() => navigation.navigate(HOME_SCREEN)}
-          title='Login'
-        />
+        <Button onPress={handleLogin} title='Login' />
       </View>
       {/* <View>
                 <TouchableOpacity>
