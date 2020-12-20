@@ -2,43 +2,54 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View, Button, Text, Image, Linking } from 'react-native';
 
-import { selectMovieStreamingServicesById } from '../../state/movies/selectors';
+import {
+  selectMovieStreamingServicesById,
+  selectMovieStreamingServicesLoadingStatus,
+  selectMovieIdByIndex,
+} from '../../state/movies/selectors';
 import {
   movieListIndexAction,
   fetchMovieStreamingServicesAction,
 } from '../../state/movies/actions';
 import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
+import { SUCCESS } from '../../state/constants';
 
-const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
+const SwipeMovieCard = ({ movie, sharedServices }) => {
   const dispatch = useDispatch();
-  const [sharedServices, setSharedServices] = useState([]);
-  const movie = useSelector((state) =>
-    selectMovieStreamingServicesById(state, movieId)
-  );
+  // const movieId = useSelector((state) =>
+  //   selectMovieIdByIndex(state, genre, movieIndex)
+  // );
+  // const [sharedServices, setSharedServices] = useState([]);
+  // const movie = useSelector((state) =>
+  //   selectMovieStreamingServicesById(state, movieId)
+  // );
 
-  useEffect(() => {
-    // if not in store, fetch movie
-    if (!movie) {
-      dispatch(fetchMovieStreamingServicesAction(movieId));
-      // sometimes endpoint errors, skip to next movie
-    } else if (movie === 'not available') {
-      dispatch(movieListIndexAction(genre));
-      // check if we have shared streaming services
-    } else {
-      const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
-        userStreamingServices,
-        movie
-      );
+  // useEffect(() => {
+  //   if (!movieId) {
+  //     return;
+  //   }
+  //   // if not in store, fetch movie
+  //   if (!movie) {
+  //     dispatch(fetchMovieStreamingServicesAction(movieId));
+  //     // sometimes endpoint errors, skip to next movie
+  //   } else if (movie === 'not available') {
+  //     dispatch(movieListIndexAction(genre));
+  //     // check if we have shared streaming services
+  //   } else {
+  //     const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
+  //       userStreamingServices,
+  //       movie
+  //     );
 
-      // if yes, set shared services
-      if (sharedServicesForMovie.length) {
-        setSharedServices(sharedServicesForMovie);
-        // skip to next movie
-      } else {
-        dispatch(movieListIndexAction(genre));
-      }
-    }
-  }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction]);
+  //     // if yes, set shared services
+  //     if (sharedServicesForMovie.length) {
+  //       setSharedServices(sharedServicesForMovie);
+  //       // skip to next movie
+  //     } else {
+  //       dispatch(movieListIndexAction(genre));
+  //     }
+  //   }
+  // }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction]);
 
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
@@ -52,45 +63,35 @@ const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
 
   return (
     <View style={styles.container}>
-      {movieId ? (
-        <>
-          <View style={styles.movieContainer}>
-            {movie && sharedServices && (
-              <View style={styles.movieBodyContainer}>
-                <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
-                <View style={styles.movieBodyContainer}>
-                  <View style={styles.imageContainer}>
-                    <Image
-                      style={styles.movieImage}
-                      source={{ uri: movie.picture }}
+      <View style={styles.movieContainer}>
+        <View style={styles.movieBodyContainer}>
+          <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
+          <View style={styles.movieBodyContainer}>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.movieImage}
+                source={{ uri: movie.picture }}
+              />
+            </View>
+            <View style={styles.movieRowContainer}>
+              <Text style={styles.movieRowAvailable}>Available on:</Text>
+              <View style={styles.movieStreamingServices}>
+                {sharedServices.map((streamingService) => (
+                  <View
+                    key={streamingService}
+                    style={styles.movieStreamingService}
+                  >
+                    <Button
+                      onPress={() => handleNavigateToLink(streamingService.url)}
+                      title={streamingService.display_name}
                     />
                   </View>
-                  <View style={styles.movieRowContainer}>
-                    <Text style={styles.movieRowAvailable}>Available on:</Text>
-                    <View style={styles.movieStreamingServices}>
-                      {sharedServices.map((streamingService) => (
-                        <View
-                          key={streamingService}
-                          style={styles.movieStreamingService}
-                        >
-                          <Button
-                            onPress={() =>
-                              handleNavigateToLink(streamingService.url)
-                            }
-                            title={streamingService.display_name}
-                          />
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                </View>
+                ))}
               </View>
-            )}
+            </View>
           </View>
-        </>
-      ) : (
-        <Text>End of Movie Array</Text>
-      )}
+        </View>
+      </View>
     </View>
   );
 };

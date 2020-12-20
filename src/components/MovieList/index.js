@@ -1,42 +1,90 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {
   selectMovieIndex,
-  selectMoviesByGenre,
   selectMoviesByGenreLoadingStatus,
+  selectMovieStreamingServicesLoadingStatus,
+  selectMovieStreamingServicesById,
+  selectMovieIdByIndex,
 } from '../../state/movies/selectors';
 import { selectUserStreamingServices } from '../../state/streaming/selectors';
 import SwipeMovieCard from '../SwipeMovieCard';
-import { SUCCESS } from '../../state/constants';
-import { movieListIndexAction } from '../../state/movies/actions';
+import { PENDING } from '../../state/constants';
+import {
+  movieListIndexAction,
+  fetchMovieStreamingServicesAction,
+} from '../../state/movies/actions';
 import * as baseStyles from '../../styles/styles';
+import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
-  const movieIndex = useSelector((state) =>
-    selectMovieIndex(state, route.params.genre)
+  const { genre } = route.params;
+  const movieIndex = useSelector((state) => selectMovieIndex(state, genre));
+  const movieId = useSelector((state) =>
+    selectMovieIdByIndex(state, genre, movieIndex)
   );
-  const moviesByGenre = useSelector((state) =>
-    selectMoviesByGenre(state, route.params.genre)
+  const movie = useSelector((state) =>
+    selectMovieStreamingServicesById(state, movieId)
   );
   const userStreamingServices = useSelector(selectUserStreamingServices);
   const moviesByGenreLoadingStatus = useSelector(
     selectMoviesByGenreLoadingStatus
   );
+  const movieStreamingServicesLoadingStatus = useSelector(
+    selectMovieStreamingServicesLoadingStatus
+  );
+  const [sharedServices, setSharedServices] = useState([]);
+
+  useEffect(() => {
+    if (!movieId) {
+      return;
+    }
+    // if not in store, fetch movie
+    else if (!movie) {
+      dispatch(fetchMovieStreamingServicesAction(movieId));
+      // sometimes endpoint errors, skip to next movie
+    } else if (movie === 'not available') {
+      dispatch(movieListIndexAction(genre));
+      // check if we have shared streaming services
+    } else {
+      const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
+        userStreamingServices,
+        movie
+      );
+
+      // if yes, set shared services
+      if (sharedServicesForMovie.length) {
+        setSharedServices(sharedServicesForMovie);
+        // skip to next movie
+      } else {
+        dispatch(movieListIndexAction(genre));
+      }
+    }
+  }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction]);
 
   return (
     <View style={styles.container}>
-      {moviesByGenreLoadingStatus === SUCCESS && moviesByGenre && (
+      {moviesByGenreLoadingStatus === PENDING ||
+      movieStreamingServicesLoadingStatus === PENDING ||
+      !sharedServices ||
+      !movie ? (
+        <View>
+          <ActivityIndicator size='large' />
+        </View>
+      ) : (
         <>
-          <SwipeMovieCard
-            genre={route.params.genre}
-            userStreamingServices={userStreamingServices}
-            movieId={moviesByGenre[movieIndex]}
-          />
+          <SwipeMovieCard sharedServices={sharedServices} movie={movie} />
           <TouchableOpacity
             style={styles.nextMovieButton}
-            onPress={() => dispatch(movieListIndexAction(route.params.genre))}
+            onPress={() => dispatch(movieListIndexAction(genre))}
           >
             <Text style={styles.nextMovieButtonText}>Next Movie</Text>
           </TouchableOpacity>

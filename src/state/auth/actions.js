@@ -1,17 +1,17 @@
 import { FAILURE, SUCCESS } from '../constants';
 
-import { SET_LOGIN_STATE } from "./constants";
+import { SET_LOGIN_STATE } from './constants';
 import {
   createUserWithEmailAndPassword,
-  loginUserWithEmailandPassword
+  loginUserWithEmailandPassword,
 } from '../../lib/sdk';
 
 const loginPayload = (isLoggedIn, uid) => {
   return {
     isLoggedIn,
-    uid
-  }
-}
+    uid,
+  };
+};
 
 export const updateUserLogin = (isLoggedIn) => (dispatch) => {
   dispatch({
@@ -30,7 +30,7 @@ export const createUserAction = (email, password) => (dispatch) => {
         status: SUCCESS,
         payload: {
           isLoggedIn: true,
-          uid: account.user.uid
+          uid: account.user.uid,
         },
       });
     })
@@ -40,11 +40,11 @@ export const createUserAction = (email, password) => (dispatch) => {
         status: FAILURE,
         payload: {
           isLoggedIn: false,
-          uid: ""
+          uid: '',
         },
       });
-    })
-}
+    });
+};
 
 export const logUserOutAction = () => (dispatch) => {
   return dispatch({
@@ -52,10 +52,10 @@ export const logUserOutAction = () => (dispatch) => {
     status: SUCCESS,
     payload: {
       isLoggedIn: false,
-      uid: ""
+      uid: '',
     },
   });
-}
+};
 
 export const loginUserAction = (email, password) => (dispatch) => {
   return loginUserWithEmailandPassword(email, password)
@@ -66,7 +66,7 @@ export const loginUserAction = (email, password) => (dispatch) => {
         status: SUCCESS,
         payload: {
           isLoggedIn: true,
-          uid: account.user.uid
+          uid: account.user.uid,
         },
       });
     })
@@ -76,18 +76,8 @@ export const loginUserAction = (email, password) => (dispatch) => {
         status: FAILURE,
         payload: {
           isLoggedIn: false,
-          uid: ""
+          uid: '',
         },
       });
     });
 };
-
-<<<<<<< HEAD
-export const logUserOut = () => (dispatch) =>
-  dispatch({
-    type: SET_LOGIN_STATE,
-    status: SUCCESS,
-    payload: { isLoggedIn: false },
-  });
-=======
->>>>>>> 28f9720d3fa757b1abb9477cb813a21e6f8100d9
