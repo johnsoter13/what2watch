@@ -1,7 +1,7 @@
-import { SUCCESS } from "../constants";
-import { MOVIE_INDEX } from "../movies/constants";
+import { SUCCESS } from '../constants';
+import { MOVIE_INDEX } from '../movies/constants';
 
-import { UPDATE_STREAMING_SERVICES } from "./constants";
+import { UPDATE_STREAMING_SERVICES } from './constants';
 
 export const updateStreamingServicesAction = (streamingServices) => (
   dispatch
@@ -15,6 +15,6 @@ export const updateStreamingServicesAction = (streamingServices) => (
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
-    payload: {reset: true},
-  })
+    payload: { reset: true },
+  });
 };

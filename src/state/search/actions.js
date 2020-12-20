@@ -1,7 +1,7 @@
-import { PENDING, SUCCESS, FAILURE } from "../constants";
-import { fetchMovieFromSearch } from "../../lib/sdk";
+import { PENDING, SUCCESS, FAILURE } from '../constants';
+import { fetchMovieFromSearch } from '../../lib/sdk';
 
-import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from "./constants";
+import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from './constants';
 
 export const fetchMovieFromSearchAction = (query) => (dispatch) => {
   dispatch({

@@ -1,24 +1,26 @@
-import React, { useEffect } from "react";
-import { useDispatch,useSelector } from "react-redux";
-import { StyleSheet, View, Button, TouchableOpacity, Text} from "react-native";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  StyleSheet, View, Button, TouchableOpacity, Text
+} from 'react-native';
 
 import * as baseStyles from '../../styles/styles';
-import { fetchMovieGenresAction } from "../../state/movies/actions";
+import { fetchMovieGenresAction } from '../../state/movies/actions';
 import {
   STREAMING_SERVICES_SCREEN,
   SEARCH_MOVIE_SCREEN,
   LOGIN
-} from "../../constants/ROUTES";
-import { selectUserIsLoggedIn } from "../../state/auth/selectors";
-import { logUserOut } from "../../state/auth/actions";
+} from '../../constants/ROUTES';
+import { selectUserIsLoggedIn } from '../../state/auth/selectors';
+import { logUserOut } from '../../state/auth/actions';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
   const logOut = () => {
-    console.log("logging out");
+    console.log('logging out');
     dispatch(logUserOut());
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
@@ -32,7 +34,7 @@ const Home = ({ navigation }) => {
           style={styles.searchButton}
           onPress={() => navigation.navigate(SEARCH_MOVIE_SCREEN)}
         >
-          <Text  style={styles.searchButtonText}>Already have a movie in mind?</Text>
+          <Text style={styles.searchButtonText}>Already have a movie in mind?</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.actionsContainer}>
@@ -45,11 +47,11 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View>
-        {/* show logout button when logged in */}
+          {/* show logout button when logged in */}
           <View style={styles.actionButton}>
             <Button
-              onPress={() => {isUserLoggedIn ? logOut() : navigation.navigate(LOGIN)}}
-              title={isUserLoggedIn ? "Logout" : "Login"}
+              onPress={() => { isUserLoggedIn ? logOut() : navigation.navigate(LOGIN); }}
+              title={isUserLoggedIn ? 'Logout' : 'Login'}
             />
           </View>
         </View>
@@ -61,44 +63,44 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#888888",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    backgroundColor: '#888888',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     paddingVertical: 20,
     paddingLeft: 10,
     paddingRight: 10,
   },
   searchContainer: {
-    width: "100%",
-    height: "5%",
+    width: '100%',
+    height: '5%',
   },
   actionsContainer: {
-    width: "100%",
+    width: '100%',
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   actionsButtonContainer: {
-    width: "100%",
-    height: "50%",
+    width: '100%',
+    height: '50%',
   },
   actionsButton: {
-    height: "100%",
+    height: '100%',
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: baseStyles.BUTTON_COLOR,
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
   },
   actionsText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
-    fontSize: "2rem"
+    fontSize: '2rem'
   },
   searchButton: {
-    height: "100%",
+    height: '100%',
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: baseStyles.BUTTON_COLOR,
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
   },

@@ -6,11 +6,11 @@ export const checkIfMovieIsAvailableToUser = (userStreamingServices, movie) => {
     if (userStreamingServices[streamingService]) {
       sharedMovieStreamingServices.push(movie.streamingServices[streamingService]);
     }
-  })
+  });
 
   if (sharedMovieStreamingServices) {
     return sharedMovieStreamingServices;
   }
 
   return [];
-}
+};

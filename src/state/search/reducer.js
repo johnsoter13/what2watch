@@ -1,11 +1,11 @@
-import { produce } from "immer";
-import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from "./constants";
-import { FAILURE, PENDING, SUCCESS } from "../constants";
+import { produce } from 'immer';
+import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from './constants';
+import { FAILURE, PENDING, SUCCESS } from '../constants';
 
 const initialState = {
   moviesFromSearch: {},
   moviesFromSearchLoadingStatus: null,
-  searchQuery: "",
+  searchQuery: '',
 };
 
 export default produce((draft, action) => {

@@ -1,6 +1,8 @@
-import { produce } from "immer";
-import { GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX } from "./constants";
-import { FAILURE, PENDING, SUCCESS } from "../constants";
+import { produce } from 'immer';
+import {
+  GENRES, MOVIES_BY_GENRE, MOVIE_STREAMING_SERVICES, MOVIE_INDEX
+} from './constants';
+import { FAILURE, PENDING, SUCCESS } from '../constants';
 
 const initialState = {
   genres: {},
@@ -15,9 +17,8 @@ const initialState = {
 const createGenresObj = (genres) => {
   const genresObj = {};
 
-  genres.map((genre) => {
-    genresObj[genre.description] = genre;
-  });
+  // eslint-disable-next-line no-return-assign
+  genres.map((genre) => genresObj[genre.description] = genre);
 
   return genresObj;
 };
@@ -25,6 +26,7 @@ const createGenresObj = (genres) => {
 const createMovieStreamingServiceObj = (streamingServices) => {
   const movieStreamingServicesObj = {};
 
+  // eslint-disable-next-line array-callback-return
   streamingServices.map((streamingService) => {
     movieStreamingServicesObj[streamingService?.name] = streamingService;
   });
@@ -50,7 +52,7 @@ export default produce((draft, action) => {
     case MOVIE_INDEX:
       switch (action.status) {
         case SUCCESS:
-          const {genre, reset} = action.payload;
+          const { genre, reset } = action.payload;
 
           if (reset) {
             draft.movieIndexes = {};
@@ -61,20 +63,19 @@ export default produce((draft, action) => {
           break;
       }
       break;
-      case MOVIES_BY_GENRE:
-        switch (action.status) {
-          case PENDING:
-            draft.moviesByGenreLoadingStatus = PENDING;
-            break;
-          case SUCCESS:
-            draft.moviesByGenre[action.payload?.genre] =
-              action.payload?.moviesByGenre;
-            draft.moviesByGenreLoadingStatus = SUCCESS;
-            break;
-          default:
-            draft.moviesByGenreLoadingStatus = PENDING;
-        }
-        break;
+    case MOVIES_BY_GENRE:
+      switch (action.status) {
+        case PENDING:
+          draft.moviesByGenreLoadingStatus = PENDING;
+          break;
+        case SUCCESS:
+          draft.moviesByGenre[action.payload?.genre] = action.payload?.moviesByGenre;
+          draft.moviesByGenreLoadingStatus = SUCCESS;
+          break;
+        default:
+          draft.moviesByGenreLoadingStatus = PENDING;
+      }
+      break;
     case MOVIE_STREAMING_SERVICES:
       switch (action.status) {
         case PENDING:
@@ -96,7 +97,7 @@ export default produce((draft, action) => {
               ),
             };
           } else {
-            draft.movieStreamingServices[movieId] = 'not available'
+            draft.movieStreamingServices[movieId] = 'not available';
           }
           draft.movieStreamingServicesLoadingStatus = SUCCESS;
           break;
