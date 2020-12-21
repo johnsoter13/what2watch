@@ -1,45 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { StyleSheet, View, Button, Text, Image, Linking } from 'react-native';
 
-import { selectMovieStreamingServicesById } from '../../state/movies/selectors';
-import {
-  movieListIndexAction,
-  fetchMovieStreamingServicesAction,
-} from '../../state/movies/actions';
-import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
-
-const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
-  const dispatch = useDispatch();
-  const [sharedServices, setSharedServices] = useState([]);
-  const movie = useSelector((state) =>
-    selectMovieStreamingServicesById(state, movieId)
-  );
-
-  useEffect(() => {
-    // if not in store, fetch movie
-    if (!movie) {
-      dispatch(fetchMovieStreamingServicesAction(movieId));
-      // sometimes endpoint errors, skip to next movie
-    } else if (movie === 'not available') {
-      dispatch(movieListIndexAction(genre));
-      // check if we have shared streaming services
-    } else {
-      const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
-        userStreamingServices,
-        movie
-      );
-
-      // if yes, set shared services
-      if (sharedServicesForMovie.length) {
-        setSharedServices(sharedServicesForMovie);
-        // skip to next movie
-      } else {
-        dispatch(movieListIndexAction(genre));
-      }
-    }
-  }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction]);
-
+const SwipeMovieCard = ({ movie, sharedServices }) => {
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
@@ -51,65 +13,31 @@ const SwipeMovieCard = ({ genre, userStreamingServices, movieId }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {movieId ? (
-        <>
-          <View style={styles.movieContainer}>
-            {movie && sharedServices && (
-              <View style={styles.movieBodyContainer}>
-                <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
-                <View style={styles.movieBodyContainer}>
-                  <View style={styles.imageContainer}>
-                    <Image
-                      style={styles.movieImage}
-                      source={{ uri: movie.picture }}
-                    />
-                  </View>
-                  <View style={styles.movieRowContainer}>
-                    <Text style={styles.movieRowAvailable}>Available on:</Text>
-                    <View style={styles.movieStreamingServices}>
-                      {sharedServices.map((streamingService) => (
-                        <View
-                          key={streamingService}
-                          style={styles.movieStreamingService}
-                        >
-                          <Button
-                            onPress={() =>
-                              handleNavigateToLink(streamingService.url)
-                            }
-                            title={streamingService.display_name}
-                          />
-                        </View>
-                      ))}
-                    </View>
-                  </View>
-                </View>
+    <>
+      <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
+      <View style={styles.movieBodyContainer}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.movieImage} source={{ uri: movie.picture }} />
+        </View>
+        <View style={styles.movieRowContainer}>
+          <Text style={styles.movieRowAvailable}>Available on:</Text>
+          <View style={styles.movieStreamingServices}>
+            {sharedServices.map((streamingService) => (
+              <View key={streamingService} style={styles.movieStreamingService}>
+                <Button
+                  onPress={() => handleNavigateToLink(streamingService.url)}
+                  title={streamingService.display_name}
+                />
               </View>
-            )}
+            ))}
           </View>
-        </>
-      ) : (
-        <Text>End of Movie Array</Text>
-      )}
-    </View>
+        </View>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    height: '80%',
-  },
-  movieContainer: {
-    flex: 1,
-    height: '100%',
-    backgroundColor: '#fff',
-    marginBottom: 20,
-    overflow: 'auto',
-    paddingTop: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#fff',
-  },
   movieBodyContainer: {
     flex: 1,
   },

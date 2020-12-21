@@ -15,3 +15,8 @@ export const selectMoviesByGenreLoadingStatus = (state) =>
   state.movies.moviesByGenreLoadingStatus;
 export const selectMovieStreamingServicesLoadingStatus = (state) =>
   state.movies.movieStreamingServicesLoadingStatus;
+
+export const selectMovieIdByIndex = (state, genre, index) =>
+  state.movies.moviesByGenre[genre]
+    ? state.movies.moviesByGenre[genre][index]
+    : null;
