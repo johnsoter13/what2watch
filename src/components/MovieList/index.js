@@ -23,6 +23,7 @@ import {
 } from '../../state/movies/actions';
 import * as baseStyles from '../../styles/styles';
 import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
+import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
@@ -41,6 +42,8 @@ const MovieList = ({ route }) => {
   const movieStreamingServicesLoadingStatus = useSelector(
     selectMovieStreamingServicesLoadingStatus
   );
+  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
+  const uid = useSelector(selectUserId);
   const [sharedServices, setSharedServices] = useState([]);
 
   useEffect(() => {
@@ -94,7 +97,11 @@ const MovieList = ({ route }) => {
         movie && (
           <TouchableOpacity
             style={styles.nextMovieButton}
-            onPress={() => dispatch(movieListIndexAction(genre))}
+            onPress={() =>
+              dispatch(
+                movieListIndexAction(genre, isUserLoggedIn, uid, movieId)
+              )
+            }
           >
             <Text style={styles.nextMovieButtonText}>Next Movie</Text>
           </TouchableOpacity>
