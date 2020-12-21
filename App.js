@@ -38,12 +38,12 @@ export default function App() {
           <Stack.Screen
             name={STREAMING_SERVICES_SCREEN}
             component={StreamingServiceList}
-            options={{ title: 'What 2 Watch' }}
+            options={{ title: 'Select Streaming Services' }}
           />
           <Stack.Screen
             name={GENRE_SCREEN}
             component={GenreList}
-            options={{ title: 'What 2 Watch' }}
+            options={{ title: 'Select Genres' }}
           />
           <Stack.Screen
             name={MOVIE_SCREEN}
@@ -53,12 +53,12 @@ export default function App() {
           <Stack.Screen
             name={SEARCH_MOVIE_SCREEN}
             component={Search}
-            options={{ title: 'What 2 Watch' }}
+            options={{ title: 'Search Movies' }}
           />
           <Stack.Screen
             name={LOGIN}
             component={Login}
-            options={{ title: 'What 2 Watch' }}
+            options={{ title: 'What 2 Watch Login' }}
           />
           <Stack.Screen
             name={DISLIKED_LIST}

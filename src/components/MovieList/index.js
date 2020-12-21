@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import {
   selectMovieIndex,
   selectMoviesByGenreLoadingStatus,
@@ -23,7 +17,7 @@ import {
 } from '../../state/movies/actions';
 import * as baseStyles from '../../styles/styles';
 import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
-import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
+import Loading from '../Loading';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
@@ -43,8 +37,6 @@ const MovieList = ({ route }) => {
   const movieStreamingServicesLoadingStatus = useSelector(
     selectMovieStreamingServicesLoadingStatus
   );
-  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
-  const uid = useSelector(selectUserId);
   const [sharedServices, setSharedServices] = useState([]);
 
   useEffect(() => {
@@ -79,20 +71,28 @@ const MovieList = ({ route }) => {
       <View style={styles.swipeContainer}>
         <View style={styles.movieContainer}>
           <View style={styles.movieBodyContainer}>
-            {moviesByGenreLoadingStatus === PENDING ||
-            movieStreamingServicesLoadingStatus === PENDING ||
-            !sharedServices ||
-            !movie ? (
-              <ActivityIndicator style={styles.loading} size='large' />
-            ) : (
-              <>
-                <SwipeMovieCard
-                  moreInfoToggle={moreInfoToggle}
-                  sharedServices={sharedServices}
-                  movie={movie}
-                />
-              </>
-            )}
+            <Loading
+              loadingComplete={
+                !!(
+                  moviesByGenreLoadingStatus === SUCCESS &&
+                  movieStreamingServicesLoadingStatus === SUCCESS &&
+                  sharedServices.length > 0 &&
+                  movie
+                )
+              }
+            />
+            {moviesByGenreLoadingStatus === SUCCESS &&
+              movieStreamingServicesLoadingStatus === SUCCESS &&
+              sharedServices.length > 0 &&
+              movie && (
+                <>
+                  <SwipeMovieCard
+                    moreInfoToggle={moreInfoToggle}
+                    sharedServices={sharedServices}
+                    movie={movie}
+                  />
+                </>
+              )}
           </View>
         </View>
       </View>
@@ -112,9 +112,8 @@ const MovieList = ({ route }) => {
               style={styles.nextMovieButton}
               onPress={() => {
                 setMoreInfoToggle(false);
-                dispatch(
-                  movieListIndexAction(genre, isUserLoggedIn, uid, movieId)
-                );
+                setSharedServices([]);
+                dispatch(movieListIndexAction(genre));
               }}
             >
               <Text style={styles.nextMovieButtonText}>Next Movie</Text>

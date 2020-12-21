@@ -19,7 +19,6 @@ const Home = ({ navigation }) => {
 
   // logs user out
   const logOut = () => {
-    // console.log("logging out");
     dispatch(logUserOutAction());
   };
 
