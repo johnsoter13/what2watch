@@ -29,6 +29,7 @@ const MovieList = ({ route }) => {
   const dispatch = useDispatch();
   const { genre } = route.params;
   const movieIndex = useSelector((state) => selectMovieIndex(state, genre));
+  const [moreInfoToggle, setMoreInfoToggle] = useState(false);
   const movieId = useSelector((state) =>
     selectMovieIdByIndex(state, genre, movieIndex)
   );
@@ -85,7 +86,11 @@ const MovieList = ({ route }) => {
               <ActivityIndicator style={styles.loading} size='large' />
             ) : (
               <>
-                <SwipeMovieCard sharedServices={sharedServices} movie={movie} />
+                <SwipeMovieCard
+                  moreInfoToggle={moreInfoToggle}
+                  sharedServices={sharedServices}
+                  movie={movie}
+                />
               </>
             )}
           </View>
@@ -95,16 +100,26 @@ const MovieList = ({ route }) => {
         movieStreamingServicesLoadingStatus === SUCCESS &&
         sharedServices &&
         movie && (
-          <TouchableOpacity
-            style={styles.nextMovieButton}
-            onPress={() =>
-              dispatch(
-                movieListIndexAction(genre, isUserLoggedIn, uid, movieId)
-              )
-            }
-          >
-            <Text style={styles.nextMovieButtonText}>Next Movie</Text>
-          </TouchableOpacity>
+          <View style={styles.swipeCardButtonContainer}>
+            <TouchableOpacity
+              style={styles.moreInfoButton}
+              onPress={() => setMoreInfoToggle(!moreInfoToggle)}
+            >
+              <Text style={styles.nextMovieButtonText}>More Info</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.nextMovieButton}
+              onPress={() => {
+                setMoreInfoToggle(false);
+                dispatch(
+                  movieListIndexAction(genre, isUserLoggedIn, uid, movieId)
+                );
+              }}
+            >
+              <Text style={styles.nextMovieButtonText}>Next Movie</Text>
+            </TouchableOpacity>
+          </View>
         )}
     </View>
   );
@@ -136,14 +151,29 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextMovieButton: {
+    marginLeft: '5px',
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
     backgroundColor: baseStyles.BUTTON_COLOR,
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
-    height: '5%',
+    height: '100%',
+  },
+  moreInfoButton: {
+    marginRight: '5px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: baseStyles.BUTTON_COLOR,
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+    height: '100%',
   },
   nextMovieButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
+  },
+  swipeCardButtonContainer: {
+    flexDirection: 'row',
+    height: '5%',
   },
 });
 

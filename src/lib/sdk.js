@@ -11,6 +11,20 @@ export const fetchMovieGenres = () =>
     },
   });
 
+export const fetchMovieDetails = (movieId) =>
+  fetch(
+    `https://imdb8.p.rapidapi.com/title/get-overview-details?tconst=${movieId}&currentCountry=US`,
+    {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-host': 'imdb8.p.rapidapi.com',
+        'x-rapidapi-key': 'c50c4c9db7mshcf4126835ef9018p19fd07jsn885511f89022',
+        useQueryString: true,
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+    }
+  );
+
 export const fetchMoviesByGenre = (genre) =>
   fetch(
     `https://imdb8.p.rapidapi.com/title/get-popular-movies-by-genre?genre=${genre}`,
