@@ -9,6 +9,7 @@ import {
   fetchMovieGenres,
   fetchMoviesByGenre,
   fetchMovieStreamingServices,
+  fetchMovieDetails,
 } from '../../lib/sdk';
 
 import { selectMoviesByGenreExists } from './selectors';
@@ -70,7 +71,9 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     });
 };
 
-export const fetchMovieStreamingServicesAction = (movieId) => (dispatch) => {
+export const fetchMovieStreamingServicesAction = (movieId) => async (
+  dispatch
+) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
@@ -81,31 +84,43 @@ export const fetchMovieStreamingServicesAction = (movieId) => (dispatch) => {
     movieId.lastIndexOf('/')
   );
 
-  return fetchMovieStreamingServices(actualMovieId)
-    .then((response) => response.text())
-    .then((text) => {
-      const movieStreamServices = JSON.parse(text)?.collection?.locations;
-      const movieTitle = JSON.parse(text)?.collection?.name;
-      const moviePicture = JSON.parse(text)?.collection?.picture;
+  try {
+    const fetchMovieDetailsResponse = await fetchMovieDetails(actualMovieId);
 
-      dispatch({
-        type: MOVIE_STREAMING_SERVICES,
-        status: SUCCESS,
-        payload: {
-          movieId,
-          movieStreamServices,
-          movieTitle,
-          moviePicture,
-        },
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({
-        type: MOVIE_STREAMING_SERVICES,
-        status: FAILURE,
-      });
+    if (fetchMovieDetailsResponse.ok) {
+      const movieDetails = await fetchMovieDetailsResponse.json();
+
+      const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
+        actualMovieId
+      );
+
+      if (fetchMovieStreamingServicesResponse.ok) {
+        const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
+
+        dispatch({
+          type: MOVIE_STREAMING_SERVICES,
+          status: SUCCESS,
+          payload: {
+            movieId,
+            movieStreamServices: movieStreamServices?.collection?.locations,
+            movieTitle: movieDetails?.title?.title,
+            moviePicture: movieDetails?.title?.image?.url,
+            moviePlot: movieDetails?.plotOutline?.text,
+            movieRating: movieDetails?.ratings?.rating,
+            movieReleaseDate: movieDetails?.releaseDate,
+            movieReleaseYear: movieDetails?.title?.year,
+            movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
+          },
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    dispatch({
+      type: MOVIE_STREAMING_SERVICES,
+      status: FAILURE,
     });
+  }
 };
 
 export const movieListIndexAction = (genre) => (dispatch) =>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Button, Text, Image, Linking } from 'react-native';
 
-const SwipeMovieCard = ({ movie, sharedServices }) => {
+const SwipeMovieCard = ({ moreInfoToggle, movie, sharedServices }) => {
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
@@ -16,22 +16,44 @@ const SwipeMovieCard = ({ movie, sharedServices }) => {
     <>
       <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
       <View style={styles.movieBodyContainer}>
-        <View style={styles.imageContainer}>
-          <Image style={styles.movieImage} source={{ uri: movie.picture }} />
-        </View>
-        <View style={styles.movieRowContainer}>
-          <Text style={styles.movieRowAvailable}>Available on:</Text>
-          <View style={styles.movieStreamingServices}>
-            {sharedServices.map((streamingService) => (
-              <View key={streamingService} style={styles.movieStreamingService}>
-                <Button
-                  onPress={() => handleNavigateToLink(streamingService.url)}
-                  title={streamingService.display_name}
+        {moreInfoToggle ? (
+          <View style={styles.movieRowContainer}>
+            <View style={styles.infoContainer}>
+              <View style={styles.ratingContainer}>
+                <Image
+                  style={styles.imdbIcon}
+                  source={require('../../../assets/imdb.png')}
                 />
+                <Text>Rating: {movie.movieRating}/10</Text>
               </View>
-            ))}
+              <View>
+                <Text>Release Date: {movie.movieReleaseDate}</Text>
+                <Text>Run Time: {movie.movieRunningTime} Minutes</Text>
+              </View>
+            </View>
+            <View>
+              <Text>{movie.moviePlot}</Text>
+            </View>
+            <Text style={styles.movieRowAvailable}>Available on:</Text>
+            <View style={styles.movieStreamingServices}>
+              {sharedServices.map((streamingService) => (
+                <View
+                  key={streamingService}
+                  style={styles.movieStreamingService}
+                >
+                  <Button
+                    onPress={() => handleNavigateToLink(streamingService.url)}
+                    title={streamingService.display_name}
+                  />
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        ) : (
+          <View style={styles.imageContainer}>
+            <Image style={styles.movieImage} source={{ uri: movie.picture }} />
+          </View>
+        )}
       </View>
     </>
   );
@@ -40,10 +62,14 @@ const SwipeMovieCard = ({ movie, sharedServices }) => {
 const styles = StyleSheet.create({
   movieBodyContainer: {
     flex: 1,
+    padding: '10px',
+    overflow: 'auto',
+    backgroundColor: '#888888',
+    borderRadius: '10px',
   },
   imageContainer: {
     width: '100%',
-    height: '50%',
+    height: '100%',
   },
   movieImage: {
     width: '100%',
@@ -63,6 +89,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textDecorationLine: 'underline',
     marginBottom: 5,
+    marginTop: '20px',
   },
   movieStreamingService: {
     marginBottom: 5,
@@ -70,6 +97,20 @@ const styles = StyleSheet.create({
   movieStreamingServices: {
     flex: 1,
     overflow: 'auto',
+  },
+  imdbIcon: {
+    height: '32px',
+    width: '32px',
+    marginRight: '5px',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '50%',
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    marginBottom: '50px',
   },
 });
 

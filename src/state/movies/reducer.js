@@ -93,6 +93,11 @@ export default produce((draft, action) => {
             movieStreamServices,
             movieTitle,
             moviePicture,
+            moviePlot,
+            movieRating,
+            movieReleaseDate,
+            movieReleaseYear,
+            movieRunningTime,
           } = action.payload;
           if (movieStreamServices) {
             draft.movieStreamingServices[movieId] = {
@@ -101,6 +106,11 @@ export default produce((draft, action) => {
               streamingServices: createMovieStreamingServiceObj(
                 movieStreamServices
               ),
+              moviePlot,
+              movieRating,
+              movieReleaseDate,
+              movieReleaseYear,
+              movieRunningTime,
             };
           } else {
             draft.movieStreamingServices[movieId] = 'not available';
