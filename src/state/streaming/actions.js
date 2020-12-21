@@ -2,7 +2,7 @@ import { SUCCESS } from '../constants';
 import { MOVIE_INDEX } from '../movies/constants';
 
 import { UPDATE_STREAMING_SERVICES } from './constants';
-import { saveToUserDatabase } from '../../lib/sdk';
+import { fetchUserDatabase, saveToUserDatabase } from '../../lib/sdk';
 
 export const updateStreamingServicesAction = (
   streamingServices,
@@ -22,7 +22,7 @@ export const updateStreamingServicesAction = (
   });
 
   if (isLoggedIn) {
-    saveToUserDatabase(uid)
+    fetchUserDatabase(uid)
       .set(
         {
           streaming_services: streamingServices,
