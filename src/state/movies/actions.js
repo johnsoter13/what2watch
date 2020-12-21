@@ -9,6 +9,7 @@ import {
   fetchMovieGenres,
   fetchMoviesByGenre,
   fetchMovieStreamingServices,
+  fetchUserDatabase,
   fetchMovieDetails,
 } from '../../lib/sdk';
 
@@ -123,9 +124,31 @@ export const fetchMovieStreamingServicesAction = (movieId) => async (
   }
 };
 
-export const movieListIndexAction = (genre) => (dispatch) =>
+export const movieListIndexAction = (
+  genre,
+  isUserLoggedIn = false,
+  uid = '',
+  movieId
+) => (dispatch) => {
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
     payload: { genre },
   });
+  if (isUserLoggedIn) {
+    const actualMovieId = movieId.slice(
+      movieId.indexOf('tt'),
+      movieId.lastIndexOf('/')
+    );
+    fetchUserDatabase(uid)
+      .child('movies/disliked')
+      .push(actualMovieId)
+      // ,
+      // (error) => {
+      //   if (error) {
+      //     console.log('failed! ' + error)
+      //   }
+      // }
+      .then(() => console.log('Movie disliked!'));
+  }
+};

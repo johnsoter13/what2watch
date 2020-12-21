@@ -1,6 +1,6 @@
 import { FAILURE, SUCCESS } from '../constants';
 
-import { SET_LOGIN_STATE } from './constants';
+import { SET_DISLIKED, SET_LOGIN_STATE } from './constants';
 import {
   createUserWithEmailAndPassword,
   fetchUserDatabase,
@@ -60,15 +60,33 @@ export const loginUserAction = (email, password) => (dispatch) => {
       account.user.getIdToken().then((idToken) => {
         // console.log(idToken);
         const { uid } = account.user;
+        // fetches user database
         fetchUserDatabase(uid)
           .once('value')
           .then((snapshot) => {
-            const streamingServices = snapshot.val().streaming_services;
-            dispatch({
-              type: UPDATE_STREAMING_SERVICES,
-              status: SUCCESS,
-              payload: { streamingServices },
-            });
+            // console.log(snapshot.val());
+
+            // runs if database is not empty
+            // updates list of streaming services
+            if (snapshot.val()) {
+              const streamingServices = snapshot.val().streaming_services;
+              dispatch({
+                type: UPDATE_STREAMING_SERVICES,
+                status: SUCCESS,
+                payload: { streamingServices },
+              });
+
+              // runs if movies exists in database
+              // stores list of disliked movies
+              if (snapshot.val().movies) {
+                const disliked = snapshot.val().movies.disliked;
+                dispatch({
+                  type: SET_DISLIKED,
+                  status: SUCCESS,
+                  payload: { disliked },
+                });
+              }
+            }
           });
 
         dispatch({
@@ -84,6 +102,11 @@ export const loginUserAction = (email, password) => (dispatch) => {
         type: SET_LOGIN_STATE,
         status: FAILURE,
         payload: loginPayload(false),
+      });
+      dispatch({
+        type: SET_LOGIN_DISLIKED,
+        status: FAILURE,
+        payload: {},
       });
     });
 };

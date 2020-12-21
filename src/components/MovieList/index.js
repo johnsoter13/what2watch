@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  ActivityIndicator,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import {
   selectMovieIndex,
   selectMoviesByGenreLoadingStatus,

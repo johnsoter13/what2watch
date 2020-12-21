@@ -2,7 +2,7 @@ import { SUCCESS } from '../constants';
 import { MOVIE_INDEX } from '../movies/constants';
 
 import { UPDATE_STREAMING_SERVICES } from './constants';
-import { fetchUserDatabase, saveToUserDatabase } from '../../lib/sdk';
+import { fetchUserDatabase } from '../../lib/sdk';
 
 export const updateStreamingServicesAction = (
   streamingServices,
@@ -29,10 +29,10 @@ export const updateStreamingServicesAction = (
         },
         (error) => {
           if (error) {
-            console.log('failed!' + error);
+            console.log('failed! ' + error);
           }
         }
       )
-      .then(() => console.log('Data saved!'));
+      .then(() => console.log('Streaming Servies saved!'));
   }
 };
