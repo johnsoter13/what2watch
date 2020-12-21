@@ -48,7 +48,7 @@ const MovieList = ({ route }) => {
       dispatch(fetchMovieStreamingServicesAction(movieId));
       // sometimes endpoint errors, skip to next movie
     } else if (movie === 'not available') {
-      dispatch(movieListIndexAction(genre));
+      dispatch(movieListIndexAction(genre, movieId, false));
       // check if we have shared streaming services
     } else {
       const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
@@ -61,7 +61,7 @@ const MovieList = ({ route }) => {
         setSharedServices(sharedServicesForMovie);
         // skip to next movie
       } else {
-        dispatch(movieListIndexAction(genre));
+        dispatch(movieListIndexAction(genre, movieId, false));
       }
     }
   }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction]);
@@ -113,7 +113,7 @@ const MovieList = ({ route }) => {
               onPress={() => {
                 setMoreInfoToggle(false);
                 setSharedServices([]);
-                dispatch(movieListIndexAction(genre));
+                dispatch(movieListIndexAction(genre, movieId, true));
               }}
             >
               <Text style={styles.nextMovieButtonText}>Next Movie</Text>

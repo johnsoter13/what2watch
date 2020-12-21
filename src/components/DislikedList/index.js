@@ -19,22 +19,20 @@ import {
   selectUserIsLoggedIn,
 } from '../../state/auth/selectors';
 import { selectSearchResults } from '../../state/search/selectors';
-import fetchUserDatabase from '../../lib/sdk';
+import { SET_DISLIKED } from '../../state/auth/constants';
+import { updateDislikedAction } from '../../state/auth/actions';
 
 const DislikedList = ({ navigation }) => {
   const dispatch = useDispatch();
   const disliked = useSelector(selectUserDisliked);
   const isLoggedIn = useSelector(selectUserIsLoggedIn);
+  const uid = useSelector(selectUserId);
 
-  const DATA = {};
-  const values = [];
   const getDisliked = () => {
     if (isLoggedIn) {
-      for (const [key, value] of Object.entries(disliked)) {
-        values.push(value);
-      }
+      updateDislikedAction(uid);
     }
-    console.log(values);
+    console.log(disliked);
   };
 
   useEffect(() => {
@@ -44,8 +42,12 @@ const DislikedList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={values}
-        renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
+        data={disliked}
+        renderItem={({ item }) => (
+          <Text style={styles.item} key={item}>
+            {item}
+          </Text>
+        )}
       />
     </View>
   );

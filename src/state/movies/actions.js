@@ -14,6 +14,7 @@ import {
 } from '../../lib/sdk';
 
 import { selectMoviesByGenreExists } from './selectors';
+import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -124,22 +125,23 @@ export const fetchMovieStreamingServicesAction = (movieId) => async (
   }
 };
 
-export const movieListIndexAction = (
-  genre,
-  isUserLoggedIn = false,
-  uid = '',
-  movieId
-) => (dispatch) => {
+export const movieListIndexAction = (genre, movieId, disliked) => (
+  dispatch,
+  getState
+) => {
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
     payload: { genre },
   });
-  if (isUserLoggedIn) {
+  const isUserLoggedIn = selectUserIsLoggedIn(getState());
+  if (disliked && isUserLoggedIn) {
+    const uid = selectUserId(getState());
     const actualMovieId = movieId.slice(
       movieId.indexOf('tt'),
       movieId.lastIndexOf('/')
     );
+    // this is overriding the database
     fetchUserDatabase(uid)
       .child('movies/disliked')
       .push(actualMovieId)

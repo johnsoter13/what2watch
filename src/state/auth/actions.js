@@ -7,6 +7,7 @@ import {
   loginUserWithEmailandPassword,
 } from '../../lib/sdk';
 import { UPDATE_STREAMING_SERVICES } from '../streaming/constants';
+import { values } from 'lodash';
 
 const loginPayload = (isLoggedIn, uid = '', idToken = '') => {
   return {
@@ -79,11 +80,16 @@ export const loginUserAction = (email, password) => (dispatch) => {
               // runs if movies exists in database
               // stores list of disliked movies
               if (snapshot.val().movies) {
+                let values = [];
                 const disliked = snapshot.val().movies.disliked;
+                // change this to Object.values
+                for (const [key, value] of Object.entries(disliked)) {
+                  values.push(value);
+                }
                 dispatch({
                   type: SET_DISLIKED,
                   status: SUCCESS,
-                  payload: { disliked },
+                  payload: { disliked: values },
                 });
               }
             }
@@ -104,9 +110,29 @@ export const loginUserAction = (email, password) => (dispatch) => {
         payload: loginPayload(false),
       });
       dispatch({
-        type: SET_LOGIN_DISLIKED,
+        type: SET_DISLIKED,
         status: FAILURE,
         payload: {},
       });
+    });
+};
+
+export const updateDislikedAction = (uid) => (dispatch) => {
+  fetchUserDatabase(uid)
+    .once('value')
+    .then((snapshot) => {
+      let values = [];
+      if (snapshot.val() && snapshot.val().movies) {
+        const disliked = snapshot.val().movies.disliked;
+        // change this to Object.values
+        for (const [key, value] of Object.entries(disliked)) {
+          values.push(value);
+        }
+        dispatch({
+          type: SET_DISLIKED,
+          status: SUCCESS,
+          payload: { disliked: values },
+        });
+      }
     });
 };

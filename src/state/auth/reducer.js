@@ -7,7 +7,7 @@ const initialState = {
     isLoggedIn: false,
     uid: '',
     idToken: '',
-    disliked: {},
+    disliked: [],
   },
 };
 
