@@ -6,7 +6,6 @@ import {
   fetchUserDatabase,
   loginUserWithEmailandPassword,
 } from '../../lib/sdk';
-import { Firebase, db } from '../../../config/Firebase';
 import { UPDATE_STREAMING_SERVICES } from '../streaming/constants';
 
 const loginPayload = (isLoggedIn, uid = '', idToken = '') => {
@@ -75,7 +74,7 @@ export const loginUserAction = (email, password) => (dispatch) => {
         dispatch({
           type: SET_LOGIN_STATE,
           status: SUCCESS,
-          payload: loginPayload(true, account.user.uid, idToken),
+          payload: loginPayload(true, uid, idToken),
         });
       });
     })
