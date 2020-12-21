@@ -25,15 +25,14 @@ const GenreList = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.genreContainer}>
         {Object.keys(movieGenres).map((genre) => (
-          <View style={styles.genreButtonContainer} key={genre}>
-            <TouchableOpacity
-              onPress={() => handleStreamingServiceSelection(genre)}
-            >
-              <Text style={styles.genreButtonText}>
-                {movieGenres[genre].description}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.genreButtonContainer}
+            onPress={() => handleStreamingServiceSelection(genre)}
+          >
+            <Text style={styles.genreButtonText}>
+              {movieGenres[genre].description}
+            </Text>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

@@ -85,17 +85,17 @@ export const fetchMovieStreamingServicesAction = (movieId) => async (
   );
 
   try {
-    const fetchMovieDetailsResponse = await fetchMovieDetails(actualMovieId);
+    const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
+      actualMovieId
+    );
 
-    if (fetchMovieDetailsResponse.ok) {
-      const movieDetails = await fetchMovieDetailsResponse.json();
+    if (fetchMovieStreamingServicesResponse.ok) {
+      const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
 
-      const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
-        actualMovieId
-      );
+      const fetchMovieDetailsResponse = await fetchMovieDetails(actualMovieId);
 
-      if (fetchMovieStreamingServicesResponse.ok) {
-        const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
+      if (fetchMovieDetailsResponse.ok) {
+        const movieDetails = await fetchMovieDetailsResponse.json();
 
         dispatch({
           type: MOVIE_STREAMING_SERVICES,

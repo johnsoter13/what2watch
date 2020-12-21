@@ -23,6 +23,7 @@ import {
 } from '../../state/movies/actions';
 import * as baseStyles from '../../styles/styles';
 import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
+import Loading from '../Loading';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
@@ -76,20 +77,28 @@ const MovieList = ({ route }) => {
       <View style={styles.swipeContainer}>
         <View style={styles.movieContainer}>
           <View style={styles.movieBodyContainer}>
-            {moviesByGenreLoadingStatus === PENDING ||
-            movieStreamingServicesLoadingStatus === PENDING ||
-            !sharedServices ||
-            !movie ? (
-              <ActivityIndicator style={styles.loading} size='large' />
-            ) : (
-              <>
-                <SwipeMovieCard
-                  moreInfoToggle={moreInfoToggle}
-                  sharedServices={sharedServices}
-                  movie={movie}
-                />
-              </>
-            )}
+            <Loading
+              loadingComplete={
+                !!(
+                  moviesByGenreLoadingStatus === SUCCESS &&
+                  movieStreamingServicesLoadingStatus === SUCCESS &&
+                  sharedServices.length > 0 &&
+                  movie
+                )
+              }
+            />
+            {moviesByGenreLoadingStatus === SUCCESS &&
+              movieStreamingServicesLoadingStatus === SUCCESS &&
+              sharedServices.length > 0 &&
+              movie && (
+                <>
+                  <SwipeMovieCard
+                    moreInfoToggle={moreInfoToggle}
+                    sharedServices={sharedServices}
+                    movie={movie}
+                  />
+                </>
+              )}
           </View>
         </View>
       </View>
@@ -109,6 +118,7 @@ const MovieList = ({ route }) => {
               style={styles.nextMovieButton}
               onPress={() => {
                 setMoreInfoToggle(false);
+                setSharedServices([]);
                 dispatch(movieListIndexAction(genre));
               }}
             >
