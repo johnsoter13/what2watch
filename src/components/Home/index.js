@@ -8,6 +8,7 @@ import {
   STREAMING_SERVICES_SCREEN,
   SEARCH_MOVIE_SCREEN,
   LOGIN,
+  DISLIKED_LIST,
 } from '../../constants/ROUTES';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { logUserOutAction } from '../../state/auth/actions';
@@ -49,13 +50,18 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View>
-          {/* show logout button when logged in */}
           <View style={styles.actionButton}>
             <Button
               onPress={() => {
                 isUserLoggedIn ? logOut() : navigation.navigate(LOGIN);
               }}
               title={isUserLoggedIn ? 'Logout' : 'Login'}
+            />
+          </View>
+          <View style={styles.actionButton}>
+            <Button
+              onPress={() => navigation.navigate(DISLIKED_LIST)}
+              title='Disliked List'
             />
           </View>
         </View>
