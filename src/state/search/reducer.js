@@ -16,9 +16,9 @@ export default produce((draft, action) => {
           draft.moviesFromSearchLoadingStatus = PENDING;
           break;
         case SUCCESS:
-          const { query, movies } = action.payload;
-          if (movies) {
-            draft.moviesFromSearch[query] = movies;
+          const { query, sanitizedMovies } = action.payload;
+          if (sanitizedMovies) {
+            draft.moviesFromSearch[query] = sanitizedMovies;
           }
           draft.moviesFromSearchLoadingStatus = SUCCESS;
           break;

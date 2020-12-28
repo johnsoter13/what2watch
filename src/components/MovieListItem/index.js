@@ -14,12 +14,12 @@ const MovieListItem = ({ movie }) => {
 
   return (
     <View style={styles.movieContainer}>
-      <Text style={styles.movieTitle}>{movie.name || movie.movieTitle}</Text>
+      <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
       <View style={styles.movieBodyContainer}>
         <View style={styles.movieRowContainer}>
           <Text style={styles.movieRowAvailable}>Available on:</Text>
           <View>
-            {movie.locations.map((streamingService) => (
+            {movie.movieStreamServices.map((streamingService) => (
               <View style={styles.movieStreamingService}>
                 <Button
                   onPress={() => handleNavigateToLink(streamingService.url)}
@@ -30,7 +30,10 @@ const MovieListItem = ({ movie }) => {
           </View>
         </View>
         <View style={styles.movieRowContainer}>
-          <Image style={styles.movieImage} source={{ uri: movie.picture }} />
+          <Image
+            style={styles.movieImage}
+            source={{ uri: movie.moviePicture }}
+          />
         </View>
       </View>
     </View>

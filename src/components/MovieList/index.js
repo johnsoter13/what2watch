@@ -1,125 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import {
-  selectMovieIndex,
-  selectMoviesByGenreLoadingStatus,
-  selectMovieStreamingServicesLoadingStatus,
-  selectMovieStreamingServicesById,
-  selectMovieIdByIndex,
-} from '../../state/movies/selectors';
-import { selectUserStreamingServices } from '../../state/streaming/selectors';
+
 import SwipeMovieCard from '../SwipeMovieCard';
-import { PENDING, SUCCESS } from '../../state/constants';
-import {
-  movieListIndexAction,
-  fetchMovieStreamingServicesAction,
-} from '../../state/movies/actions';
+import { movieListIndexAction } from '../../state/movies/actions';
 import * as baseStyles from '../../styles/styles';
-import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils';
 import Loading from '../Loading';
+import { useMovie } from '../../hooks/useMovie';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
   const { genre } = route.params;
-  const movieIndex = useSelector((state) => selectMovieIndex(state, genre));
   const [moreInfoToggle, setMoreInfoToggle] = useState(false);
-  const movieId = useSelector((state) =>
-    selectMovieIdByIndex(state, genre, movieIndex)
-  );
-  const movie = useSelector((state) =>
-    selectMovieStreamingServicesById(state, movieId)
-  );
-  const userStreamingServices = useSelector(selectUserStreamingServices);
-  const moviesByGenreLoadingStatus = useSelector(
-    selectMoviesByGenreLoadingStatus
-  );
-  const movieStreamingServicesLoadingStatus = useSelector(
-    selectMovieStreamingServicesLoadingStatus
-  );
-  const [sharedServices, setSharedServices] = useState([]);
 
-  useEffect(() => {
-    if (!movieId) {
-      return;
-    }
-    // if not in store, fetch movie
-    else if (!movie) {
-      dispatch(fetchMovieStreamingServicesAction(movieId));
-      // sometimes endpoint errors, skip to next movie
-    } else if (movie === 'not available') {
-      dispatch(movieListIndexAction(genre, movieId, false));
-      // check if we have shared streaming services
-    } else {
-      const sharedServicesForMovie = checkIfMovieIsAvailableToUser(
-        userStreamingServices,
-        movie
-      );
-
-      // if yes, set shared services
-      if (sharedServicesForMovie.length) {
-        setSharedServices(sharedServicesForMovie);
-        // skip to next movie
-      } else {
-        dispatch(movieListIndexAction(genre, movieId, false));
-      }
-    }
-  }, [movie, movieId, dispatch, fetchMovieStreamingServicesAction]);
+  const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
 
   return (
     <View style={styles.container}>
       <View style={styles.swipeContainer}>
         <View style={styles.movieContainer}>
           <View style={styles.movieBodyContainer}>
-            <Loading
-              loadingComplete={
-                !!(
-                  moviesByGenreLoadingStatus === SUCCESS &&
-                  movieStreamingServicesLoadingStatus === SUCCESS &&
-                  sharedServices.length > 0 &&
-                  movie
-                )
-              }
-            />
-            {moviesByGenreLoadingStatus === SUCCESS &&
-              movieStreamingServicesLoadingStatus === SUCCESS &&
-              sharedServices.length > 0 &&
-              movie && (
-                <>
-                  <SwipeMovieCard
-                    moreInfoToggle={moreInfoToggle}
-                    sharedServices={sharedServices}
-                    movie={movie}
-                  />
-                </>
-              )}
+            <Loading loadingComplete={movieLoadingComplete} />
+            {movieLoadingComplete && (
+              <>
+                <SwipeMovieCard
+                  moreInfoToggle={moreInfoToggle}
+                  sharedServices={sharedServices}
+                  movie={movie}
+                />
+              </>
+            )}
           </View>
         </View>
       </View>
-      {moviesByGenreLoadingStatus === SUCCESS &&
-        movieStreamingServicesLoadingStatus === SUCCESS &&
-        sharedServices &&
-        movie && (
-          <View style={styles.swipeCardButtonContainer}>
-            <TouchableOpacity
-              style={styles.moreInfoButton}
-              onPress={() => setMoreInfoToggle(!moreInfoToggle)}
-            >
-              <Text style={styles.nextMovieButtonText}>More Info</Text>
-            </TouchableOpacity>
+      {movieLoadingComplete && (
+        <View style={styles.swipeCardButtonContainer}>
+          <TouchableOpacity
+            style={styles.moreInfoButton}
+            onPress={() => setMoreInfoToggle(!moreInfoToggle)}
+          >
+            <Text style={styles.nextMovieButtonText}>More Info</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.nextMovieButton}
-              onPress={() => {
-                setMoreInfoToggle(false);
-                setSharedServices([]);
-                dispatch(movieListIndexAction(genre, movieId, true));
-              }}
-            >
-              <Text style={styles.nextMovieButtonText}>Next Movie</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+          <TouchableOpacity
+            style={styles.nextMovieButton}
+            onPress={() => {
+              setMoreInfoToggle(false);
+              dispatch(movieListIndexAction(genre, true));
+            }}
+          >
+            <Text style={styles.nextMovieButtonText}>Next Movie</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

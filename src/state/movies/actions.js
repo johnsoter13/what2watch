@@ -13,7 +13,11 @@ import {
   fetchMovieDetails,
 } from '../../lib/sdk';
 
-import { selectMoviesByGenreExists } from './selectors';
+import {
+  selectMovieIdByIndex,
+  selectMovieIndex,
+  selectMoviesByGenreExists,
+} from './selectors';
 import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
@@ -73,47 +77,55 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     });
 };
 
-export const fetchMovieStreamingServicesAction = (movieId) => async (
-  dispatch
+export const fetchMovieStreamingServicesAction = (genre) => async (
+  dispatch,
+  getState
 ) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
   });
-
-  const actualMovieId = movieId.slice(
-    movieId.indexOf('tt'),
-    movieId.lastIndexOf('/')
-  );
+  const movieIndex = selectMovieIndex(getState(), genre);
 
   try {
-    const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
-      actualMovieId
-    );
+    for (let i = movieIndex; i < movieIndex + 10; i++) {
+      const movieId = selectMovieIdByIndex(getState(), genre, i);
 
-    if (fetchMovieStreamingServicesResponse.ok) {
-      const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
+      const actualMovieId = movieId.slice(
+        movieId.indexOf('tt'),
+        movieId.lastIndexOf('/')
+      );
 
-      const fetchMovieDetailsResponse = await fetchMovieDetails(actualMovieId);
+      const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
+        actualMovieId
+      );
 
-      if (fetchMovieDetailsResponse.ok) {
-        const movieDetails = await fetchMovieDetailsResponse.json();
+      if (fetchMovieStreamingServicesResponse.ok) {
+        const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
 
-        dispatch({
-          type: MOVIE_STREAMING_SERVICES,
-          status: SUCCESS,
-          payload: {
-            movieId,
-            movieStreamServices: movieStreamServices?.collection?.locations,
-            movieTitle: movieDetails?.title?.title,
-            moviePicture: movieDetails?.title?.image?.url,
-            moviePlot: movieDetails?.plotOutline?.text,
-            movieRating: movieDetails?.ratings?.rating,
-            movieReleaseDate: movieDetails?.releaseDate,
-            movieReleaseYear: movieDetails?.title?.year,
-            movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
-          },
-        });
+        const fetchMovieDetailsResponse = await fetchMovieDetails(
+          actualMovieId
+        );
+
+        if (fetchMovieDetailsResponse.ok) {
+          const movieDetails = await fetchMovieDetailsResponse.json();
+
+          dispatch({
+            type: MOVIE_STREAMING_SERVICES,
+            status: SUCCESS,
+            payload: {
+              movieId,
+              movieStreamServices: movieStreamServices?.collection?.locations,
+              movieTitle: movieDetails?.title?.title,
+              moviePicture: movieDetails?.title?.image?.url,
+              moviePlot: movieDetails?.plotOutline?.text,
+              movieRating: movieDetails?.ratings?.rating,
+              movieReleaseDate: movieDetails?.releaseDate,
+              movieReleaseYear: movieDetails?.title?.year,
+              movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
+            },
+          });
+        }
       }
     }
   } catch (err) {
@@ -125,7 +137,7 @@ export const fetchMovieStreamingServicesAction = (movieId) => async (
   }
 };
 
-export const movieListIndexAction = (genre, movieId, disliked) => (
+export const movieListIndexAction = (genre, disliked) => (
   dispatch,
   getState
 ) => {
@@ -135,6 +147,9 @@ export const movieListIndexAction = (genre, movieId, disliked) => (
     payload: { genre },
   });
   const isUserLoggedIn = selectUserIsLoggedIn(getState());
+  const movieIndex = selectMovieIndex(getState(), genre);
+  const movieId = selectMovieIdByIndex(getState(), genre, movieIndex);
+
   if (disliked && isUserLoggedIn) {
     const uid = selectUserId(getState());
     const actualMovieId = movieId.slice(
