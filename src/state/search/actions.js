@@ -1,31 +1,54 @@
 import { PENDING, SUCCESS, FAILURE } from '../constants';
-import { fetchMovieFromSearch } from '../../lib/sdk';
+import { fetchMovieFromSearch, fetchMovieDetails } from '../../lib/sdk';
 
 import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from './constants';
 
-export const fetchMovieFromSearchAction = (query) => (dispatch) => {
+export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
   dispatch({
     type: MOVIE_FROM_SEARCH,
     status: PENDING,
   });
-  return fetchMovieFromSearch(query)
-    .then((response) => response.text())
-    .then((text) => {
-      const movies = JSON.parse(text)?.results;
+  try {
+    const searchResponse = await fetchMovieFromSearch(query);
+    const sanitizedMovies = [];
 
-      dispatch({
-        type: MOVIE_FROM_SEARCH,
-        status: SUCCESS,
-        payload: { query, movies },
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({
-        type: MOVIE_FROM_SEARCH,
-        status: FAILURE,
-      });
+    if (searchResponse.ok) {
+      const searchMovies = await searchResponse.json();
+
+      for (let i = 0; i < searchMovies.results.length; i++) {
+        const movie = searchMovies.results[i];
+        const fetchMovieDetailsResponse = await fetchMovieDetails(
+          movie.external_ids.imdb.id
+        );
+
+        if (fetchMovieDetailsResponse.ok) {
+          const movieDetails = await fetchMovieDetailsResponse.json();
+
+          sanitizedMovies.push({
+            movieStreamServices: movie?.locations,
+            movieTitle: movieDetails?.title?.title,
+            moviePicture: movieDetails?.title?.image?.url,
+            moviePlot: movieDetails?.plotOutline?.text,
+            movieRating: movieDetails?.ratings?.rating,
+            movieReleaseDate: movieDetails?.releaseDate,
+            movieReleaseYear: movieDetails?.title?.year,
+            movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
+          });
+        }
+      }
+    }
+
+    dispatch({
+      type: MOVIE_FROM_SEARCH,
+      status: SUCCESS,
+      payload: { query, sanitizedMovies },
     });
+  } catch {
+    dispatch({
+      type: MOVIE_FROM_SEARCH,
+      status: FAILURE,
+    });
+  }
 };
 
 export const setSearchQueryAction = (query) => (dispatch) => {

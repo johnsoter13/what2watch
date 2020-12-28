@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import Swiper from 'react-native-deck-swiper';
 
 import SwipeMovieCard from '../SwipeMovieCard';
 import { movieListIndexAction } from '../../state/movies/actions';
@@ -13,8 +12,6 @@ const MovieList = ({ route }) => {
   const dispatch = useDispatch();
   const { genre } = route.params;
   const [moreInfoToggle, setMoreInfoToggle] = useState(false);
-
-  const movies = useSelector((state) => selectMoviesByGenre(state, genre));
 
   const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
 
