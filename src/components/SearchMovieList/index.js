@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { selectSearchResults } from '../../state/search/selectors';
 import MovieListItem from '../MovieListItem';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const SearchMovieList = ({ query }) => {
   const searchMovies = useSelector((state) =>
@@ -12,9 +13,11 @@ const SearchMovieList = ({ query }) => {
 
   return (
     <View style={styles.container}>
-      {searchMovies?.map((movie) => (
-        <MovieListItem movie={movie} />
-      ))}
+      <ScrollView>
+        {searchMovies?.map((movie) => (
+          <MovieListItem movie={movie} />
+        ))}
+      </ScrollView>
     </View>
   );
 };

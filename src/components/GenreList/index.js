@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 
 import { selectMovieGenres } from '../../state/movies/selectors';
 import { fetchMoviesByGenreAction } from '../../state/movies/actions';
@@ -23,7 +23,7 @@ const GenreList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.genreContainer}>
+      <ScrollView style={styles.genreContainer}>
         {Object.keys(movieGenres).map((genre) => (
           <TouchableOpacity
             style={styles.genreButtonContainer}
@@ -34,7 +34,7 @@ const GenreList = ({ navigation }) => {
             </Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -47,17 +47,16 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   genreContainer: {
-    overflow: 'auto',
     width: '100%',
     flex: 1,
   },
   genreButtonContainer: {
-    height: '35px',
+    height: 35,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
     backgroundColor: baseStyles.BUTTON_COLOR,
-    marginBottom: '20px',
+    marginBottom: 20,
   },
   genreButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,

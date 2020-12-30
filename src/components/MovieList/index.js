@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff',
     marginBottom: 20,
-    overflow: 'auto',
     paddingTop: 5,
     borderRadius: 5,
     borderWidth: 1,
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextMovieButton: {
-    marginLeft: '5px',
+    marginLeft: 5,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   moreInfoButton: {
-    marginRight: '5px',
+    marginRight: 5,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,

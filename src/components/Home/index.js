@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   actionsText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
-    fontSize: '2rem',
+    fontSize: 28,
   },
   searchButton: {
     height: '100%',

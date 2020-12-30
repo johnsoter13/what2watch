@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Button, Linking, Text, StyleSheet, Image } from 'react-native';
 
 const MovieListItem = ({ movie }) => {
+  const [moreInfoToggle, setMoreInfoToggle] = useState(false);
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
@@ -37,7 +38,51 @@ const MovieListItem = ({ movie }) => {
         </View>
       </View>
     </View>
+  //   <>
+  //   <Text style={styles.movieTitle}>{movie.movieTitle}</Text>
+  //   <View style={styles.movieBodyContainer}>
+  //     {moreInfoToggle ? (
+  //       <View style={styles.movieRowContainer}>
+  //         <View style={styles.infoContainer}>
+  //           <View style={styles.ratingContainer}>
+  //             <Image
+  //               style={styles.imdbIcon}
+  //               source={require('../../../assets/imdb.png')}
+  //             />
+  //             <Text>Rating: {movie.movieRating}/10</Text>
+  //           </View>
+  //           <View>
+  //             <Text>Release Date: {movie.movieReleaseDate}</Text>
+  //             <Text>Run Time: {movie.movieRunningTime} Minutes</Text>
+  //           </View>
+  //         </View>
+  //         <View>
+  //           <Text>{movie.moviePlot}</Text>
+  //         </View>
+  //         <Text style={styles.movieRowAvailable}>Available on:</Text>
+  //         <View style={styles.movieStreamingServices}>
+  //           {sharedServices.map((streamingService) => (
+  //             <View
+  //               key={streamingService}
+  //               style={styles.movieStreamingService}
+  //             >
+  //               <Button
+  //                 onPress={() => handleNavigateToLink(streamingService.url)}
+  //                 title={streamingService.display_name}
+  //               />
+  //             </View>
+  //           ))}
+  //         </View>
+  //       </View>
+  //     ) : (
+  //       <View style={styles.imageContainer}>
+  //         <Image style={styles.movieImage} source={{ uri: movie.picture }} />
+  //       </View>
+  //     )}
+  //   </View>
+  // </>
   );
+  
 };
 
 const styles = StyleSheet.create({
@@ -45,9 +90,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     marginBottom: 20,
-    width: '85%',
+    width: '100%',
     minHeight: 200,
-    overflow: 'auto',
     paddingTop: 5,
     borderRadius: 5,
     borderWidth: 1,

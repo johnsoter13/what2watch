@@ -62,10 +62,9 @@ const SwipeMovieCard = ({ moreInfoToggle, movie, sharedServices }) => {
 const styles = StyleSheet.create({
   movieBodyContainer: {
     flex: 1,
-    padding: '10px',
-    overflow: 'auto',
+    padding: 10,
     backgroundColor: '#888888',
-    borderRadius: '10px',
+    borderRadius: 10,
   },
   imageContainer: {
     width: '100%',
@@ -89,19 +88,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textDecorationLine: 'underline',
     marginBottom: 5,
-    marginTop: '20px',
+    marginTop: 20,
   },
   movieStreamingService: {
     marginBottom: 5,
   },
   movieStreamingServices: {
     flex: 1,
-    overflow: 'auto',
   },
   imdbIcon: {
-    height: '32px',
-    width: '32px',
-    marginRight: '5px',
+    height: 32,
+    width: 32,
+    marginRight: 5,
   },
   ratingContainer: {
     flexDirection: 'row',
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flexDirection: 'row',
-    marginBottom: '50px',
+    marginBottom: 50,
   },
 });
 

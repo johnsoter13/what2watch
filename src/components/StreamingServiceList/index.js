@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
@@ -17,6 +17,7 @@ import * as baseStyles from '../../styles/styles';
 import { STREAMING_SERVICES } from './constants';
 import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { Firebase, db } from '../../../config/Firebase';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -78,7 +79,7 @@ const StreamingServiceList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+      <ScrollView style={styles.buttonContainer}>
         {Object.keys(STREAMING_SERVICES).map((streamingService) => (
           <View key={streamingService} style={styles.serviceButtonContainer}>
             <TouchableHighlight
@@ -95,7 +96,7 @@ const StreamingServiceList = ({ navigation }) => {
             </TouchableHighlight>
           </View>
         ))}
-      </View>
+      </ScrollView>
       <View style={styles.submitButtonContainer}>
         <TouchableHighlight
           style={styles.submitButton}
@@ -116,13 +117,12 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   buttonContainer: {
-    overflow: 'auto',
     width: '100%',
     flex: 1,
   },
   serviceButtonContainer: {
     height: '5%',
-    marginBottom: '20px',
+    marginBottom: 20,
   },
   serviceButton: {
     flex: 1,

@@ -43,7 +43,7 @@ export default function App() {
           <Stack.Screen
             name={GENRE_SCREEN}
             component={GenreList}
-            options={{ title: 'Select Genres' }}
+            options={{ title: 'Select a Genre' }}
           />
           <Stack.Screen
             name={MOVIE_SCREEN}
