@@ -80,7 +80,6 @@ const Search = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#888888',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingVertical: 20,
@@ -111,6 +110,7 @@ const styles = StyleSheet.create({
   },
   searchList: {
     width: '100%',
+    flex: 1,
   },
 });
 

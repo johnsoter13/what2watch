@@ -6,6 +6,7 @@ import {
   Text,
   Alert,
   TouchableHighlight,
+  ScrollView,
 } from 'react-native';
 import { cloneDeep } from 'lodash';
 
@@ -16,8 +17,6 @@ import * as baseStyles from '../../styles/styles';
 
 import { STREAMING_SERVICES } from './constants';
 import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
-import { Firebase, db } from '../../../config/Firebase';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -79,7 +78,7 @@ const StreamingServiceList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.buttonContainer}>
+      <ScrollView>
         {Object.keys(STREAMING_SERVICES).map((streamingService) => (
           <View key={streamingService} style={styles.serviceButtonContainer}>
             <TouchableHighlight
@@ -115,10 +114,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingLeft: 20,
     paddingRight: 20,
-  },
-  buttonContainer: {
-    width: '100%',
-    flex: 1,
   },
   serviceButtonContainer: {
     height: '5%',
