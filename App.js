@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -20,7 +20,6 @@ import {
   LOGIN,
   DISLIKED_LIST,
 } from './src/constants/ROUTES';
-import { setUseProxies } from 'immer';
 
 const store = createStore();
 const Stack = createStackNavigator();
