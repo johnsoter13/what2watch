@@ -76,3 +76,5 @@ export const loginUserWithEmailandPassword = (email, password) =>
   Firebase.auth().signInWithEmailAndPassword(email, password);
 
 export const fetchUserDatabase = (uid) => db.ref('/users/' + uid);
+
+export const fetchMeetups = () => fetch('http://localhost:3000/api/meetups');

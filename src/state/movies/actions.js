@@ -11,6 +11,7 @@ import {
   fetchMovieStreamingServices,
   fetchUserDatabase,
   fetchMovieDetails,
+  fetchMeetups,
 } from '../../lib/sdk';
 
 import {
@@ -168,4 +169,28 @@ export const movieListIndexAction = (genre, disliked) => (
       // }
       .then(() => console.log('Movie disliked!'));
   }
+};
+
+export const fetchMeetupsAction = () => (dispatch) => {
+  dispatch({
+    type: 'MEETUPS',
+    status: PENDING,
+  });
+
+  return fetchMeetups()
+    .then((res) => res.json())
+    .then((text) => {
+      console.log(text);
+      dispatch({
+        type: 'MEETUPS',
+        status: SUCCESS,
+        payload: { text },
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: 'MEETUPS',
+        status: FAILURE,
+      });
+    });
 };
