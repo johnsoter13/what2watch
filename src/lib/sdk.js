@@ -77,4 +77,6 @@ export const loginUserWithEmailandPassword = (email, password) =>
 
 export const fetchUserDatabase = (uid) => db.ref('/users/' + uid);
 
+export const fetchRoomsDatabase = (rid) => db.ref('/rooms/' + rid);
+
 export const fetchMeetups = () => fetch('http://localhost:3000/api/meetups');
