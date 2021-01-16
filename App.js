@@ -11,6 +11,7 @@ import MovieList from './src/components/MovieList';
 import Search from './src/components/Search';
 import Login from './src/components/Login';
 import DislikedList from './src/components/DislikedList';
+import CreatedRoom from './src/components/CreatedRoom';
 import {
   HOME_SCREEN,
   STREAMING_SERVICES_SCREEN,
@@ -19,8 +20,8 @@ import {
   SEARCH_MOVIE_SCREEN,
   LOGIN,
   DISLIKED_LIST,
+  CREATED_ROOM
 } from './src/constants/ROUTES';
-import { setUseProxies } from 'immer';
 
 const store = createStore();
 const Stack = createStackNavigator();
@@ -64,6 +65,11 @@ export default function App() {
             name={DISLIKED_LIST}
             component={DislikedList}
             options={{ title: 'What 2 Watch' }}
+          />
+          <Stack.Screen
+            name={CREATED_ROOM}
+            component={CreatedRoom}
+            options={{ title: 'Your Room' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

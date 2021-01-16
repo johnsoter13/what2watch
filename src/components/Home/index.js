@@ -9,6 +9,7 @@ import {
   SEARCH_MOVIE_SCREEN,
   LOGIN,
   DISLIKED_LIST,
+  CREATED_ROOM
 } from '../../constants/ROUTES';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { logUserOutAction } from '../../state/auth/actions';
@@ -46,6 +47,14 @@ const Home = ({ navigation }) => {
             onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
           >
             <Text style={styles.actionsText}>Match with a Movie!</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.actionsButton}
+            onPress={() => navigation.navigate(CREATED_ROOM)}
+          >
+            <Text style={styles.actionsText}>Create a Room</Text>
           </TouchableOpacity>
         </View>
         <View>
