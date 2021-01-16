@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
 
 import * as baseStyles from '../../styles/styles';
-import { fetchMovieGenresAction } from '../../state/movies/actions';
+import {
+  fetchMovieGenresAction,
+  fetchMeetupsAction,
+} from '../../state/movies/actions';
 import {
   STREAMING_SERVICES_SCREEN,
   SEARCH_MOVIE_SCREEN,
@@ -13,7 +16,6 @@ import {
 } from '../../constants/ROUTES';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { logUserOutAction } from '../../state/auth/actions';
-
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
@@ -25,6 +27,7 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
+    dispatch(fetchMeetupsAction());
   }, []);
 
   return (

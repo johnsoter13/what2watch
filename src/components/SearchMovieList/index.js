@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 
 import { selectSearchResults } from '../../state/search/selectors';
 import MovieListItem from '../MovieListItem';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const SearchMovieList = ({ query }) => {
   const searchMovies = useSelector((state) =>
@@ -13,7 +12,7 @@ const SearchMovieList = ({ query }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         {searchMovies?.map((movie) => (
           <MovieListItem movie={movie} />
         ))}
@@ -27,6 +26,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 20,
+    width: '100%',
+  },
+  scrollView: {
+    flex: 1,
     width: '100%',
   },
 });
