@@ -21,7 +21,6 @@ const CreatedRoom = ({ navigation }) => {
   const dispatch = useDispatch();
   const [error, setError] = useState('');
   const [userName, setUserName] = useState('');
-  let inCreateRoom = true;
 
   const handleEnterRoom = () => {
     if (!text) {
@@ -33,15 +32,12 @@ const CreatedRoom = ({ navigation }) => {
       roomRef
         .orderByChild('roomID')
         .equalTo(text)
-        .on('value', function (snapshot) {
+        .once('value', function (snapshot) {
           if (snapshot.val()) {
             const roomID = text;
             const roomKey = Object.keys(snapshot.val())[0];
-            if (inCreateRoom) {
-              console.log('about to navigate to streaming services');
-              navigation.navigate(STREAMING_SERVICES_SCREEN);
-              inCreateRoom = false;
-            }
+            console.log('about to navigate to streaming services');
+            navigation.navigate(STREAMING_SERVICES_SCREEN);
             dispatch(updateRoomIDRoomKeyAction(roomID, roomKey, userName));
           } else {
             console.log('NO ROOM WITH THAT ID');
