@@ -94,7 +94,7 @@ export const fetchMovieStreamingServicesAction = (genre) => async (
   const movieIndex = selectMovieIndex(getState(), genre);
 
   try {
-    for (let i = movieIndex; i < movieIndex + 10; i++) {
+    for (let i = movieIndex; i < movieIndex + 2; i++) {
       const movieId = selectMovieIdByIndex(getState(), genre, i);
 
       const actualMovieId = movieId.slice(
@@ -181,21 +181,19 @@ export const saveMovieAction = (genre, disliked, movie) => (
       .then(() => console.log('Movie disliked!'));
   }
 
-  // const roomID = selectRoomID(getState());
-  // const roomKey = selectRoomKey(getState());
-  // const userName = selectUserName(getState());
+  const roomID = selectRoomID(getState());
+  const roomKey = selectRoomKey(getState());
+  const userName = selectUserName(getState());
 
-  // if (roomID && roomKey && disliked) {
-  //   let movieObj = {
-  //     actualMovieId: {
-  //       movieName: movieName,
-  //       users:
-  //     }
-  //   }
-  //   fetchRoomsDatabase(roomKey)
-  //     .child('/movies/')
-  //     .push(actualMovieId)
-  //     .then(() => console.log('Sent to room!'));
-  //   // first check if movie is already in
-  // }
+  if (roomID && roomKey && disliked) {
+    const movieObj = {
+      movieName: movieName,
+      users: userName,
+    };
+    fetchRoomsDatabase(roomKey)
+      .child('/movies/' + actualMovieId)
+      .set(movieObj)
+      .then(() => console.log('Sent to room!'));
+    // first check if movie is already in
+  }
 };

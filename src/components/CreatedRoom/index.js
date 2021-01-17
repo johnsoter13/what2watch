@@ -12,6 +12,7 @@ import { updateRoomIDRoomKeyAction } from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
+import * as baseStyles from '../../styles/styles';
 
 const CreatedRoom = ({navigation}) => {
   const [text, setText] = useState('');
@@ -66,21 +67,27 @@ const CreatedRoom = ({navigation}) => {
   };
 
   return (
-    <View>
-      <Text>Room ID:</Text>
-      <TextInput value={text} onChangeText={(text) => setText(text)} />
-      <Text>Name:</Text>
-      <TextInput
-        value={userName}
-        onChangeText={(userName) => setUserName(userName)}
-      />
-      <View>
-        <TouchableOpacity onPress={() => handleEnterRoom()}>
-          <Text>Enter Room</Text>
-        </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.roomContainer}>
+        <Text style={styles.roomText}>Room ID:</Text>
+        <TextInput style={styles.roomInputText} value={text} onChangeText={(text) => setText(text)} />
+        <View style={styles.generateContainer}>
+          <Text>Want to create a room? </Text>
+          <Text style={styles.generateRoomText}onPress={handleGenerateRoom}>Generate Room ID</Text>
+        </View>
+      </View>
+      <View style={styles.roomContainer}>
+        <Text style={styles.roomText}>Your Name:</Text>
+        <TextInput
+          style={styles.roomInputText}
+          value={userName}
+          onChangeText={(userName) => setUserName(userName)}
+        />
 
-        <TouchableOpacity onPress={() => handleGenerateRoom()}>
-          <Text>Generate Room ID</Text>
+      </View>
+      <View style={styles.enterButtonContainer}>
+        <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterRoom()}>
+          <Text style={styles.enterButtonText}>Enter Room</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.error}>{error}</Text>
@@ -89,9 +96,56 @@ const CreatedRoom = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingVertical: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
   error: {
     color: 'red',
   },
+  roomContainer: {
+    width: '100%',
+    marginBottom: 50,
+  },
+  roomText: {
+    alignSelf: 'center',
+    marginRight: 3,
+    fontSize: 28,
+  },
+  roomInputText: {
+    flex: 1,
+    minHeight: 70,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: baseStyles.BUTTON_COLOR,
+    padding: 10,
+    textAlign: 'center',
+    fontSize: 28
+  },
+  generateRoomText: {
+    color: baseStyles.BUTTON_COLOR,
+  },
+  generateContainer: {
+    flexDirection: 'row',
+    marginTop: 10
+  },
+  enterButton: {
+    height: 35,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+    backgroundColor: baseStyles.BUTTON_COLOR,
+  },
+  enterButtonContainer: {
+    width: '100%'
+  },
+  enterButtonText: {
+    color: baseStyles.BUTTON_TEXT_COLOR
+  }
 });
 
 export default CreatedRoom;
