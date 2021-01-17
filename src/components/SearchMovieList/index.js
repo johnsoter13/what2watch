@@ -20,7 +20,9 @@ const SearchMovieList = ({ query }) => {
       ) : (
       <ScrollView style={styles.scrollView}>
         {searchMovies?.map((movie) => (
-          <MovieListItem movie={movie} />
+          <View style={styles.movieContainer}>
+            <MovieListItem movie={movie} />
+          </View>
         ))}
       </ScrollView>
       )}
@@ -34,6 +36,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 20,
     width: '100%',
+  },
+  movieContainer: {
+    marginBottom: 20,
   },
   scrollView: {
     flex: 1,

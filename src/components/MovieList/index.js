@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   swipeCardButtonContainer: {
     flexDirection: 'row',
     height: '5%',
+    marginTop: 20,
   },
 });
 

@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import * as baseStyles from '../../styles/styles';
+
 const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
   const [moreInfoToggle, setMoreInfoToggle] = useState(false);
   const handleNavigateToLink = (url) => {
@@ -34,7 +36,7 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
           />
         </TouchableOpacity>
       </View>
-      <View style={styles.movieBodyContainer}>
+      <View style={moreInfoToggle ? styles.moreInfoBodyContainer : styles.movieBodyContainer}>
         {moreInfoToggle ? (
           <View style={styles.movieRowContainer}>
             <View style={styles.infoContainer}>
@@ -43,15 +45,15 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
                   style={styles.imdbIcon}
                   source={require('../../../assets/imdb.png')}
                 />
-                <Text>Rating: {movie.movieRating}/10</Text>
+                <Text style={styles.text}>Rating: {movie.movieRating}/10</Text>
               </View>
               <View>
-                <Text>Release Date: {movie.movieReleaseDate}</Text>
-                <Text>Run Time: {movie.movieRunningTime} Minutes</Text>
+                <Text style={styles.text}>Release Date: {movie.movieReleaseDate}</Text>
+                <Text style={styles.text}>Run Time: {movie.movieRunningTime} Minutes</Text>
               </View>
             </View>
             <View>
-              <Text>{movie.moviePlot}</Text>
+              <Text style={styles.text}>{movie.moviePlot}</Text>
             </View>
             <Text style={styles.movieRowAvailable}>Available on:</Text>
             <View style={styles.movieStreamingServices}>
@@ -85,7 +87,6 @@ const styles = StyleSheet.create({
   movieContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    marginBottom: 20,
     width: '100%',
     minHeight: '600px',
     paddingTop: 5,
@@ -95,8 +96,14 @@ const styles = StyleSheet.create({
   },
   movieBodyContainer: {
     flex: 1,
+    padding: 5,
+    backgroundColor: baseStyles.BUTTON_COLOR,
+    borderRadius: 10,
+  },
+  moreInfoBodyContainer: {
+    flex: 1,
     padding: 10,
-    backgroundColor: '#888888',
+    backgroundColor: baseStyles.BUTTON_COLOR,
     borderRadius: 10,
   },
   imageContainer: {
@@ -121,6 +128,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textDecorationLine: 'underline',
     marginBottom: 5,
+    color: baseStyles.BUTTON_TEXT_COLOR,
+    marginTop: 30
   },
   movieStreamingService: {
     marginBottom: 5,
@@ -156,6 +165,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  text: {
+    color: baseStyles.BUTTON_TEXT_COLOR
+  }
 });
 
 export default MovieListItem;
