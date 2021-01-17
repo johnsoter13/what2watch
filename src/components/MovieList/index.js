@@ -39,10 +39,10 @@ const MovieList = ({ route }) => {
         <View style={styles.swipeCardButtonContainer}>
           <TouchableOpacity
             style={styles.moreInfoButton}
-            onPress={() => {              
-              dispatch(saveMovieAction(genre, true, movie));
-              dispatch(movieListIndexAction(genre));}
-            }
+            onPress={() => {
+              dispatch(saveMovieAction(genre, false, movie));
+              dispatch(movieListIndexAction(genre));
+            }}
           >
             <Text style={styles.nextMovieButtonText}>No</Text>
           </TouchableOpacity>
@@ -50,7 +50,8 @@ const MovieList = ({ route }) => {
           <TouchableOpacity
             style={styles.nextMovieButton}
             onPress={() => {
-
+              dispatch(saveMovieAction(genre, true, movie));
+              dispatch(movieListIndexAction(genre));
             }}
           >
             <Text style={styles.nextMovieButtonText}>Yes</Text>
@@ -64,7 +65,7 @@ const MovieList = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   loading: {
     flex: 1,
