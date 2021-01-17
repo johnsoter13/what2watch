@@ -21,6 +21,7 @@ const CreatedRoom = ({ navigation }) => {
   const dispatch = useDispatch();
   const [error, setError] = useState('');
   const [userName, setUserName] = useState('');
+  let inCreateRoom = true;
 
   const handleEnterRoom = () => {
     if (!text) {
@@ -36,8 +37,11 @@ const CreatedRoom = ({ navigation }) => {
           if (snapshot.val()) {
             const roomID = text;
             const roomKey = Object.keys(snapshot.val())[0];
-            console.log('about to navigate to streaming services');
-            navigation.navigate(STREAMING_SERVICES_SCREEN);
+            if (inCreateRoom) {
+              console.log('about to navigate to streaming services');
+              navigation.navigate(STREAMING_SERVICES_SCREEN);
+              inCreateRoom = false;
+            }
             dispatch(updateRoomIDRoomKeyAction(roomID, roomKey, userName));
           } else {
             console.log('NO ROOM WITH THAT ID');
@@ -71,10 +75,16 @@ const CreatedRoom = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.roomContainer}>
         <Text style={styles.roomText}>Room ID:</Text>
-        <TextInput style={styles.roomInputText} value={text} onChangeText={(text) => setText(text)} />
+        <TextInput
+          style={styles.roomInputText}
+          value={text}
+          onChangeText={(text) => setText(text)}
+        />
         <View style={styles.generateContainer}>
           <Text>Want to create a room? </Text>
-          <Text style={styles.generateRoomText}onPress={handleGenerateRoom}>Generate Room ID</Text>
+          <Text style={styles.generateRoomText} onPress={handleGenerateRoom}>
+            Generate Room ID
+          </Text>
         </View>
       </View>
       <View style={styles.roomContainer}>
@@ -84,10 +94,12 @@ const CreatedRoom = ({ navigation }) => {
           value={userName}
           onChangeText={(userName) => setUserName(userName)}
         />
-
       </View>
       <View style={styles.enterButtonContainer}>
-        <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterRoom()}>
+        <TouchableOpacity
+          style={styles.enterButton}
+          onPress={() => handleEnterRoom()}
+        >
           <Text style={styles.enterButtonText}>Enter Room</Text>
         </TouchableOpacity>
       </View>
@@ -125,14 +137,14 @@ const styles = StyleSheet.create({
     borderColor: baseStyles.BUTTON_COLOR,
     padding: 10,
     textAlign: 'center',
-    fontSize: 28
+    fontSize: 28,
   },
   generateRoomText: {
     color: baseStyles.BUTTON_COLOR,
   },
   generateContainer: {
     flexDirection: 'row',
-    marginTop: 10
+    marginTop: 10,
   },
   enterButton: {
     height: 35,
@@ -142,11 +154,11 @@ const styles = StyleSheet.create({
     backgroundColor: baseStyles.BUTTON_COLOR,
   },
   enterButtonContainer: {
-    width: '100%'
+    width: '100%',
   },
   enterButtonText: {
-    color: baseStyles.BUTTON_TEXT_COLOR
-  }
+    color: baseStyles.BUTTON_TEXT_COLOR,
+  },
 });
 
 export default CreatedRoom;
