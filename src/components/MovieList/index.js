@@ -3,7 +3,10 @@ import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 import SwipeMovieCard from '../SwipeMovieCard';
-import { movieListIndexAction } from '../../state/movies/actions';
+import {
+  movieListIndexAction,
+  saveMovieAction,
+} from '../../state/movies/actions';
 import * as baseStyles from '../../styles/styles';
 import Loading from '../Loading';
 import { useMovie } from '../../hooks/useMovie';
@@ -46,7 +49,8 @@ const MovieList = ({ route }) => {
             style={styles.nextMovieButton}
             onPress={() => {
               setMoreInfoToggle(false);
-              dispatch(movieListIndexAction(genre, true));
+              dispatch(movieListIndexAction(genre));
+              dispatch(saveMovieAction(genre, true, movie));
             }}
           >
             <Text style={styles.nextMovieButtonText}>Next Movie</Text>

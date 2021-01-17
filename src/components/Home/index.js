@@ -12,7 +12,7 @@ import {
   SEARCH_MOVIE_SCREEN,
   LOGIN,
   DISLIKED_LIST,
-  CREATED_ROOM
+  CREATED_ROOM,
 } from '../../constants/ROUTES';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { logUserOutAction } from '../../state/auth/actions';
@@ -27,7 +27,7 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
-    dispatch(fetchMeetupsAction());
+    // dispatch(fetchMeetupsAction());
   }, []);
 
   return (

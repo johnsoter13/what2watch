@@ -6,6 +6,7 @@ const initialState = {
   room: {
     roomID: '',
     roomKey: '',
+    userName: '',
   },
 };
 
@@ -16,10 +17,12 @@ export default produce((draft, action) => {
         case SUCCESS:
           draft.room.roomID = action.payload.roomID;
           draft.room.roomKey = action.payload.roomKey;
+          draft.room.userName = action.payload.userName;
           break;
         case FAILURE:
           draft.room.roomID = action.payload.roomID;
           draft.room.roomKey = action.payload.roomKey;
+          draft.room.userName = action.payload.userName;
       }
     default:
   }
