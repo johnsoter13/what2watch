@@ -12,6 +12,7 @@ import Search from './src/components/Search';
 import Login from './src/components/Login';
 import DislikedList from './src/components/DislikedList';
 import CreatedRoom from './src/components/CreatedRoom';
+import ExperienceSelect from './src/components/ExperienceSelect';
 import {
   HOME_SCREEN,
   STREAMING_SERVICES_SCREEN,
@@ -20,7 +21,8 @@ import {
   SEARCH_MOVIE_SCREEN,
   LOGIN,
   DISLIKED_LIST,
-  CREATED_ROOM
+  CREATED_ROOM,
+  EXPERIENCE_SELECT
 } from './src/constants/ROUTES';
 
 const store = createStore();
@@ -70,6 +72,11 @@ export default function App() {
             name={CREATED_ROOM}
             component={CreatedRoom}
             options={{ title: 'Your Room' }}
+          />
+          <Stack.Screen
+            name={EXPERIENCE_SELECT}
+            component={ExperienceSelect}
+            options={{ title: 'Select Your Experience' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

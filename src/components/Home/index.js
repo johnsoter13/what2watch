@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground } from 'react-native';
 
 import * as baseStyles from '../../styles/styles';
 import {
@@ -12,7 +12,8 @@ import {
   SEARCH_MOVIE_SCREEN,
   LOGIN,
   DISLIKED_LIST,
-  CREATED_ROOM
+  CREATED_ROOM,
+  EXPERIENCE_SELECT
 } from '../../constants/ROUTES';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { logUserOutAction } from '../../state/auth/actions';
@@ -27,7 +28,6 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(fetchMovieGenresAction());
-    dispatch(fetchMeetupsAction());
   }, []);
 
   return (
@@ -47,21 +47,29 @@ const Home = ({ navigation }) => {
         <View style={styles.actionsButtonContainer}>
           <TouchableOpacity
             style={styles.actionsButton}
-            onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
+            onPress={() => navigation.navigate(EXPERIENCE_SELECT)}
           >
-            <Text style={styles.actionsText}>Match with a Movie!</Text>
+            <View style={styles.imageContainer}>
+              <ImageBackground style={styles.movieImage} source={require('../../../assets/find-movie.jpg')} >
+                <View>
+                  <Text style={styles.movieImageText}>
+                    Find a Movie!
+                  </Text>
+                </View>
+              </ImageBackground>
+            </View>
           </TouchableOpacity>
         </View>
-        <View>
+        {/* <View>
           <TouchableOpacity
             style={styles.actionsButton}
             onPress={() => navigation.navigate(CREATED_ROOM)}
           >
             <Text style={styles.actionsText}>Create a Room</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View>
-          <View style={styles.actionButton}>
+          {/* <View style={styles.actionButton}>
             <Button
               onPress={() => {
                 isUserLoggedIn ? logOut() : navigation.navigate(LOGIN);
@@ -74,7 +82,7 @@ const Home = ({ navigation }) => {
               onPress={() => navigation.navigate(DISLIKED_LIST)}
               title='Disliked List'
             />
-          </View>
+          </View> */}
         </View>
       </View>
     </View>
@@ -84,26 +92,32 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#888888',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingVertical: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
+
   },
   searchContainer: {
     width: '100%',
     height: '5%',
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   actionsContainer: {
     width: '100%',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+
   },
   actionsButtonContainer: {
     width: '100%',
-    height: '50%',
+    height: '75%',
+    borderStyle: 'solid',
+    borderWidth: 5,
+    borderColor: baseStyles.BUTTON_COLOR
   },
   actionsButton: {
     height: '100%',
@@ -111,7 +125,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: baseStyles.BUTTON_COLOR,
-    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
   },
   actionsText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
@@ -128,6 +141,20 @@ const styles = StyleSheet.create({
   searchButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
   },
+  imageContainer: {
+    width: '100%',
+    height: '100%',
+  },
+  movieImage: {
+    width: '100%',
+    height: '100%',
+
+  },
+  movieImageText: {
+    fontSize: 28,
+    alignSelf: 'center',
+    marginTop: 100
+  }
 });
 
 export default Home;

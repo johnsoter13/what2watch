@@ -1,9 +1,9 @@
 
 import React, {useState} from 'react'
-import { StyleSheet, View, Button, TouchableOpacity, Text, TextInput } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
 
 
-const CreatedRoom = () => {
+const CreatedRoom = ({navigation}) => {
   const [text, setText] = useState('');
 
   const handleEnterRoom = () => {
