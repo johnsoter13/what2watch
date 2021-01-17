@@ -24,6 +24,7 @@ import {
   selectRoomID,
   selectRoomKey,
   selectUserName,
+  selectRoomUserID,
 } from '../rooms/selectors';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
@@ -151,7 +152,7 @@ export const movieListIndexAction = (genre) => (dispatch, getState) => {
   });
 };
 
-export const saveMovieAction = (genre, disliked, movie) => (
+export const saveMovieAction = (genre, liked, movie) => (
   dispatch,
   getState
 ) => {
@@ -165,7 +166,7 @@ export const saveMovieAction = (genre, disliked, movie) => (
 
   // console.log(movie);
 
-  if (disliked && isUserLoggedIn) {
+  if (!liked && isUserLoggedIn) {
     const uid = selectUserId(getState());
 
     // this is overriding the database
@@ -184,16 +185,17 @@ export const saveMovieAction = (genre, disliked, movie) => (
   const roomID = selectRoomID(getState());
   const roomKey = selectRoomKey(getState());
   const userName = selectUserName(getState());
+  const roomUserID = selectRoomUserID(getState());
   const movieName = movie.movieTitle;
 
-  if (roomID && roomKey && disliked) {
+  if (roomID && roomKey) {
     const movieObj = {
       movieName: movieName,
-      users: [userName],
+      users: [{ [roomUserID]: { [userName]: liked } }],
     };
 
     let users = [];
-    let inDB = false;
+    // let inDB = false;
 
     const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
 
@@ -201,9 +203,12 @@ export const saveMovieAction = (genre, disliked, movie) => (
       'value',
       function (snapshot) {
         if (snapshot.val()) {
-          inDB = true;
+          // inDB = true;
           users = snapshot.val().users;
-          users.push(userName);
+          if (!Array.isArray(users)) {
+            users = [users];
+          }
+          users.push({ [roomUserID]: { [userName]: liked } });
           refMovieId.update({
             users: users,
           });

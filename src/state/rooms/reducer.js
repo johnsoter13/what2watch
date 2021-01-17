@@ -7,6 +7,7 @@ const initialState = {
     roomID: '',
     roomKey: '',
     userName: '',
+    roomUserID: '',
     roomSize: 0,
   },
   currentRoomSize: 0,
@@ -21,11 +22,15 @@ export default produce((draft, action) => {
           draft.room.roomID = action.payload.roomID;
           draft.room.roomKey = action.payload.roomKey;
           draft.room.userName = action.payload.userName;
+          draft.room.roomUserID = action.payload.roomUserID;
+          draft.room.roomSize = action.payload.roomSize;
           break;
         case FAILURE:
           draft.room.roomID = action.payload.roomID;
           draft.room.roomKey = action.payload.roomKey;
           draft.room.userName = action.payload.userName;
+          draft.room.roomUserID = action.payload.roomUserID;
+          draft.room.roomSize = action.payload.roomSize;
       }
     case MOVIE_SWIPE:
       switch (action.status) {

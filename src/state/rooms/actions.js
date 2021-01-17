@@ -6,13 +6,17 @@ import { SET_ROOM_STATE, MOVIE_SWIPE } from './constants';
 import { selectCurrentRoomSize } from './selectors';
 import {openModalAction} from '../modal/actions';
 
-export const updateRoomIDRoomKeyAction = (roomID, roomKey, userName) => (
-  dispatch
-) => {
+export const updateRoomAction = (
+  roomID,
+  roomKey,
+  userName,
+  roomUserID,
+  roomSize
+) => (dispatch) => {
   dispatch({
     type: SET_ROOM_STATE,
     status: SUCCESS,
-    payload: { roomID, roomKey, userName },
+    payload: { roomID, roomKey, userName, roomUserID, roomSize },
   });
 };
 

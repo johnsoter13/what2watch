@@ -8,11 +8,16 @@ import {
   Text,
   TextInput,
 } from 'react-native';
-import { updateRoomIDRoomKeyAction } from '../../state/rooms/actions';
+import { updateRoomAction } from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
 import * as baseStyles from '../../styles/styles';
+import {
+  selectRoomUserID,
+  selectUserName,
+  selectRoomID,
+} from '../../state/rooms/selectors';
 
 const CreatedRoom = ({ navigation }) => {
   const [text, setText] = useState('');
@@ -22,13 +27,17 @@ const CreatedRoom = ({ navigation }) => {
   const [roomError, setRoomError] = useState('');
   const [userNameError, setUserNameError] = useState('');
   const [userName, setUserName] = useState('');
+  const stateUserName = useSelector(selectUserName);
+  const stateRoomID = useSelector(selectRoomID);
 
   const handleEnterRoom = () => {
     if (!userName) {
       setUserNameError('Please enter a name to continue');
-    } if (!text) {
+    }
+    if (!text) {
       setRoomError('Please enter a Room ID');
-    } if (userName && text) {
+    }
+    if (userName && text) {
       setUserNameError('');
       setRoomError('');
       // check if RoomID exists
@@ -39,9 +48,32 @@ const CreatedRoom = ({ navigation }) => {
           if (snapshot.val()) {
             const roomID = text;
             const roomKey = Object.keys(snapshot.val())[0];
-            console.log('about to navigate to streaming services');
-            navigation.navigate(STREAMING_SERVICES_SCREEN);
-            dispatch(updateRoomIDRoomKeyAction(roomID, roomKey, userName));
+            let roomSize = 1;
+
+            db.ref('rooms/' + roomKey + '/roomSize').transaction(function (
+              current_size
+            ) {
+              roomSize = (current_size || 0) + 1;
+              const randomNumber = Math.floor(Math.random() * 1000);
+              const roomUserID = hashids.encode(randomNumber);
+              console.log(roomUserID);
+
+              // only update room state if name or roomID is changed
+              if (stateUserName !== userName || stateRoomID !== roomID) {
+                dispatch(
+                  updateRoomAction(
+                    roomID,
+                    roomKey,
+                    userName,
+                    roomUserID,
+                    roomSize
+                  )
+                );
+              }
+              // console.log('about to navigate to streaming services');
+              navigation.navigate(STREAMING_SERVICES_SCREEN);
+              return roomSize;
+            });
           } else {
             console.log('NO ROOM WITH THAT ID');
             setRoomError('No room was found by that ID');
@@ -60,7 +92,7 @@ const CreatedRoom = ({ navigation }) => {
 
     // pushing roomID to database
     // roomKey is uid of the room
-    const newRoomRef = roomRef.push({ roomID: roomID });
+    const newRoomRef = roomRef.push({ roomID: roomID, roomSize: 0 });
     const roomKey = newRoomRef.key;
 
     console.log('Key in the database: ' + roomKey);
@@ -74,7 +106,11 @@ const CreatedRoom = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.roomContainer}>
         <Text style={styles.roomText}>Room ID:</Text>
-        <TextInput style={styles.roomInputText} value={text} onChangeText={(text) => setText(text)} />
+        <TextInput
+          style={styles.roomInputText}
+          value={text}
+          onChangeText={(text) => setText(text)}
+        />
         <Text style={styles.error}>{roomError}</Text>
         <View style={styles.generateContainer}>
           <Text>Want to create a room? </Text>
