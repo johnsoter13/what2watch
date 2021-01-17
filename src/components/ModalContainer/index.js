@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 
 import {selectModalContent} from '../../state/modal/selectors';
 
-const ModalContainer = () => {
+const ModalContainer = ({baseModalStyles}) => {
   const modalContent = useSelector(selectModalContent);
 
   if (!modalContent) {

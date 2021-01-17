@@ -25,7 +25,6 @@ import {
   selectRoomKey,
   selectUserName,
 } from '../rooms/selectors';
-import Firebase, { db } from '../../../config/Firebase';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({

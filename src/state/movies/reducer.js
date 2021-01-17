@@ -101,6 +101,7 @@ export default produce((draft, action) => {
           } = action.payload;
           if (movieStreamServices) {
             draft.movieStreamingServices[movieId] = {
+              movieId,
               movieTitle,
               moviePicture,
               streamingServices: createMovieStreamingServiceObj(

@@ -13,7 +13,7 @@ export const MODAL_STYLES = {
     { translateX: '-50%'},
     { translateY: '-50%'},
   ],
-  width: '80%',
-  height: '80%',
+  width: '90%',
+  height: '90%',
   backgroundColor: '#fff'
 }

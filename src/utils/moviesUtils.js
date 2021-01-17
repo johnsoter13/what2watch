@@ -16,3 +16,7 @@ export const checkIfMovieIsAvailableToUser = (userStreamingServices, movie) => {
 
   return [];
 };
+
+// export const checkForPotentialMatch = (roomSize, numberOfMatches) => {
+  
+// }

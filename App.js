@@ -5,10 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   StyleSheet,
   View,
-  Button,
-  TouchableOpacity,
-  Text,
-  TextInput,
 } from 'react-native';
 
 import createStore from './src/state/store';

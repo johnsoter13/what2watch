@@ -1,5 +1,10 @@
+import React from "react";
+
+import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import { FAILURE, SUCCESS } from '../constants';
-import { SET_ROOM_STATE } from './constants';
+import { SET_ROOM_STATE, MOVIE_SWIPE } from './constants';
+import { selectCurrentRoomSize } from './selectors';
+import {openModalAction} from '../modal/actions';
 
 export const updateRoomIDRoomKeyAction = (roomID, roomKey, userName) => (
   dispatch
@@ -9,4 +14,24 @@ export const updateRoomIDRoomKeyAction = (roomID, roomKey, userName) => (
     status: SUCCESS,
     payload: { roomID, roomKey, userName },
   });
+};
+
+export const movieMatchAction = (movieId, rightSwipe) => (
+  dispatch, getState
+) => {
+  const currentRoomSize = selectCurrentRoomSize(getState());
+
+  if (currentRoomSize === 1) {
+    if (rightSwipe) {
+      dispatch(openModalAction(
+        <MovieMatchModal movieId={movieId}/>
+      ));
+    }
+  } else {
+    dispatch({
+      type: MOVIE_SWIPE,
+      status: SUCCESS,
+      payload: { movieId, rightSwipe },
+    });
+  }
 };

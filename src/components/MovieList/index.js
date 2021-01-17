@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 import {
@@ -10,6 +10,7 @@ import * as baseStyles from '../../styles/styles';
 import Loading from '../Loading';
 import { useMovie } from '../../hooks/useMovie';
 import MovieListItem from '../MovieListItem';
+import {movieMatchAction} from '../../state/rooms/actions';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
@@ -41,8 +42,9 @@ const MovieList = ({ route }) => {
             style={styles.moreInfoButton}
             onPress={() => {              
               dispatch(saveMovieAction(genre, true, movie));
-              dispatch(movieListIndexAction(genre));}
-            }
+              dispatch(movieListIndexAction(genre));
+              dispatch(movieMatchAction(movie.movieId, false));
+            }}
           >
             <Text style={styles.nextMovieButtonText}>No</Text>
           </TouchableOpacity>
@@ -50,7 +52,8 @@ const MovieList = ({ route }) => {
           <TouchableOpacity
             style={styles.nextMovieButton}
             onPress={() => {
-
+              dispatch(movieListIndexAction(genre));
+              dispatch(movieMatchAction(movie.movieId, true))
             }}
           >
             <Text style={styles.nextMovieButtonText}>Yes</Text>
