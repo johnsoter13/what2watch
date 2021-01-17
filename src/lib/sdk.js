@@ -44,3 +44,5 @@ export const loginUserWithEmailandPassword = (email, password) =>
   Firebase.auth().signInWithEmailAndPassword(email, password);
 
 export const fetchUserDatabase = (uid) => db.ref('/users/' + uid);
+
+export const fetchRoomsDatabase = (rid) => db.ref('/rooms/' + rid);

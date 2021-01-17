@@ -11,6 +11,7 @@ import {
   fetchMovieStreamingServices,
   fetchUserDatabase,
   fetchMovieDetails,
+  fetchRoomsDatabase,
 } from '../../lib/sdk';
 
 import {
@@ -19,6 +20,11 @@ import {
   selectMoviesByGenreExists,
 } from './selectors';
 import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors';
+import {
+  selectRoomID,
+  selectRoomKey,
+  selectUserName,
+} from '../rooms/selectors';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -137,25 +143,31 @@ export const fetchMovieStreamingServicesAction = (genre) => async (
   }
 };
 
-export const movieListIndexAction = (genre, disliked) => (
-  dispatch,
-  getState
-) => {
+export const movieListIndexAction = (genre) => (dispatch, getState) => {
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
     payload: { genre },
   });
+};
+
+export const saveMovieAction = (genre, disliked, movie) => (
+  dispatch,
+  getState
+) => {
   const isUserLoggedIn = selectUserIsLoggedIn(getState());
   const movieIndex = selectMovieIndex(getState(), genre);
   const movieId = selectMovieIdByIndex(getState(), genre, movieIndex);
+  const actualMovieId = movieId.slice(
+    movieId.indexOf('tt'),
+    movieId.lastIndexOf('/')
+  );
+
+  console.log(movie);
 
   if (disliked && isUserLoggedIn) {
     const uid = selectUserId(getState());
-    const actualMovieId = movieId.slice(
-      movieId.indexOf('tt'),
-      movieId.lastIndexOf('/')
-    );
+
     // this is overriding the database
     fetchUserDatabase(uid)
       .child('movies/disliked')
@@ -168,4 +180,22 @@ export const movieListIndexAction = (genre, disliked) => (
       // }
       .then(() => console.log('Movie disliked!'));
   }
+
+  // const roomID = selectRoomID(getState());
+  // const roomKey = selectRoomKey(getState());
+  // const userName = selectUserName(getState());
+
+  // if (roomID && roomKey && disliked) {
+  //   let movieObj = {
+  //     actualMovieId: {
+  //       movieName: movieName,
+  //       users:
+  //     }
+  //   }
+  //   fetchRoomsDatabase(roomKey)
+  //     .child('/movies/')
+  //     .push(actualMovieId)
+  //     .then(() => console.log('Sent to room!'));
+  //   // first check if movie is already in
+  // }
 };

@@ -6,12 +6,14 @@ import auth from './auth/reducer';
 import movies from './movies/reducer';
 import streaming from './streaming/reducer';
 import search from './search/reducer';
+import rooms from './rooms/reducer';
 
 const reducer = combineReducers({
   auth,
   movies,
   streaming,
   search,
+  rooms,
 });
 
 export default (initialState) =>
