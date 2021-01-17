@@ -102,7 +102,7 @@ export default produce((draft, action) => {
           if (movieStreamServices) {
             draft.movieStreamingServices[movieId] = {
               movieTitle,
-              picture: moviePicture,
+              moviePicture,
               streamingServices: createMovieStreamingServiceObj(
                 movieStreamServices
               ),

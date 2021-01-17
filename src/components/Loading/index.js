@@ -17,5 +17,6 @@ export default React.memo(Loading, areEqual);
 const styles = StyleSheet.create({
   loading: {
     flex: 1,
+    minHeight: 600
   },
 });

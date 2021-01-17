@@ -7,6 +7,7 @@ import movies from './movies/reducer';
 import streaming from './streaming/reducer';
 import search from './search/reducer';
 import rooms from './rooms/reducer';
+import modal from './modal/reducer';
 
 const reducer = combineReducers({
   auth,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   streaming,
   search,
   rooms,
+  modal,
 });
 
 export default (initialState) =>

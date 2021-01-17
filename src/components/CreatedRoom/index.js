@@ -14,7 +14,7 @@ import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
 import * as baseStyles from '../../styles/styles';
 
-const CreatedRoom = ({navigation}) => {
+const CreatedRoom = ({ navigation }) => {
   const [text, setText] = useState('');
   const hashids = new Hashids();
   const roomRef = db.ref('rooms');
@@ -22,6 +22,7 @@ const CreatedRoom = ({navigation}) => {
   const [roomError, setRoomError] = useState('');
   const [userNameError, setUserNameError] = useState('');
   const [userName, setUserName] = useState('');
+  let inCreateRoom = true;
 
   const handleEnterRoom = () => {
     if (!userName) {
@@ -39,8 +40,12 @@ const CreatedRoom = ({navigation}) => {
           if (snapshot.val()) {
             const roomID = text;
             const roomKey = Object.keys(snapshot.val())[0];
+            if (inCreateRoom) {
+              console.log('about to navigate to streaming services');
+              navigation.navigate(STREAMING_SERVICES_SCREEN);
+              inCreateRoom = false;
+            }
             dispatch(updateRoomIDRoomKeyAction(roomID, roomKey, userName));
-            navigation.navigate(STREAMING_SERVICES_SCREEN);
           } else {
             console.log('NO ROOM WITH THAT ID');
             setRoomError('No room was found by that ID');
@@ -77,7 +82,9 @@ const CreatedRoom = ({navigation}) => {
         <Text style={styles.error}>{roomError}</Text>
         <View style={styles.generateContainer}>
           <Text>Want to create a room? </Text>
-          <Text style={styles.generateRoomText}onPress={handleGenerateRoom}>Generate Room ID</Text>
+          <Text style={styles.generateRoomText} onPress={handleGenerateRoom}>
+            Generate Room ID
+          </Text>
         </View>
       </View>
       <View style={styles.roomContainer}>
@@ -90,7 +97,10 @@ const CreatedRoom = ({navigation}) => {
         <Text style={styles.error}>{userNameError}</Text>
       </View>
       <View style={styles.enterButtonContainer}>
-        <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterRoom()}>
+        <TouchableOpacity
+          style={styles.enterButton}
+          onPress={() => handleEnterRoom()}
+        >
           <Text style={styles.enterButtonText}>Enter Room</Text>
         </TouchableOpacity>
       </View>
@@ -127,14 +137,14 @@ const styles = StyleSheet.create({
     borderColor: baseStyles.BUTTON_COLOR,
     padding: 10,
     textAlign: 'center',
-    fontSize: 28
+    fontSize: 28,
   },
   generateRoomText: {
     color: baseStyles.BUTTON_COLOR,
   },
   generateContainer: {
     flexDirection: 'row',
-    marginTop: 10
+    marginTop: 10,
   },
   enterButton: {
     height: 35,
@@ -144,11 +154,11 @@ const styles = StyleSheet.create({
     backgroundColor: baseStyles.BUTTON_COLOR,
   },
   enterButtonContainer: {
-    width: '100%'
+    width: '100%',
   },
   enterButtonText: {
-    color: baseStyles.BUTTON_TEXT_COLOR
-  }
+    color: baseStyles.BUTTON_TEXT_COLOR,
+  },
 });
 
 export default CreatedRoom;

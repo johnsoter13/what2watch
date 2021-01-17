@@ -1,22 +1,29 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 
-import { selectSearchResults } from '../../state/search/selectors';
+import { selectSearchResults, selectSearchStatus } from '../../state/search/selectors';
 import MovieListItem from '../MovieListItem';
+import { PENDING } from '../../state/constants';
 
 const SearchMovieList = ({ query }) => {
   const searchMovies = useSelector((state) =>
     selectSearchResults(state, query)
   );
 
+  const moviesFromSearchLoadingStatus = useSelector(selectSearchStatus)
+
   return (
     <View style={styles.container}>
+      {moviesFromSearchLoadingStatus === PENDING ? (
+        <ActivityIndicator size='large' />
+      ) : (
       <ScrollView style={styles.scrollView}>
         {searchMovies?.map((movie) => (
           <MovieListItem movie={movie} />
         ))}
       </ScrollView>
+      )}
     </View>
   );
 };

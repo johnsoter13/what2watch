@@ -25,6 +25,7 @@ import {
   selectRoomKey,
   selectUserName,
 } from '../rooms/selectors';
+import Firebase, { db } from '../../../config/Firebase';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -184,14 +185,18 @@ export const saveMovieAction = (genre, disliked, movie) => (
   const roomID = selectRoomID(getState());
   const roomKey = selectRoomKey(getState());
   const userName = selectUserName(getState());
+  const movieName = movie.movieTitle;
 
   if (roomID && roomKey && disliked) {
     const movieObj = {
       movieName: movieName,
       users: userName,
     };
-    fetchRoomsDatabase(roomKey)
-      .child('/movies/' + actualMovieId)
+    // fetchRoomsDatabase(roomKey)
+    //   .child('/movies/' + actualMovieId)
+    //   .set(movieObj)
+    //   .then(() => console.log('Sent to room!'));
+    db.ref('rooms/' + roomKey + '/' + '/movies/' + actualMovieId)
       .set(movieObj)
       .then(() => console.log('Sent to room!'));
     // first check if movie is already in

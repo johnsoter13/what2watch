@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
-import SwipeMovieCard from '../SwipeMovieCard';
 import {
   movieListIndexAction,
   saveMovieAction,
@@ -10,11 +9,11 @@ import {
 import * as baseStyles from '../../styles/styles';
 import Loading from '../Loading';
 import { useMovie } from '../../hooks/useMovie';
+import MovieListItem from '../MovieListItem';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
   const { genre } = route.params;
-  const [moreInfoToggle, setMoreInfoToggle] = useState(false);
 
   const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
 
@@ -26,8 +25,8 @@ const MovieList = ({ route }) => {
             <Loading loadingComplete={movieLoadingComplete} />
             {movieLoadingComplete && (
               <>
-                <SwipeMovieCard
-                  moreInfoToggle={moreInfoToggle}
+                <MovieListItem
+                  swipeCard
                   sharedServices={sharedServices}
                   movie={movie}
                 />
@@ -40,20 +39,21 @@ const MovieList = ({ route }) => {
         <View style={styles.swipeCardButtonContainer}>
           <TouchableOpacity
             style={styles.moreInfoButton}
-            onPress={() => setMoreInfoToggle(!moreInfoToggle)}
+            onPress={() => {              
+              dispatch(saveMovieAction(genre, true, movie));
+              dispatch(movieListIndexAction(genre));}
+            }
           >
-            <Text style={styles.nextMovieButtonText}>More Info</Text>
+            <Text style={styles.nextMovieButtonText}>No</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.nextMovieButton}
             onPress={() => {
-              setMoreInfoToggle(false);
-              dispatch(movieListIndexAction(genre));
-              dispatch(saveMovieAction(genre, true, movie));
+
             }}
           >
-            <Text style={styles.nextMovieButtonText}>Next Movie</Text>
+            <Text style={styles.nextMovieButtonText}>Yes</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -64,10 +64,7 @@ const MovieList = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
-    justifyContent: 'center',
-  },
-  swipeContainer: {
-    height: '80%',
+    justifyContent: 'center'
   },
   loading: {
     flex: 1,

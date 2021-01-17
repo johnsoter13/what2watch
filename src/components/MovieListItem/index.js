@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const MovieListItem = ({ movie }) => {
+const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
   const [moreInfoToggle, setMoreInfoToggle] = useState(false);
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
@@ -20,6 +20,8 @@ const MovieListItem = ({ movie }) => {
       }
     });
   };
+
+  const movieStreamingServices = swipeCard ? sharedServices : movie.movieStreamServices;
 
   return (
     <View style={styles.movieContainer}>
@@ -53,7 +55,7 @@ const MovieListItem = ({ movie }) => {
             </View>
             <Text style={styles.movieRowAvailable}>Available on:</Text>
             <View style={styles.movieStreamingServices}>
-              {movie.movieStreamServices.map((streamingService) => (
+              {movieStreamingServices.map((streamingService) => (
                 <View
                   key={streamingService}
                   style={styles.movieStreamingService}
@@ -143,7 +145,6 @@ const styles = StyleSheet.create({
   infoIcon: {
     height: 24,
     width: 24,
-    marginTop: 2,
   },
   movieStreamingService: {
     marginBottom: 5,
