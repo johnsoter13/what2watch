@@ -49,8 +49,8 @@ const MovieList = ({ route }) => {
             style={styles.nextMovieButton}
             onPress={() => {
               setMoreInfoToggle(false);
-              dispatch(movieListIndexAction(genre));
               dispatch(saveMovieAction(genre, true, movie));
+              dispatch(movieListIndexAction(genre));
             }}
           >
             <Text style={styles.nextMovieButtonText}>Next Movie</Text>

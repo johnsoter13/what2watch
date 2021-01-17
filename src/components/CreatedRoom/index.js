@@ -13,7 +13,7 @@ import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
 
-const CreatedRoom = ({navigation}) => {
+const CreatedRoom = ({ navigation }) => {
   const [text, setText] = useState('');
   const hashids = new Hashids();
   const roomRef = db.ref('rooms');
@@ -35,8 +35,9 @@ const CreatedRoom = ({navigation}) => {
           if (snapshot.val()) {
             const roomID = text;
             const roomKey = Object.keys(snapshot.val())[0];
-            dispatch(updateRoomIDRoomKeyAction(roomID, roomKey, userName));
+            console.log('about to navigate to streaming services');
             navigation.navigate(STREAMING_SERVICES_SCREEN);
+            dispatch(updateRoomIDRoomKeyAction(roomID, roomKey, userName));
           } else {
             console.log('NO ROOM WITH THAT ID');
             setError('NO ROOM OF THAT ID');
