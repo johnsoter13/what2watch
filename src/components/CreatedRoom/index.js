@@ -19,15 +19,18 @@ const CreatedRoom = ({navigation}) => {
   const hashids = new Hashids();
   const roomRef = db.ref('rooms');
   const dispatch = useDispatch();
-  const [error, setError] = useState('');
+  const [roomError, setRoomError] = useState('');
+  const [userNameError, setUserNameError] = useState('');
   const [userName, setUserName] = useState('');
 
   const handleEnterRoom = () => {
-    if (!text) {
-      setError('NO ROOM ID');
-    } else if (!userName) {
-      setError('NO NAME');
-    } else {
+    if (!userName) {
+      setUserNameError('Please enter a name to continue');
+    } if (!text) {
+      setRoomError('Please enter a Room ID');
+    } if (userName && text) {
+      setUserNameError('');
+      setRoomError('');
       // check if RoomID exists
       roomRef
         .orderByChild('roomID')
@@ -40,7 +43,7 @@ const CreatedRoom = ({navigation}) => {
             navigation.navigate(STREAMING_SERVICES_SCREEN);
           } else {
             console.log('NO ROOM WITH THAT ID');
-            setError('NO ROOM OF THAT ID');
+            setRoomError('No room was found by that ID');
           }
         });
     }
@@ -71,6 +74,7 @@ const CreatedRoom = ({navigation}) => {
       <View style={styles.roomContainer}>
         <Text style={styles.roomText}>Room ID:</Text>
         <TextInput style={styles.roomInputText} value={text} onChangeText={(text) => setText(text)} />
+        <Text style={styles.error}>{roomError}</Text>
         <View style={styles.generateContainer}>
           <Text>Want to create a room? </Text>
           <Text style={styles.generateRoomText}onPress={handleGenerateRoom}>Generate Room ID</Text>
@@ -83,14 +87,13 @@ const CreatedRoom = ({navigation}) => {
           value={userName}
           onChangeText={(userName) => setUserName(userName)}
         />
-
+        <Text style={styles.error}>{userNameError}</Text>
       </View>
       <View style={styles.enterButtonContainer}>
         <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterRoom()}>
           <Text style={styles.enterButtonText}>Enter Room</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.error}>{error}</Text>
     </View>
   );
 };
