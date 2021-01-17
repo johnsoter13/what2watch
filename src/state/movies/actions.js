@@ -164,7 +164,7 @@ export const saveMovieAction = (genre, disliked, movie) => (
     movieId.lastIndexOf('/')
   );
 
-  console.log(movie);
+  // console.log(movie);
 
   if (disliked && isUserLoggedIn) {
     const uid = selectUserId(getState());
@@ -190,15 +190,31 @@ export const saveMovieAction = (genre, disliked, movie) => (
   if (roomID && roomKey && disliked) {
     const movieObj = {
       movieName: movieName,
-      users: userName,
+      users: [userName],
     };
-    // fetchRoomsDatabase(roomKey)
-    //   .child('/movies/' + actualMovieId)
-    //   .set(movieObj)
-    //   .then(() => console.log('Sent to room!'));
-    db.ref('rooms/' + roomKey + '/' + '/movies/' + actualMovieId)
-      .set(movieObj)
-      .then(() => console.log('Sent to room!'));
-    // first check if movie is already in
+
+    let users = [];
+    let inDB = false;
+
+    const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
+
+    refMovieId.once(
+      'value',
+      function (snapshot) {
+        if (snapshot.val()) {
+          inDB = true;
+          users = snapshot.val().users;
+          users.push(userName);
+          refMovieId.update({
+            users: users,
+          });
+        } else {
+          refMovieId.set(movieObj).then(() => console.log('Sent to room!'));
+        }
+      },
+      function (errorObject) {
+        console.log('The read failed: ' + errorObject.code);
+      }
+    );
   }
 };
