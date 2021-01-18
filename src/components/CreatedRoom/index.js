@@ -8,7 +8,7 @@ import {
   Text,
   TextInput,
 } from 'react-native';
-import { updateRoomAction } from '../../state/rooms/actions';
+import { updateRoomAction, updateRoomSize } from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
@@ -54,6 +54,7 @@ const CreatedRoom = ({ navigation }) => {
               current_size
             ) {
               roomSize = (current_size || 0) + 1;
+              checkRoomSize(roomKey);
               const randomNumber = Math.floor(Math.random() * 1000);
               const roomUserID = hashids.encode(randomNumber);
               console.log(roomUserID);
@@ -61,14 +62,9 @@ const CreatedRoom = ({ navigation }) => {
               // only update room state if name or roomID is changed
               if (stateUserName !== userName || stateRoomID !== roomID) {
                 dispatch(
-                  updateRoomAction(
-                    roomID,
-                    roomKey,
-                    userName,
-                    roomUserID,
-                    roomSize
-                  )
+                  updateRoomAction(roomID, roomKey, userName, roomUserID)
                 );
+                dispatch(updateRoomSize(roomSize));
               }
               // console.log('about to navigate to streaming services');
               navigation.navigate(STREAMING_SERVICES_SCREEN);
@@ -82,6 +78,20 @@ const CreatedRoom = ({ navigation }) => {
     }
   };
 
+  // attaching listener on roomSize
+  const checkRoomSize = (roomKey) => {
+    db.ref('rooms/' + roomKey + '/roomSize').on(
+      'child_changed',
+      function (snapshot) {
+        const changedSize = snapshot.val();
+        console.log('Room Size is now: ' + changedSize);
+        dispatch(updateRoomSize(changedSize));
+      }
+    );
+  };
+
+  // attaching listener on found
+
   const handleGenerateRoom = () => {
     console.log('handle generate room clicked');
 
@@ -90,9 +100,14 @@ const CreatedRoom = ({ navigation }) => {
     const randomNumber = Math.floor(Math.random() * 1000);
     const roomID = hashids.encode(date, randomNumber);
 
+    // initializing a new room in database
     // pushing roomID to database
     // roomKey is uid of the room
-    const newRoomRef = roomRef.push({ roomID: roomID, roomSize: 0 });
+    const newRoomRef = roomRef.push({
+      roomID: roomID,
+      roomSize: 0,
+      found: false,
+    });
     const roomKey = newRoomRef.key;
 
     console.log('Key in the database: ' + roomKey);
