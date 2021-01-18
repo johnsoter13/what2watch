@@ -1,13 +1,13 @@
 import Firebase, { db } from '../../config/Firebase';
 
 export const fetchMovieGenres = () =>
-  fetch('http://localhost:3000/fetchMovieGenres', {
+  fetch('http://ec2-18-221-43-33.us-east-2.compute.amazonaws.com:3000/fetchMovieGenres', {
     method: 'GET',
   });
 
 export const fetchMovieDetails = (movieId) =>
   fetch(
-    `http://localhost:3000/fetchMovieDetails?tconst=${movieId}&currentCountry=US`,
+    `http://ec2-18-221-43-33.us-east-2.compute.amazonaws.com:3000/fetchMovieDetails?tconst=${movieId}&currentCountry=US`,
     {
       method: 'GET',
     }
@@ -15,7 +15,7 @@ export const fetchMovieDetails = (movieId) =>
 
 export const fetchMoviesByGenre = (genre) =>
   fetch(
-    `http://localhost:3000/fetchMoviesByGenre?genre=${genre}`,
+    `http://ec2-18-221-43-33.us-east-2.compute.amazonaws.com:3000/fetchMoviesByGenre?genre=${genre}`,
     {
       method: 'GET',
     }
@@ -23,7 +23,7 @@ export const fetchMoviesByGenre = (genre) =>
 
 export const fetchMovieStreamingServices = (movieId) =>
   fetch(
-    `http://localhost:3000/fetchMovieStreamingServices?country=us&source_id=${movieId}&source=imdb`,
+    `http://ec2-18-221-43-33.us-east-2.compute.amazonaws.com:3000/fetchMovieStreamingServices?country=us&source_id=${movieId}&source=imdb`,
     {
       method: 'GET',
     }
@@ -31,7 +31,7 @@ export const fetchMovieStreamingServices = (movieId) =>
 
 export const fetchMovieFromSearch = (query) =>
   fetch(
-    `http://localhost:3000/fetchMovieFromSearch?country=us&term=${query}`,
+    `http://ec2-18-221-43-33.us-east-2.compute.amazonaws.com:3000/fetchMovieFromSearch?country=us&term=${query}`,
     {
       method: 'GET',
     }

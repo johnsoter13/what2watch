@@ -3,12 +3,23 @@ import { FAILURE, SUCCESS } from '../constants';
 import { SET_ROOM_STATE, MOVIE_SWIPE } from './constants';
 
 const initialState = {
-  room: {
-    roomID: '',
-    roomKey: '',
-    userName: '',
-    roomUserID: '',
-    roomSize: 0,
+  rooms: {
+    '1234' : {
+      roomID: '',
+      roomKey: '',
+      userName: '',
+      roomUserID: '',
+      roomSize: 0,
+    },
+    '2345': {
+      swipedMovies: {
+        'movieid1': {
+          leftSwipes: 2,
+          rightSwipes: 1,
+        }
+      }
+    }
+
   },
   currentRoomSize: 0,
   soloSwipesByMovieId: {},
