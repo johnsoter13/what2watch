@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  Image,
 } from 'react-native';
 import Clipboard from 'expo-clipboard';
 
@@ -133,8 +134,15 @@ const CreatedRoom = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.roomContainer}>
-        <Text style={styles.roomText}>Room ID:</Text>
-        <Text style={styles.roomText} onPress={() => Clipboard.setString(text)}>Copy</Text>
+        <View style={styles.copyButtonContainer}>
+          <Text style={styles.roomText}>Room ID</Text>
+          <TouchableOpacity style={styles.copyButton} onPress={() => Clipboard.setString(text)}>
+            <Image
+              style={styles.copyButtonImage}
+              source={require('../../../assets/copyButton.svg')}
+            />
+          </TouchableOpacity>
+        </View>
         <TextInput
           style={styles.roomInputText}
           value={text}
@@ -149,7 +157,7 @@ const CreatedRoom = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.roomContainer}>
-        <Text style={styles.roomText}>Your Name:</Text>
+        <Text style={styles.roomText}>Your Name</Text>
         <TextInput
           style={styles.roomInputText}
           value={userName}
@@ -186,9 +194,10 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   roomText: {
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     marginRight: 3,
     fontSize: 28,
+    flex: 1,
   },
   roomInputText: {
     flex: 1,
@@ -220,6 +229,16 @@ const styles = StyleSheet.create({
   enterButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
   },
+  copyButtonImage: {
+    height: 24,
+    width: 24,
+  },
+  copyButtonContainer: {
+    flexDirection: 'row'
+  },
+  copyButton: {
+    justifyContent: 'center',
+  }
 });
 
 export default CreatedRoom;
