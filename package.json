@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/clipboard": "^1.5.1",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.7.3",
@@ -15,6 +16,7 @@
     "babel-plugin-react-native-classname-to-style": "^1.2.2",
     "babel-plugin-react-native-platform-specific-extensions": "^1.1.1",
     "expo": "~38.0.8",
+    "expo-clipboard": "^1.0.1",
     "expo-status-bar": "^1.0.2",
     "firebase": "^8.2.1",
     "hashids": "^2.2.8",

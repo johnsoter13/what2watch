@@ -8,6 +8,8 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+import Clipboard from 'expo-clipboard';
+
 import { updateRoomAction, updateRoomSize } from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
@@ -95,7 +97,7 @@ const CreatedRoom = ({ navigation }) => {
     // generating random roomID using date of the month and random number
     const date = new Date().getDate();
     const randomNumber = Math.floor(Math.random() * 1000);
-    const roomID = hashids.encode(date, randomNumber);
+    const roomID = hashids.encode(date, randomNumber).toUpperCase();
 
     // initializing a new room in database
     // pushing roomID to database
@@ -118,10 +120,11 @@ const CreatedRoom = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.roomContainer}>
         <Text style={styles.roomText}>Room ID:</Text>
+        <Text style={styles.roomText} onPress={() => Clipboard.setString(text)}>Copy</Text>
         <TextInput
           style={styles.roomInputText}
           value={text}
-          onChangeText={(text) => setText(text)}
+          onChangeText={(text) => setText(text.toUpperCase())}
         />
         <Text style={styles.error}>{roomError}</Text>
         <View style={styles.generateContainer}>
