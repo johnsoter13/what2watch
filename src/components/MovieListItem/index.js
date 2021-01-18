@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     width: '100%',
-    minHeight: '600px',
     paddingTop: 5,
     borderRadius: 5,
     borderWidth: 1,

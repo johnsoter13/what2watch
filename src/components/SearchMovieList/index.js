@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   },
   movieContainer: {
     marginBottom: 20,
+    height: 600
   },
   scrollView: {
     flex: 1,

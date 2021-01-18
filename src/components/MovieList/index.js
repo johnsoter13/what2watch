@@ -20,7 +20,6 @@ const MovieList = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.swipeContainer}>
         <View style={styles.movieContainer}>
           <View style={styles.movieBodyContainer}>
             <Loading loadingComplete={movieLoadingComplete} />
@@ -35,7 +34,6 @@ const MovieList = ({ route }) => {
             )}
           </View>
         </View>
-      </View>
       {movieLoadingComplete && (
         <View style={styles.swipeCardButtonContainer}>
           <TouchableOpacity
@@ -82,6 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#fff',
+    maxHeight: 600,
   },
   movieBodyContainer: {
     flex: 1,
