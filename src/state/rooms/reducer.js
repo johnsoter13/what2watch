@@ -1,26 +1,13 @@
 import { produce } from 'immer';
 import { FAILURE, SUCCESS } from '../constants';
-import { SET_ROOM_STATE, MOVIE_SWIPE } from './constants';
+import { SET_ROOM_STATE, MOVIE_SWIPE, SET_ROOM_SIZE } from './constants';
 
 const initialState = {
-  rooms: {
-    '1234' : {
-      roomID: '',
-      roomKey: '',
-      userName: '',
-      roomUserID: '',
-      roomSize: 0,
-    },
-    '2345': {
-      swipedMovies: {
-        'movieid1': {
-          leftSwipes: 2,
-          rightSwipes: 1,
-        }
-      }
-    }
-
-  },
+  roomID: '',
+  roomKey: '',
+  userName: '',
+  roomUserID: '',
+  roomSize: 0,
   currentRoomSize: 0,
   soloSwipesByMovieId: {},
 };
@@ -30,24 +17,23 @@ export default produce((draft, action) => {
     case SET_ROOM_STATE:
       switch (action.status) {
         case SUCCESS:
-          draft.room.roomID = action.payload.roomID;
-          draft.room.roomKey = action.payload.roomKey;
-          draft.room.userName = action.payload.userName;
-          draft.room.roomUserID = action.payload.roomUserID;
-          draft.room.roomSize = action.payload.roomSize;
+          draft.roomID = action.payload.roomID;
+          draft.roomKey = action.payload.roomKey;
+          draft.userName = action.payload.userName;
+          draft.roomUserID = action.payload.roomUserID;
           break;
-        case FAILURE:
-          draft.room.roomID = action.payload.roomID;
-          draft.room.roomKey = action.payload.roomKey;
-          draft.room.userName = action.payload.userName;
-          draft.room.roomUserID = action.payload.roomUserID;
-          draft.room.roomSize = action.payload.roomSize;
       }
     case MOVIE_SWIPE:
       switch (action.status) {
         case SUCCESS:
-          const {movieId, rightSwipe} = action.payload;
+          const { movieId, rightSwipe } = action.payload;
 
+          break;
+      }
+    case SET_ROOM_SIZE:
+      switch (action.status) {
+        case SUCCESS:
+          draft.roomSize = action.payload.roomSize;
           break;
       }
   }

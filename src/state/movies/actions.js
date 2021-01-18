@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   GENRES,
   MOVIES_BY_GENRE,
@@ -25,7 +26,11 @@ import {
   selectRoomKey,
   selectUserName,
   selectRoomUserID,
+  selectRoomSize,
 } from '../rooms/selectors';
+import { movieMatchAction } from '../rooms/actions';
+import { openModalAction } from '../modal/actions';
+import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -163,6 +168,7 @@ export const saveMovieAction = (genre, liked, movie) => (
     movieId.indexOf('tt'),
     movieId.lastIndexOf('/')
   );
+  const roomSize = selectRoomSize(getState());
 
   // console.log(movie);
 
@@ -188,6 +194,7 @@ export const saveMovieAction = (genre, liked, movie) => (
   const roomUserID = selectRoomUserID(getState());
   const movieName = movie.movieTitle;
 
+  // saving user's like/dislike of the movie if in a room
   if (roomID && roomKey) {
     const movieObj = {
       movieName: movieName,
@@ -205,10 +212,27 @@ export const saveMovieAction = (genre, liked, movie) => (
         if (snapshot.val()) {
           // inDB = true;
           users = snapshot.val().users;
+          // when there's only 1 user, it's not an array in firebase
           if (!Array.isArray(users)) {
             users = [users];
           }
           users.push({ [roomUserID]: { [userName]: liked } });
+
+          // check if everyone is in the room
+          if (roomSize !== 1 && users.length === roomSize) {
+            users.forEach((element) => {
+              let found = true;
+              if (!Object.values(Object.values(element)[0])[0]) {
+                found = false;
+              }
+              if (found) {
+                dispatch(
+                  openModalAction(<MovieMatchModal movieId={movieId} />)
+                );
+              }
+            });
+          }
+
           refMovieId.update({
             users: users,
           });

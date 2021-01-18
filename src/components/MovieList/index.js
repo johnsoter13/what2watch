@@ -10,7 +10,7 @@ import * as baseStyles from '../../styles/styles';
 import Loading from '../Loading';
 import { useMovie } from '../../hooks/useMovie';
 import MovieListItem from '../MovieListItem';
-import {movieMatchAction} from '../../state/rooms/actions';
+import { movieMatchAction } from '../../state/rooms/actions';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const MovieList = ({ route }) => {
             onPress={() => {
               dispatch(saveMovieAction(genre, true, movie));
               dispatch(movieListIndexAction(genre));
-              dispatch(movieMatchAction(movie.movieId, true))
+              dispatch(movieMatchAction(movie.movieId, true));
             }}
           >
             <Text style={styles.nextMovieButtonText}>Yes</Text>
