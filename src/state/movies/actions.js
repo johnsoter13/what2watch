@@ -226,13 +226,11 @@ export const saveMovieAction = (genre, liked, movie) => (
               if (!Object.values(Object.values(element)[0])[0]) {
                 found = false;
               }
-              if (found) {
-                dispatch(
-                  openModalAction(<MovieMatchModal movieId={movieId} />)
-                );
-                fetchRoomsDatabase(roomKey).update({ found: movieId });
-              }
             });
+          }
+          if (found) {
+            dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
+            fetchRoomsDatabase(roomKey).update({ found: movieId });
           }
 
           refMovieId.update({
