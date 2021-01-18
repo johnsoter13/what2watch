@@ -92,6 +92,7 @@ const CreatedRoom = ({ navigation }) => {
     });
   };
 
+  // attaching listener on found
   const checkFound = (roomKey) => {
     db.ref('rooms/' + roomKey + '/found').on('value', function (snapshot) {
       const movieId = snapshot.val();
