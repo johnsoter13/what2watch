@@ -18,6 +18,8 @@ import {
   selectUserName,
   selectRoomID,
 } from '../../state/rooms/selectors';
+import { openModalAction } from '../../state/modal/actions';
+import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 
 const CreatedRoom = ({ navigation }) => {
   const [text, setText] = useState('');
@@ -55,6 +57,7 @@ const CreatedRoom = ({ navigation }) => {
             ) {
               roomSize = (current_size || 0) + 1;
               checkRoomSize(roomKey);
+              checkFound(roomKey);
               const randomNumber = Math.floor(Math.random() * 1000);
               const roomUserID = hashids.encode(randomNumber);
               console.log(roomUserID);
@@ -84,6 +87,16 @@ const CreatedRoom = ({ navigation }) => {
       const changedSize = snapshot.val();
       console.log('Room Size is now: ' + changedSize);
       dispatch(updateRoomSize(changedSize));
+    });
+  };
+
+  const checkFound = (roomKey) => {
+    db.ref('rooms/' + roomKey + '/found').on('value', function (snapshot) {
+      const movieId = snapshot.val();
+      console.log('Found?: ' + movieId);
+      if (movieId) {
+        dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
+      }
     });
   };
 

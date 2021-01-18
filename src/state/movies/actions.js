@@ -31,6 +31,7 @@ import {
 import { movieMatchAction } from '../rooms/actions';
 import { openModalAction } from '../modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
+import Firebase, { db } from '../../../config/Firebase';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -218,10 +219,10 @@ export const saveMovieAction = (genre, liked, movie) => (
           }
           users.push({ [roomUserID]: { [userName]: liked } });
 
+          let found = true;
           // check if everyone is in the room
           if (roomSize !== 1 && users.length === roomSize) {
             users.forEach((element) => {
-              let found = true;
               if (!Object.values(Object.values(element)[0])[0]) {
                 found = false;
               }
@@ -229,6 +230,7 @@ export const saveMovieAction = (genre, liked, movie) => (
                 dispatch(
                   openModalAction(<MovieMatchModal movieId={movieId} />)
                 );
+                fetchRoomsDatabase(roomKey).update({ found: movieId });
               }
             });
           }
