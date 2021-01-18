@@ -80,14 +80,11 @@ const CreatedRoom = ({ navigation }) => {
 
   // attaching listener on roomSize
   const checkRoomSize = (roomKey) => {
-    db.ref('rooms/' + roomKey + '/roomSize').on(
-      'child_changed',
-      function (snapshot) {
-        const changedSize = snapshot.val();
-        console.log('Room Size is now: ' + changedSize);
-        dispatch(updateRoomSize(changedSize));
-      }
-    );
+    db.ref('rooms/' + roomKey + '/roomSize').on('value', function (snapshot) {
+      const changedSize = snapshot.val();
+      console.log('Room Size is now: ' + changedSize);
+      dispatch(updateRoomSize(changedSize));
+    });
   };
 
   // attaching listener on found
