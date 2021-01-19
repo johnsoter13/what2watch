@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "what2watch",
-    "slug": "what2watch",
+    "name": "What 2 Watch",
+    "slug": "what-2-watch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,7 +13,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -22,7 +24,13 @@
     },
     "packagerOpts": {
       "config": "metro.config.js",
-      "sourceExts": ["js", "jsx", "scss", "sass"]
-    }
+      "sourceExts": [
+        "js",
+        "jsx",
+        "scss",
+        "sass"
+      ]
+    },
+    "description": "Trying to figure out which movie to watch tonight? Let us help you!\n\nAll you have to do is select your streaming services and get watching!"
   }
 }
