@@ -38,3 +38,19 @@ export const movieMatchAction = (movieId, rightSwipe) => (
     }
   }
 };
+
+// export const attachRoomSizeListenerAction = () => (dispatch) => {
+//   dispatch({
+//     type: ,
+//     status: SUCCESS,
+//     payload: { },
+//   });
+// };
+
+// export const detachRoomSizeListenerAction = () => (dispatch) => {
+//   dispatch({
+//     type: ,
+//     status: SUCCESS,
+//     payload: { },
+//   });
+// };

@@ -42,43 +42,57 @@ const CreatedRoom = ({ navigation }) => {
     if (userName && text) {
       setUserNameError('');
       setRoomError('');
-      // check if RoomID exists
-      roomRef
-        .orderByChild('roomID')
-        .equalTo(text)
-        .once('value', function (snapshot) {
-          if (snapshot.val()) {
-            const roomID = text;
-            const roomKey = Object.keys(snapshot.val())[0];
-            let roomSize = 1;
 
-            db.ref('rooms/' + roomKey + '/roomSize').transaction(function (
-              current_size
-            ) {
-              roomSize = (current_size || 0) + 1;
-              checkRoomSize(roomKey);
-              checkFound(roomKey);
-              const randomNumber = Math.floor(Math.random() * 1000);
-              const roomUserID = hashids.encode(randomNumber);
-              console.log(roomUserID);
+      // todo
+      // remove listeners if roomKey exists in store
 
-              // only update room state if name or roomID is changed
-              if (stateUserName !== userName || stateRoomID !== roomID) {
-                dispatch(
-                  updateRoomAction(roomID, roomKey, userName, roomUserID)
-                );
-                dispatch(updateRoomSize(roomSize));
-              }
-              // console.log('about to navigate to streaming services');
-              navigation.navigate(STREAMING_SERVICES_SCREEN);
-              return roomSize;
-            });
-          } else {
-            console.log('NO ROOM WITH THAT ID');
-            setRoomError('No room was found by that ID');
-          }
-        });
+      findRoom();
     }
+  };
+
+  // check if there is a room with given room code
+  const findRoom = () => {
+    db.ref('rooms')
+      .orderByChild('roomID')
+      .equalTo(text)
+      .once('value', function (snapshot) {
+        if (snapshot.val()) {
+          const roomID = text;
+          const roomKey = Object.keys(snapshot.val())[0];
+          let roomSize = 1;
+
+          joinRoom(roomKey, roomID, roomSize);
+        } else {
+          console.log('NO ROOM WITH THAT ID');
+          setRoomError('No room was found by that ID');
+        }
+      });
+  };
+
+  // join room with roomKey
+  const joinRoom = (roomKey, roomID, roomSize) => {
+    db.ref('rooms/' + roomKey + '/roomSize').transaction(function (
+      current_size
+    ) {
+      roomSize = (current_size || 0) + 1;
+      checkRoomSize(roomKey);
+      checkFound(roomKey);
+      const randomNumber = Math.floor(Math.random() * 1000);
+      const roomUserID = hashids.encode(randomNumber);
+      console.log(roomUserID);
+
+      // only update room state if name or roomID is changed
+      if (stateUserName !== userName || stateRoomID !== roomID) {
+        dispatch(updateRoomAction(roomID, roomKey, userName, roomUserID));
+        dispatch(updateRoomSize(roomSize));
+
+        // todo
+        // send another dispatch with ref of both listeners?
+      }
+      // console.log('about to navigate to streaming services');
+      navigation.navigate(STREAMING_SERVICES_SCREEN);
+      return roomSize;
+    });
   };
 
   // attaching listener on roomSize
@@ -101,8 +115,6 @@ const CreatedRoom = ({ navigation }) => {
     });
   };
 
-  // attaching listener on found
-
   const handleGenerateRoom = () => {
     console.log('handle generate room clicked');
 
@@ -124,8 +136,6 @@ const CreatedRoom = ({ navigation }) => {
     console.log('Key in the database: ' + roomKey);
     console.log('Room ID: ' + roomID);
     setText(roomID);
-
-    // need to store roomkey in the store
   };
 
   return (
