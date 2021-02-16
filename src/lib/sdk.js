@@ -37,6 +37,14 @@ export const fetchMovieFromSearch = (query) =>
     }
   );
 
+  export const fetchMostPopularMovies = () =>
+  fetch(
+    `http://ec2-18-221-43-33.us-east-2.compute.amazonaws.com:3000/fetchMostPopularMovies`,
+    {
+      method: 'GET',
+    }
+  );
+
 export const createUserWithEmailAndPassword = (email, password) =>
   Firebase.auth().createUserWithEmailAndPassword(email, password);
 

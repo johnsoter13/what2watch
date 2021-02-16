@@ -14,7 +14,7 @@ import { movieMatchAction } from '../../state/rooms/actions';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
-  const { genre } = route.params;
+  const genre = route?.params?.genre || 'most-popular' ;
 
   const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
 

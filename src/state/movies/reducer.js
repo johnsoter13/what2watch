@@ -4,6 +4,7 @@ import {
   MOVIES_BY_GENRE,
   MOVIE_STREAMING_SERVICES,
   MOVIE_INDEX,
+  MOST_POPULAR_MOVIES,
 } from './constants';
 import { FAILURE, PENDING, SUCCESS } from '../constants';
 
@@ -15,6 +16,7 @@ const initialState = {
   movieStreamingServices: {},
   movieStreamingServicesLoadingStatus: null,
   movieIndexes: {},
+  mostPopularMovies: [],
 };
 
 const createGenresObj = (genres) => {
@@ -122,6 +124,13 @@ export default produce((draft, action) => {
           draft.movieStreamingServicesLoadingStatus = FAILURE;
       }
       break;
+    case MOST_POPULAR_MOVIES:
+      switch (action.status) {
+        case SUCCESS: 
+          const {mostPopularMovies} = action.payload;
+
+          draft.mostPopularMovies = mostPopularMovies;
+      }
     default:
   }
 }, initialState);

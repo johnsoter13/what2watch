@@ -1,25 +1,20 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+  /usr/local/bin/node /Users/jsoter/.yarn/bin/yarn.js
 
 PATH: 
-  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\AMD\ATI.ACE\Core-Static;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Android;C:\Windows\System32;C:\Program Files\dotnet\;D:\Program Files\Liquid Technologies\Liquid Studio 2017\XmlDataBinder15\Redist15\cpp\win32\bin;D:\Program Files\Liquid Technologies\Liquid Studio 2017\XmlDataBinder15\Redist15\cpp\win64\bin;C:\WINDOWS\System32\OpenSSH\;C:\Gradle\gradle-4.10.2;C:\Gradle\gradle-4.10.2\bin;C:\Program Files\Microsoft VS Code\bin;C:\Program Files\Java\jdk-11\bin;C:\Users\Soda\openssl-0.9.8k_X64;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Amazon\AWSCLI\bin\;C:\Users\Soda\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin\;C:\ProgramData\chocolatey\bin;C:\Go\bin;D:\Program Files\Anaconda;D:\Program Files\Anaconda\Library\mingw-w64\bin;D:\Program Files\Anaconda\Library\usr\bin;D:\Program Files\Anaconda\Library\bin;D:\Program Files\Anaconda\Scripts;C:\Users\Soda\AppData\Local\atom\bin;C:\Users\Soda\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Microsoft VS Code\bin;C:\Users\Soda\AppData\Roaming\npm;D:\Drivers\flutter\bin;D:\Program Files\Azure Data Studio\bin;C:\Users\Soda\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Soda\AppData\Local\Yarn\bin;C:\Users\Soda\go\bin
+  /Users/jsoter/.yarn/bin:/Users/jsoter/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:./node_modules/.bin
 
 Yarn version: 
-  1.22.4
+  1.19.0
 
 Node version: 
-  12.18.0
+  14.15.4
 
 Platform: 
-  win32 x64
+  darwin x64
 
 Trace: 
-  SyntaxError: C:\Users\Soda\what2watch\package.json: Unexpected token } in JSON at position 1306
-      at JSON.parse (<anonymous>)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
-      at Generator.next (<anonymous>)
-      at step (C:\Program Files (x86)\Yarn\lib\cli.js:310:30)
-      at C:\Program Files (x86)\Yarn\lib\cli.js:321:13
+  Error: EACCES: permission denied, unlink '/Users/jsoter/what2watch/node_modules/expo-clipboard/.eslintrc.js'
 
 npm manifest: 
   {
@@ -32,6 +27,7 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@react-native-community/clipboard": "^1.5.1",
       "@react-native-community/hooks": "^2.6.0",
       "@react-native-community/masked-view": "0.1.10",
       "@react-navigation/native": "^5.7.3",
@@ -39,14 +35,17 @@ npm manifest:
       "babel-plugin-react-native-classname-to-style": "^1.2.2",
       "babel-plugin-react-native-platform-specific-extensions": "^1.1.1",
       "expo": "~38.0.8",
+      "expo-clipboard": "^1.0.1",
       "expo-status-bar": "^1.0.2",
       "firebase": "^8.2.1",
+      "hashids": "^2.2.8",
       "immer": "^7.0.7",
       "lodash": "^4.17.20",
       "node-sass": "^5.0.0",
       "react": "~16.11.0",
       "react-dom": "~16.11.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
+      "react-native-deck-swiper": "^2.0.5",
       "react-native-dotenv": "^2.4.3",
       "react-native-gesture-handler": "~1.6.0",
       "react-native-reanimated": "~1.9.0",
@@ -59,6 +58,7 @@ npm manifest:
       "redux": "^4.0.5",
       "redux-devtools-extension": "^2.13.8",
       "redux-thunk": "^2.3.0",
+      "reselect": "^4.0.0"
     },
     "devDependencies": {
       "@babel/core": "^7.8.6",
@@ -1657,6 +1657,11 @@ Lockfile:
       strip-ansi "^5.2.0"
       sudo-prompt "^9.0.0"
       wcwidth "^1.0.1"
+  
+  "@react-native-community/clipboard@^1.5.1":
+    version "1.5.1"
+    resolved "https://registry.yarnpkg.com/@react-native-community/clipboard/-/clipboard-1.5.1.tgz#32abb3ea2eb91ee3f9c5fb1d32d5783253c9fabe"
+    integrity sha512-AHAmrkLEH5UtPaDiRqoULERHh3oNv7Dgs0bTC0hO5Z2GdNokAMPT5w8ci8aMcRemcwbtdHjxChgtjbeA38GBdA==
   
   "@react-native-community/hooks@^2.6.0":
     version "2.6.0"
@@ -3663,6 +3668,11 @@ Lockfile:
       path-browserify "^1.0.0"
       url-parse "^1.4.4"
   
+  expo-clipboard@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/expo-clipboard/-/expo-clipboard-1.0.1.tgz#cc73e01dce83cca0df2c539d2c862aa892e70bfc"
+    integrity sha512-TQjMi9mAZr8jQOSl/XJLVwW6DTmjA3qAOUMk4BuxlMvJ1NqJbCITLEBwUcLW/rNewgmXLytoLzRpxadcxSfJAQ==
+  
   expo-constants@~9.1.1:
     version "9.1.1"
     resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.1.1.tgz"
@@ -4446,6 +4456,11 @@ Lockfile:
     integrity sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
     dependencies:
       function-bind "^1.1.1"
+  
+  hashids@^2.2.8:
+    version "2.2.8"
+    resolved "https://registry.yarnpkg.com/hashids/-/hashids-2.2.8.tgz#d1e4e1be48e711ad6e5f27b32c37c399d5eeb5b4"
+    integrity sha512-OI6rsk/OqyX60nBsqxnNl3R7CDv9eMOgxzipshZwXE6cUcBcEyHf8rNDlWVdQJZK3TEynILYybCsNUEQfJsdLA==
   
   hermes-engine@0.0.0:
     version "0.0.0"
@@ -6580,6 +6595,14 @@ Lockfile:
     dependencies:
       asap "~2.0.3"
   
+  prop-types@15.5.10:
+    version "15.5.10"
+    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
+    integrity sha1-J5ffwxJhguOpXj37suiT3ddFYVQ=
+    dependencies:
+      fbjs "^0.8.9"
+      loose-envify "^1.3.1"
+  
   prop-types@15.7.2, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     version "15.7.2"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz"
@@ -6696,6 +6719,13 @@ Lockfile:
       fbemitter "^2.1.1"
       invariant "^2.2.4"
       use-subscription "^1.0.0"
+  
+  react-native-deck-swiper@^2.0.5:
+    version "2.0.5"
+    resolved "https://registry.yarnpkg.com/react-native-deck-swiper/-/react-native-deck-swiper-2.0.5.tgz#acc6dbae31e45f3b5f1c51541664f94c3a8b00c7"
+    integrity sha512-PRDsdgAYUogMMwPWChEL/XsEpSob8CFNd9ThsvoyMV2lXd2bR4VZsHSuyVgXvqiHspGb3modbvogBpiSOZ3oHQ==
+    dependencies:
+      prop-types "15.5.10"
   
   react-native-dotenv@^2.4.3:
     version "2.4.3"
@@ -7067,6 +7097,11 @@ Lockfile:
     version "3.0.1"
     resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz"
     integrity sha1-79qpjqdFEyTQkrKyFjpqHXqaIUc=
+  
+  reselect@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.0.0.tgz#f2529830e5d3d0e021408b246a206ef4ea4437f7"
+    integrity sha512-qUgANli03jjAyGlnbYVAV5vvnOmJnODyABz51RdBN7M4WaVu8mecZWgyQNkG8Yqe3KRGRt0l4K4B3XVEULC4CA==
   
   resolve-from@^3.0.0:
     version "3.0.0"
