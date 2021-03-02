@@ -23,7 +23,9 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
     });
   };
 
-  const movieStreamingServices = swipeCard ? sharedServices : movie.movieStreamServices;
+  const movieStreamingServices = swipeCard
+    ? sharedServices
+    : movie.movieStreamServices;
 
   return (
     <View style={styles.movieContainer}>
@@ -36,7 +38,13 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
           />
         </TouchableOpacity>
       </View>
-      <View style={moreInfoToggle ? styles.moreInfoBodyContainer : styles.movieBodyContainer}>
+      <View
+        style={
+          moreInfoToggle
+            ? styles.moreInfoBodyContainer
+            : styles.movieBodyContainer
+        }
+      >
         {moreInfoToggle ? (
           <View style={styles.movieRowContainer}>
             <View style={styles.infoContainer}>
@@ -48,8 +56,12 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
                 <Text style={styles.text}>Rating: {movie.movieRating}/10</Text>
               </View>
               <View>
-                <Text style={styles.text}>Release Date: {movie.movieReleaseDate}</Text>
-                <Text style={styles.text}>Run Time: {movie.movieRunningTime} Minutes</Text>
+                <Text style={styles.text}>
+                  Release Date: {movie.movieReleaseDate}
+                </Text>
+                <Text style={styles.text}>
+                  Run Time: {movie.movieRunningTime} Minutes
+                </Text>
               </View>
             </View>
             <View>
@@ -128,7 +140,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 5,
     color: baseStyles.BUTTON_TEXT_COLOR,
-    marginTop: 30
+    marginTop: 30,
   },
   movieStreamingService: {
     marginBottom: 5,
@@ -165,8 +177,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: baseStyles.BUTTON_TEXT_COLOR
-  }
+    color: baseStyles.BUTTON_TEXT_COLOR,
+  },
 });
 
 export default MovieListItem;

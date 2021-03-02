@@ -21,6 +21,7 @@ import {
   selectMovieIdByIndex,
   selectMovieIndex,
   selectMoviesByGenreExists,
+  selectMovieStreamingServicesById,
 } from './selectors';
 import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors';
 import {
@@ -92,10 +93,9 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     });
 };
 
-export const fetchMovieStreamingServicesAction = (genre = 'most-popular') => async (
-  dispatch,
-  getState
-) => {
+export const fetchMovieStreamingServicesAction = (
+  genre = 'most-popular'
+) => async (dispatch, getState) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
@@ -173,6 +173,9 @@ export const saveMovieAction = (genre, liked, movie) => (
   );
   const roomSize = selectRoomSize(getState());
 
+  if (!movie) {
+    movie = selectMovieStreamingServicesById(getState(), movieId);
+  }
   // console.log(movie);
 
   if (!liked && isUserLoggedIn) {
@@ -272,4 +275,3 @@ export const fetchMostPopularMoviesActions = () => (dispatch) => {
       });
     });
 };
-
