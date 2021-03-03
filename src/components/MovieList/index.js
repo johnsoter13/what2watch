@@ -13,7 +13,6 @@ import MovieListItem from '../MovieListItem';
 import { movieMatchAction } from '../../state/rooms/actions';
 import SwipeContainer from '../SwipeContainer';
 import { MOST_POPULAR } from './constants';
-import SwipeByGenreModal from '../Modals/SwipeByGenreModal';
 import { openModalAction } from '../../state/modal/actions';
 import { GENRE_SCREEN } from '../../constants/ROUTES';
 

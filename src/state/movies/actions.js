@@ -36,7 +36,6 @@ import { openModalAction } from '../modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import Firebase, { db } from '../../../config/Firebase';
 import { MOST_POPULAR } from '../../components/MovieList/constants';
-import SwipeByGenreModal from '../../components/Modals/SwipeByGenreModal';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
