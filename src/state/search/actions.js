@@ -37,7 +37,7 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
         }
       }
     }
-    const sortedMovies = sanitizedMovies.sort((a, b) => b.movieRating - a.movieRating);
+    const sortedMovies = sanitizedMovies.sort((a, b) => b.movieReleaseYear - a.movieReleaseYear);
 
     dispatch({
       type: MOVIE_FROM_SEARCH,
