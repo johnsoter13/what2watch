@@ -27,8 +27,10 @@ import {
   LOGIN,
   DISLIKED_LIST,
   CREATED_ROOM,
-  EXPERIENCE_SELECT
+  EXPERIENCE_SELECT,
+  SWIPE_BY_GENRE_MODAL,
 } from './src/constants/ROUTES';
+import SwipeByGenreModal from './src/components/Modals/SwipeByGenreModal';
 
 const store = createStore();
 const Stack = createStackNavigator();
@@ -83,6 +85,11 @@ export default function App() {
               name={EXPERIENCE_SELECT}
               component={ExperienceSelect}
               options={{ title: 'Select Your Experience' }}
+            />
+            <Stack.Screen
+              name={SWIPE_BY_GENRE_MODAL}
+              component={SwipeByGenreModal}
+              options={{ title: 'Testing' }}
             />
           </Stack.Navigator>
           <ModalContainer />

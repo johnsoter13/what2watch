@@ -8,4 +8,5 @@ export const LOGIN = 'Login';
 export const DISLIKED_LIST = 'DislikedList';
 export const CREATED_ROOM = 'CreatedRoom';
 export const EXPERIENCE_SELECT = 'ExperienceSelect';
+export const SWIPE_BY_GENRE_MODAL = 'SwipeByGenreModal';
 

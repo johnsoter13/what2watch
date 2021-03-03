@@ -57,15 +57,12 @@ export default produce((draft, action) => {
     case MOVIE_INDEX:
       switch (action.status) {
         case SUCCESS:
-          const { genre, reset } = action.payload;
+          const { genre, newIndex, reset } = action.payload;
 
           if (reset) {
             draft.movieIndexes = {};
           } else {
-            const newMovieIndex = draft.movieIndexes[genre]
-              ? draft.movieIndexes[genre] + 1
-              : 1;
-            draft.movieIndexes[genre] = newMovieIndex;
+            draft.movieIndexes[genre] = newIndex;
           }
           break;
       }

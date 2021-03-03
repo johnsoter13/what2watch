@@ -35,6 +35,8 @@ import { movieMatchAction } from '../rooms/actions';
 import { openModalAction } from '../modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import Firebase, { db } from '../../../config/Firebase';
+import { MOST_POPULAR } from '../../components/MovieList/constants';
+import SwipeByGenreModal from '../../components/Modals/SwipeByGenreModal';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -94,7 +96,7 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
 };
 
 export const fetchMovieStreamingServicesAction = (
-  genre = 'most-popular'
+  genre = MOST_POPULAR
 ) => async (dispatch, getState) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
@@ -152,11 +154,13 @@ export const fetchMovieStreamingServicesAction = (
   }
 };
 
-export const movieListIndexAction = (genre = 'most-popular') => (dispatch) => {
+export const movieListIndexAction = (genre = MOST_POPULAR) => (dispatch, getState) => {
+  const currentGenreIndex = selectMovieIndex(getState(), genre);
+
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
-    payload: { genre },
+    payload: { genre, newIndex: currentGenreIndex + 1 },
   });
 };
 

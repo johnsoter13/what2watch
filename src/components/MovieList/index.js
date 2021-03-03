@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
@@ -11,69 +11,117 @@ import Loading from '../Loading';
 import { useMovie } from '../../hooks/useMovie';
 import MovieListItem from '../MovieListItem';
 import { movieMatchAction } from '../../state/rooms/actions';
-import { LEFT_SWIPE, RIGHT_SWIPE } from './constants';
 import SwipeContainer from '../SwipeContainer';
+import { MOST_POPULAR } from './constants';
+import SwipeByGenreModal from '../Modals/SwipeByGenreModal';
+import { openModalAction } from '../../state/modal/actions';
+import { GENRE_SCREEN } from '../../constants/ROUTES';
 
-const MovieList = ({ route }) => {
+const MovieList = ({ navigation, route }) => {
   const dispatch = useDispatch();
-  const genre = route?.params?.genre || 'most-popular';
-
+  const genre = route?.params?.genre || MOST_POPULAR;
+  const [leftSwipeStreak, setLeftSwipeStreak] = useState(0);
   const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
 
-  const handleRightSwipe = () => {
-    dispatch(saveMovieAction(genre, true, movie));
-    dispatch(movieListIndexAction(genre));
-    dispatch(movieMatchAction(movie.movieId, true));
-  };
+  const handleRightSwipe = useCallback(
+    () => {
+      dispatch(saveMovieAction(genre, true, movie));
+      dispatch(movieListIndexAction(genre));
+      dispatch(movieMatchAction(movie.movieId, true));
+      // Reset on a right swipe
+      setLeftSwipeStreak(0);
+    }, [movie]
+  );
 
-  const handleLeftSwipe = () => {
-    dispatch(saveMovieAction(genre, false, movie));
-    dispatch(movieListIndexAction(genre));
-  };
+  const handleLeftSwipe = useCallback(
+    () => {
+      dispatch(saveMovieAction(genre, false, movie));
+      dispatch(movieListIndexAction(genre));
+      setLeftSwipeStreak(leftSwipeStreak + 1);
+    }, [movie]
+  );
 
   return (
     <View style={styles.container}>
-      {movie && (
-        <SwipeContainer
-          movie={movie}
-          genre={genre}
-          components={
-            <View style={styles.movieContainer}>
-              <View style={styles.movieBodyContainer}>
-                <Loading loadingComplete={movieLoadingComplete} />
-                {movieLoadingComplete && (
-                  <MovieListItem
-                    swipeCard
-                    sharedServices={sharedServices}
-                    movie={movie}
-                  />
-                )}
+      {leftSwipeStreak >= 1 && 
+        <TouchableOpacity
+          style={styles.genreButton}
+          onPress={() => {
+            setLeftSwipeStreak(0);
+            navigation.navigate(GENRE_SCREEN);
+          }}
+        >
+          <Text style={styles.nextMovieButtonText}>{genre === MOST_POPULAR ? 'Swipe By Genre Instead' : 'Switch Genres'}</Text>
+        </TouchableOpacity>
+      }
+      {movieLoadingComplete ? (
+        <>
+          <SwipeContainer
+            handleRightSwipe={() => handleRightSwipe()}
+            handleLeftSwipe={() => handleLeftSwipe()}
+            components={
+              <View style={styles.movieContainer}>
+                <View style={styles.movieBodyContainer}>
+                  {movieLoadingComplete && (
+                    <MovieListItem
+                      swipeCard
+                      sharedServices={sharedServices}
+                      movie={movie}
+                    />
+                  )}
+                </View>
               </View>
+            }
+          />
+          <View style={styles.swipeCardButtonContainer}>
+            <TouchableOpacity
+              style={styles.moreInfoButton}
+              onPress={() => {
+                handleLeftSwipe();
+              }}
+            >
+              <Text style={styles.nextMovieButtonText}>No</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.nextMovieButton}
+              onPress={() => {
+                handleRightSwipe();
+              }}
+            >
+              <Text style={styles.nextMovieButtonText}>Yes</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <>
+          <View style={styles.movieContainer}>
+            <View style={styles.movieBodyContainer}>
+              <Loading loadingComplete={movieLoadingComplete} />
             </View>
-          }
-        />
-      )}
+          </View>
+          <View style={styles.swipeCardButtonContainer}>
+            <TouchableOpacity
+              style={styles.moreInfoButton}
+              onPress={() => {
+                handleLeftSwipe();
+              }}
+              disabled
+            >
+              <Text style={styles.nextMovieButtonText}>No</Text>
+            </TouchableOpacity>
 
-      {movieLoadingComplete && (
-        <View style={styles.swipeCardButtonContainer}>
-          <TouchableOpacity
-            style={styles.moreInfoButton}
-            onPress={() => {
-              handleLeftSwipe();
-            }}
-          >
-            <Text style={styles.nextMovieButtonText}>No</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.nextMovieButton}
-            onPress={() => {
-              handleRightSwipe();
-            }}
-          >
-            <Text style={styles.nextMovieButtonText}>Yes</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              style={styles.nextMovieButton}
+              onPress={() => {
+                handleRightSwipe();
+              }}
+              disabled
+            >
+              <Text style={styles.nextMovieButtonText}>Yes</Text>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
     </View>
   );
@@ -131,6 +179,14 @@ const styles = StyleSheet.create({
     height: 600,
     width: '100%',
   },
+  genreButton: {
+    height: '5%',
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: baseStyles.BUTTON_COLOR,
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+  }
 });
 
 export default MovieList;

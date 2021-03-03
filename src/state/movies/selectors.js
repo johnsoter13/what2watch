@@ -1,6 +1,8 @@
+import { MOST_POPULAR } from "../../components/MovieList/constants";
+
 export const selectMovieGenres = (state) => state.movies.genres;
 export const selectMoviesByGenre = (state, genre) => {
-  if (genre !== 'most-popular') {
+  if (genre !== MOST_POPULAR) {
     return state.movies.moviesByGenre[genre] || [];
   } else {
     return state.movies.mostPopularMovies;
@@ -22,7 +24,7 @@ export const selectMovieStreamingServicesLoadingStatus = (state) =>
   state.movies.movieStreamingServicesLoadingStatus;
 
 export const selectMovieIdByIndex = (state, genre, index) => {
-  if (genre !== 'most-popular') {
+  if (genre !== MOST_POPULAR) {
     return state.movies.moviesByGenre[genre]
     ? state.movies.moviesByGenre[genre][index]
     : null;

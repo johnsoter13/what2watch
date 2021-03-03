@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /Users/jsoter/.yarn/bin/yarn.js
+  /usr/local/bin/node /Users/jsoter/.yarn/bin/yarn.js remove react-native-swipe-cards
 
 PATH: 
   /Users/jsoter/.yarn/bin:/Users/jsoter/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:./node_modules/.bin
@@ -45,7 +45,6 @@ npm manifest:
       "react": "~16.11.0",
       "react-dom": "~16.11.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
-      "react-native-deck-swiper": "^2.0.5",
       "react-native-dotenv": "^2.4.3",
       "react-native-gesture-handler": "~1.6.0",
       "react-native-reanimated": "~1.9.0",
@@ -2637,6 +2636,11 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz"
     integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
+  
+  clamp@^1.0.1:
+    version "1.0.1"
+    resolved "https://registry.yarnpkg.com/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+    integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
   
   class-utils@^0.3.5:
     version "0.3.6"
@@ -6595,14 +6599,6 @@ Lockfile:
     dependencies:
       asap "~2.0.3"
   
-  prop-types@15.5.10:
-    version "15.5.10"
-    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
-    integrity sha1-J5ffwxJhguOpXj37suiT3ddFYVQ=
-    dependencies:
-      fbjs "^0.8.9"
-      loose-envify "^1.3.1"
-  
   prop-types@15.7.2, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     version "15.7.2"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz"
@@ -6720,13 +6716,6 @@ Lockfile:
       invariant "^2.2.4"
       use-subscription "^1.0.0"
   
-  react-native-deck-swiper@^2.0.5:
-    version "2.0.5"
-    resolved "https://registry.yarnpkg.com/react-native-deck-swiper/-/react-native-deck-swiper-2.0.5.tgz#acc6dbae31e45f3b5f1c51541664f94c3a8b00c7"
-    integrity sha512-PRDsdgAYUogMMwPWChEL/XsEpSob8CFNd9ThsvoyMV2lXd2bR4VZsHSuyVgXvqiHspGb3modbvogBpiSOZ3oHQ==
-    dependencies:
-      prop-types "15.5.10"
-  
   react-native-dotenv@^2.4.3:
     version "2.4.3"
     resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.4.3.tgz#1d04043ecbba185dc1ddc01fd22b5aec162b891c"
@@ -6781,6 +6770,14 @@ Lockfile:
     version "2.9.0"
     resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz"
     integrity sha512-5MaiUD6HA3nzY3JbVI8l3V7pKedtxQF3d8qktTVI0WmWXTI4QzqOU8r8fPVvfKo3MhOXwhWBjr+kQ7DZaIQQeg==
+  
+  react-native-swipe-cards@^0.1.1:
+    version "0.1.1"
+    resolved "https://registry.yarnpkg.com/react-native-swipe-cards/-/react-native-swipe-cards-0.1.1.tgz#25a31b450f2616f3a25a101c9fc37ccbb2deb3e2"
+    integrity sha1-JaMbRQ8mFvOiWhAcn8N8y7Les+I=
+    dependencies:
+      clamp "^1.0.1"
+      prop-types "^15.6.0"
   
   react-native-web@~0.11.7:
     version "0.11.7"

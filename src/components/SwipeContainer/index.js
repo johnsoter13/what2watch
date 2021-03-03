@@ -1,39 +1,19 @@
 import React, { useEffect, useState } from 'react';
-
 import {
-  View,
   Dimensions,
-  StyleSheet,
   Animated,
   PanResponder,
   LayoutAnimation,
   UIManager,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import {
-  movieListIndexAction,
-  saveMovieAction,
-} from '../../state/movies/actions';
-import { movieMatchAction } from '../../state/rooms/actions';
+
+import { LEFT_SWIPE, RIGHT_SWIPE } from '../MovieList/constants';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 250;
 
-const SwipeContainer = ({ genre, movie, components }) => {
-  const dispatch = useDispatch();
-
-  const handleRightSwipe = () => {
-    dispatch(saveMovieAction(genre, true, movie));
-    dispatch(movieListIndexAction(genre));
-    dispatch(movieMatchAction(movie.movieId, true));
-  };
-
-  const handleLeftSwipe = () => {
-    dispatch(saveMovieAction(genre, false, movie));
-    dispatch(movieListIndexAction(genre));
-  };
-
+const SwipeContainer = ({ handleRightSwipe, handleLeftSwipe, components }) => {
   const [position] = useState(new Animated.ValueXY());
   const [panResponder] = useState(
     PanResponder.create({
@@ -46,11 +26,9 @@ const SwipeContainer = ({ genre, movie, components }) => {
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
         if (gestureState.dx > SWIPE_THRESHOLD) {
-          console.log('swipe right');
-          forceSwipe('right');
+          forceSwipe(RIGHT_SWIPE);
         } else if (gestureState.dx < -SWIPE_THRESHOLD) {
-          console.log('swipe left');
-          forceSwipe('left');
+          forceSwipe(LEFT_SWIPE);
         } else {
           resetPosition();
         }
@@ -62,7 +40,7 @@ const SwipeContainer = ({ genre, movie, components }) => {
     UIManager.setLayoutAnimationEnabledExperimental &&
       UIManager.setLayoutAnimationEnabledExperimental(true);
     LayoutAnimation.spring();
-  }, [movie, genre]);
+  });
 
   const getCardStyle = () => {
     const rotate = position.x.interpolate({
@@ -79,11 +57,11 @@ const SwipeContainer = ({ genre, movie, components }) => {
 
   const onSwipeComplete = (direction) => {
     position.setValue({ x: 0, y: 0 });
-    direction === 'right' ? handleRightSwipe() : handleLeftSwipe();
+    direction === RIGHT_SWIPE ? handleRightSwipe() : handleLeftSwipe();
   };
 
   const forceSwipe = (direction) => {
-    const x = direction === 'right' ? SCREEN_WIDTH : -SCREEN_WIDTH;
+    const x = direction === RIGHT_SWIPE ? SCREEN_WIDTH : -SCREEN_WIDTH;
     Animated.timing(position, {
       toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION,
