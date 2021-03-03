@@ -42,7 +42,7 @@ const MovieList = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      {leftSwipeStreak >= 1 && 
+      {leftSwipeStreak >= 10 && 
         <TouchableOpacity
           style={styles.genreButton}
           onPress={() => {
