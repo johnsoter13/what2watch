@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 import {
@@ -11,37 +11,55 @@ import Loading from '../Loading';
 import { useMovie } from '../../hooks/useMovie';
 import MovieListItem from '../MovieListItem';
 import { movieMatchAction } from '../../state/rooms/actions';
+import { LEFT_SWIPE, RIGHT_SWIPE } from './constants';
+import SwipeContainer from '../SwipeContainer';
 
 const MovieList = ({ route }) => {
   const dispatch = useDispatch();
-  const genre = route?.params?.genre || 'most-popular' ;
+  const genre = route?.params?.genre || 'most-popular';
 
   const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
 
+  const handleRightSwipe = () => {
+    dispatch(saveMovieAction(genre, true, movie));
+    dispatch(movieListIndexAction(genre));
+    dispatch(movieMatchAction(movie.movieId, true));
+  };
+
+  const handleLeftSwipe = () => {
+    dispatch(saveMovieAction(genre, false, movie));
+    dispatch(movieListIndexAction(genre));
+  };
+
   return (
     <View style={styles.container}>
-        <View style={styles.movieContainer}>
-          <View style={styles.movieBodyContainer}>
-            <Loading loadingComplete={movieLoadingComplete} />
-            {movieLoadingComplete && (
-              <>
-                <MovieListItem
-                  swipeCard
-                  sharedServices={sharedServices}
-                  movie={movie}
-                />
-              </>
-            )}
-          </View>
-        </View>
+      {movie && (
+        <SwipeContainer
+          movie={movie}
+          genre={genre}
+          components={
+            <View style={styles.movieContainer}>
+              <View style={styles.movieBodyContainer}>
+                <Loading loadingComplete={movieLoadingComplete} />
+                {movieLoadingComplete && (
+                  <MovieListItem
+                    swipeCard
+                    sharedServices={sharedServices}
+                    movie={movie}
+                  />
+                )}
+              </View>
+            </View>
+          }
+        />
+      )}
+
       {movieLoadingComplete && (
         <View style={styles.swipeCardButtonContainer}>
           <TouchableOpacity
             style={styles.moreInfoButton}
             onPress={() => {
-              dispatch(saveMovieAction(genre, false, movie));
-              dispatch(movieListIndexAction(genre));
-              dispatch(movieMatchAction(movie.movieId, false));
+              handleLeftSwipe();
             }}
           >
             <Text style={styles.nextMovieButtonText}>No</Text>
@@ -50,9 +68,7 @@ const MovieList = ({ route }) => {
           <TouchableOpacity
             style={styles.nextMovieButton}
             onPress={() => {
-              dispatch(saveMovieAction(genre, true, movie));
-              dispatch(movieListIndexAction(genre));
-              dispatch(movieMatchAction(movie.movieId, true));
+              handleRightSwipe();
             }}
           >
             <Text style={styles.nextMovieButtonText}>Yes</Text>
@@ -110,6 +126,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: '5%',
     marginTop: 20,
+  },
+  tinderCard: {
+    height: 600,
+    width: '100%',
   },
 });
 
