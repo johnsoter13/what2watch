@@ -32,7 +32,8 @@ export const useMovie = (genre) => {
   const movieLoadingComplete = !!(sharedServices.length > 0 && movie);
 
   useEffect(() => {
-    if (!movies.length) {
+    // if movies doesn't exit or index has surpassed the length of the array
+    if (!movies.length || movieIndex > movies.length) {
       return;
     }
     // if not in store, fetch movie
@@ -58,5 +59,5 @@ export const useMovie = (genre) => {
     }
   }, [movie, movies, movieId, dispatch, fetchMovieStreamingServicesAction]);
 
-  return [movie, movieLoadingComplete, sharedServices];
+  return [movieIndex, movie, movieLoadingComplete, sharedServices];
 };
