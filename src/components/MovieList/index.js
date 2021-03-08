@@ -12,37 +12,34 @@ import { useMovie } from '../../hooks/useMovie';
 import MovieListItem from '../MovieListItem';
 import { movieMatchAction } from '../../state/rooms/actions';
 import SwipeContainer from '../SwipeContainer';
-import { MOST_POPULAR } from './constants';
-import { openModalAction } from '../../state/modal/actions';
+import { MOST_POPULAR, MOVIES_ARRAY_MAX_LENGTH } from './constants';
 import { GENRE_SCREEN } from '../../constants/ROUTES';
 
 const MovieList = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const genre = route?.params?.genre || MOST_POPULAR;
   const [leftSwipeStreak, setLeftSwipeStreak] = useState(0);
-  const [movie, movieLoadingComplete, sharedServices] = useMovie(genre);
-
-  const handleRightSwipe = useCallback(
-    () => {
-      dispatch(saveMovieAction(genre, true, movie));
-      dispatch(movieListIndexAction(genre));
-      dispatch(movieMatchAction(movie.movieId, true));
-      // Reset on a right swipe
-      setLeftSwipeStreak(0);
-    }, [movie]
+  const [movieIndex, movie, movieLoadingComplete, sharedServices] = useMovie(
+    genre
   );
 
-  const handleLeftSwipe = useCallback(
-    () => {
-      dispatch(saveMovieAction(genre, false, movie));
-      dispatch(movieListIndexAction(genre));
-      setLeftSwipeStreak(leftSwipeStreak + 1);
-    }, [movie]
-  );
+  const handleRightSwipe = useCallback(() => {
+    dispatch(saveMovieAction(genre, true, movie));
+    dispatch(movieListIndexAction(genre));
+    dispatch(movieMatchAction(movie.movieId, true));
+    // Reset on a right swipe
+    setLeftSwipeStreak(0);
+  }, [movie]);
+
+  const handleLeftSwipe = useCallback(() => {
+    dispatch(saveMovieAction(genre, false, movie));
+    dispatch(movieListIndexAction(genre));
+    setLeftSwipeStreak(leftSwipeStreak + 1);
+  }, [movie]);
 
   return (
     <View style={styles.container}>
-      {leftSwipeStreak >= 10 && 
+      {leftSwipeStreak >= 10 && (
         <TouchableOpacity
           style={styles.genreButton}
           onPress={() => {
@@ -50,10 +47,14 @@ const MovieList = ({ navigation, route }) => {
             navigation.navigate(GENRE_SCREEN);
           }}
         >
-          <Text style={styles.nextMovieButtonText}>{genre === MOST_POPULAR ? 'Swipe By Genre Instead' : 'Switch Genres'}</Text>
+          <Text style={styles.nextMovieButtonText}>
+            {genre === MOST_POPULAR
+              ? 'Swipe By Genre Instead'
+              : 'Switch Genres'}
+          </Text>
         </TouchableOpacity>
-      }
-      {movieLoadingComplete ? (
+      )}
+      {movieLoadingComplete && (
         <>
           <SwipeContainer
             handleRightSwipe={() => handleRightSwipe()}
@@ -92,7 +93,8 @@ const MovieList = ({ navigation, route }) => {
             </TouchableOpacity>
           </View>
         </>
-      ) : (
+      )}
+      {!movieLoadingComplete && movieIndex < MOVIES_ARRAY_MAX_LENGTH && (
         <>
           <View style={styles.movieContainer}>
             <View style={styles.movieBodyContainer}>
@@ -101,24 +103,63 @@ const MovieList = ({ navigation, route }) => {
           </View>
           <View style={styles.swipeCardButtonContainer}>
             <TouchableOpacity
-              style={styles.moreInfoButton}
+              style={[styles.moreInfoButton, styles.disabledButton]}
               onPress={() => {
                 handleLeftSwipe();
               }}
               disabled
             >
-              <Text style={styles.nextMovieButtonText}>No</Text>
+              <Text style={[styles.nextMovieButtonText, styles.disabledText]}>
+                No
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.nextMovieButton}
+              style={[styles.nextMovieButton, styles.disabledButton]}
               onPress={() => {
                 handleRightSwipe();
               }}
               disabled
             >
-              <Text style={styles.nextMovieButtonText}>Yes</Text>
+              <Text style={[styles.nextMovieButtonText, styles.disabledText]}>
+                Yes
+              </Text>
             </TouchableOpacity>
+          </View>
+        </>
+      )}
+      {movieIndex > MOVIES_ARRAY_MAX_LENGTH && (
+        <>
+          <View style={styles.movieContainer}>
+            <View style={styles.outOfSwipesContainer}>
+              <Text style={styles.outOfSwipesText}>
+                You have run out of movies, try changing genres...or being less
+                picky
+              </Text>
+              <View style={styles.outOfSwipesButtonContainer}>
+                <TouchableOpacity
+                  style={styles.outOfSwipesButton}
+                  onPress={() => {
+                    dispatch(movieListIndexAction(genre, true));
+                    setLeftSwipeStreak(0);
+                  }}
+                  disabled
+                >
+                  <Text style={styles.nextMovieButtonText}>Start Over</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.outOfSwipesButton}
+                  onPress={() => {
+                    setLeftSwipeStreak(0);
+                    navigation.navigate(GENRE_SCREEN);
+                  }}
+                  disabled
+                >
+                  <Text style={styles.nextMovieButtonText}>Change Genre</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </>
       )}
@@ -185,7 +226,36 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: baseStyles.BUTTON_COLOR,
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
-  }
+  },
+  outOfSwipesContainer: {
+    padding: 20,
+    justifyContent: 'center',
+    height: '100%',
+  },
+  outOfSwipesText: {
+    flex: 1,
+    fontSize: 20,
+  },
+  outOfSwipesButtonContainer: {
+    alignSelf: 'center',
+    width: '100%',
+    height: '30%',
+  },
+  outOfSwipesButton: {
+    marginTop: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: baseStyles.BUTTON_COLOR,
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+    height: '100%',
+  },
+  disabledButton: {
+    backgroundColor: baseStyles.DISABLED_BUTTON_COLOR,
+  },
+  disabledText: {
+    color: baseStyles.BUTTON_COLOR,
+  },
 });
 
 export default MovieList;

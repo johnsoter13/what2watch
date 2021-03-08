@@ -153,13 +153,16 @@ export const fetchMovieStreamingServicesAction = (
   }
 };
 
-export const movieListIndexAction = (genre = MOST_POPULAR) => (dispatch, getState) => {
+export const movieListIndexAction = (genre = MOST_POPULAR, reset) => (
+  dispatch,
+  getState
+) => {
   const currentGenreIndex = selectMovieIndex(getState(), genre);
 
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
-    payload: { genre, newIndex: currentGenreIndex + 1 },
+    payload: { genre, newIndex: reset ? 0 : currentGenreIndex + 1 },
   });
 };
 
