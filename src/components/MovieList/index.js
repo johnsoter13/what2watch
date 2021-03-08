@@ -24,18 +24,18 @@ const MovieList = ({ navigation, route }) => {
   );
 
   const handleRightSwipe = useCallback(() => {
-    dispatch(saveMovieAction(genre, true, movie));
-    dispatch(movieListIndexAction(genre));
-    dispatch(movieMatchAction(movie.movieId, true));
     // Reset on a right swipe
     setLeftSwipeStreak(0);
-  }, [movie]);
+    dispatch(saveMovieAction(genre, true, movie));
+    dispatch(movieListIndexAction(genre));
+    dispatch(movieMatchAction(movie?.movieId, true));
+  }, [movie?.movieId]);
 
   const handleLeftSwipe = useCallback(() => {
     dispatch(saveMovieAction(genre, false, movie));
     dispatch(movieListIndexAction(genre));
     setLeftSwipeStreak(leftSwipeStreak + 1);
-  }, [movie]);
+  }, [movie?.movieId]);
 
   return (
     <View style={styles.container}>
@@ -54,7 +54,7 @@ const MovieList = ({ navigation, route }) => {
           </Text>
         </TouchableOpacity>
       )}
-      {movieLoadingComplete && (
+      {movieLoadingComplete && movie && (
         <>
           <SwipeContainer
             handleRightSwipe={() => handleRightSwipe()}
@@ -94,7 +94,7 @@ const MovieList = ({ navigation, route }) => {
           </View>
         </>
       )}
-      {!movieLoadingComplete && movieIndex < MOVIES_ARRAY_MAX_LENGTH && (
+      {!movieLoadingComplete && !movie && movieIndex < MOVIES_ARRAY_MAX_LENGTH && (
         <>
           <View style={styles.movieContainer}>
             <View style={styles.movieBodyContainer}>
