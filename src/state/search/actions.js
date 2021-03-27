@@ -37,11 +37,12 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
         }
       }
     }
+    const sortedMovies = sanitizedMovies.sort((a, b) => b.movieReleaseYear - a.movieReleaseYear);
 
     dispatch({
       type: MOVIE_FROM_SEARCH,
       status: SUCCESS,
-      payload: { query, sanitizedMovies },
+      payload: { query, movies: sortedMovies },
     });
   } catch {
     dispatch({

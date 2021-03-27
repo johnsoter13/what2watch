@@ -4,6 +4,7 @@ import {
   MOVIES_BY_GENRE,
   MOVIE_STREAMING_SERVICES,
   MOVIE_INDEX,
+  MOST_POPULAR_MOVIES,
 } from './constants';
 import { PENDING, SUCCESS, FAILURE } from '../constants';
 import {
@@ -13,12 +14,14 @@ import {
   fetchUserDatabase,
   fetchMovieDetails,
   fetchRoomsDatabase,
+  fetchMostPopularMovies,
 } from '../../lib/sdk';
 
 import {
   selectMovieIdByIndex,
   selectMovieIndex,
   selectMoviesByGenreExists,
+  selectMovieStreamingServicesById,
 } from './selectors';
 import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors';
 import {
@@ -32,6 +35,7 @@ import { movieMatchAction } from '../rooms/actions';
 import { openModalAction } from '../modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import Firebase, { db } from '../../../config/Firebase';
+import { MOST_POPULAR } from '../../components/MovieList/constants';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -90,10 +94,9 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     });
 };
 
-export const fetchMovieStreamingServicesAction = (genre) => async (
-  dispatch,
-  getState
-) => {
+export const fetchMovieStreamingServicesAction = (
+  genre = MOST_POPULAR
+) => async (dispatch, getState) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
@@ -150,11 +153,16 @@ export const fetchMovieStreamingServicesAction = (genre) => async (
   }
 };
 
-export const movieListIndexAction = (genre) => (dispatch, getState) => {
+export const movieListIndexAction = (genre = MOST_POPULAR, reset) => (
+  dispatch,
+  getState
+) => {
+  const currentGenreIndex = selectMovieIndex(getState(), genre);
+
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
-    payload: { genre },
+    payload: { genre, newIndex: reset ? 0 : currentGenreIndex + 1 },
   });
 };
 
@@ -171,6 +179,9 @@ export const saveMovieAction = (genre, liked, movie) => (
   );
   const roomSize = selectRoomSize(getState());
 
+  if (!movie) {
+    movie = selectMovieStreamingServicesById(getState(), movieId);
+  }
   // console.log(movie);
 
   if (!liked && isUserLoggedIn) {
@@ -245,4 +256,28 @@ export const saveMovieAction = (genre, liked, movie) => (
       }
     );
   }
+};
+
+export const fetchMostPopularMoviesActions = () => (dispatch) => {
+  dispatch({
+    type: MOST_POPULAR_MOVIES,
+    status: PENDING,
+  });
+
+  return fetchMostPopularMovies()
+    .then((response) => response.text())
+    .then((text) => JSON.parse(text))
+    .then((mostPopularMovies) => {
+      dispatch({
+        type: MOST_POPULAR_MOVIES,
+        status: SUCCESS,
+        payload: { mostPopularMovies },
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: MOST_POPULAR_MOVIES,
+        status: FAILURE,
+      });
+    });
 };

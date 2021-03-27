@@ -27,7 +27,8 @@ import {
   LOGIN,
   DISLIKED_LIST,
   CREATED_ROOM,
-  EXPERIENCE_SELECT
+  EXPERIENCE_SELECT,
+  SWIPE_BY_GENRE_MODAL,
 } from './src/constants/ROUTES';
 
 const store = createStore();

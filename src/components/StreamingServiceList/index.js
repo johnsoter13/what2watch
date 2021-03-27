@@ -12,11 +12,12 @@ import { cloneDeep } from 'lodash';
 
 import { updateStreamingServicesAction } from '../../state/streaming/actions';
 import { selectUserStreamingServices } from '../../state/streaming/selectors';
-import { GENRE_SCREEN } from '../../constants/ROUTES';
+import { GENRE_SCREEN, MOVIE_SCREEN } from '../../constants/ROUTES';
 import * as baseStyles from '../../styles/styles';
 
 import { STREAMING_SERVICES } from './constants';
 import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
+import { fetchMostPopularMoviesActions } from '../../state/movies/actions';
 
 const StreamingServiceList = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -36,7 +37,8 @@ const StreamingServiceList = ({ navigation }) => {
           uid
         )
       );
-      navigation.navigate(GENRE_SCREEN);
+      dispatch(fetchMostPopularMoviesActions());
+      navigation.navigate(MOVIE_SCREEN);
     } else {
       console.log('SELECT SOMETHING');
     }
