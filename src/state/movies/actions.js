@@ -38,6 +38,7 @@ import { openModalAction } from '../modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import { MOST_POPULAR } from '../../components/MovieList/constants';
 import { shuffleMovies } from '../../utils/moviesUtils';
+import { setMatchedMovieIdAction } from '../rooms/actions';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -263,7 +264,7 @@ export const saveMovieAction = (genre, liked, movie) => (
           }
 
           if (found) {
-            dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
+            dispatch(setMatchedMovieIdAction(movieId));
             fetchRoomsDatabase(roomKey).update({ found: movieId });
           }
 

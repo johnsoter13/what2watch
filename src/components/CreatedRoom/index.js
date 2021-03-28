@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Clipboard from 'expo-clipboard';
 
-import { updateRoomAction, updateRoomSize } from '../../state/rooms/actions';
+import { setMatchedMovieIdAction, updateRoomAction, updateRoomSize } from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
@@ -144,7 +144,7 @@ const CreatedRoom = ({ navigation }) => {
       const movieId = snapshot.val();
       console.log('Found?: ' + movieId);
       if (movieId) {
-        dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
+        dispatch(setMatchedMovieIdAction(movieId));
       }
     });
   };
