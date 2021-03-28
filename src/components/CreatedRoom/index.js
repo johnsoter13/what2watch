@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
   View,
-  Button,
   TouchableOpacity,
   Text,
   TextInput,

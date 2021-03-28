@@ -8,8 +8,10 @@ export const selectMoviesByGenre = (state, genre) => {
     return state.movies.mostPopularMovies;
   }
 }
+
+export const selectMostPopularMoviesExists = (state) => state.movies.mostPopularMovies?.length > 0;
 export const selectMoviesByGenreExists = (state, genre) =>
-  !!state.movies.moviesByGenre[genre];
+  state.movies.moviesByGenre[genre]?.length > 0;
 export const selectMovieStreamingServices = (state) =>
   state.movies.movieStreamingServices;
 

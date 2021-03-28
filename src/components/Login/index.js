@@ -53,11 +53,6 @@ const Login = ({ navigation }) => {
       <View style={styles.actionButton}>
         <Button onPress={handleLogin} title='Login' />
       </View>
-      {/* <View>
-                <TouchableOpacity>
-                    <Text style={styles.forgotButton}>Forgot Password?</Text>
-                </TouchableOpacity>
-            </View> */}
     </View>
   );
 };

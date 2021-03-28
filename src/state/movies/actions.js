@@ -6,6 +6,7 @@ import {
   MOVIE_INDEX,
   MOST_POPULAR_MOVIES,
   SET_CURRENT_MOVIE_ID,
+  MOVIES_TO_FETCH_LIMIT,
 } from './constants';
 import { PENDING, SUCCESS, FAILURE } from '../constants';
 import {
@@ -19,6 +20,7 @@ import {
 } from '../../lib/sdk';
 
 import {
+  selectMostPopularMoviesExists,
   selectMovieIdByIndex,
   selectMovieIndex,
   selectMoviesByGenreExists,
@@ -65,18 +67,16 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
   dispatch,
   getState
 ) => {
-  dispatch({
-    type: MOVIES_BY_GENRE,
-    status: PENDING,
-  });
   const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre);
-  if (moviesByGenreExist) {
-    return dispatch({
+
+  // If movies in this genre already exist, don't fetch again
+  if (!moviesByGenreExist) {
+    dispatch({
       type: MOVIES_BY_GENRE,
-      status: SUCCESS,
+      status: PENDING,
     });
-  }
-  return fetchMoviesByGenre(endpoint)
+
+    return fetchMoviesByGenre(endpoint)
     .then((response) => response.text())
     .then((text) => JSON.parse(text))
     .then((moviesByGenre) => {
@@ -93,6 +93,7 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
         status: FAILURE,
       });
     });
+  }
 };
 
 export const fetchMovieStreamingServicesAction = (
@@ -105,7 +106,7 @@ export const fetchMovieStreamingServicesAction = (
   const movieIndex = selectMovieIndex(getState(), genre);
 
   try {
-    for (let i = movieIndex; i < movieIndex + 2; i++) {
+    for (let i = movieIndex; i < movieIndex + MOVIES_TO_FETCH_LIMIT; i++) {
       const movieId = selectMovieIdByIndex(getState(), genre, i);
 
       const actualMovieId = movieId.slice(
@@ -183,7 +184,6 @@ export const saveMovieAction = (genre, liked, movie) => (
   if (!movie) {
     movie = selectMovieStreamingServicesById(getState(), movieId);
   }
-  // console.log(movie);
 
   if (!liked && isUserLoggedIn) {
     const uid = selectUserId(getState());
@@ -259,29 +259,34 @@ export const saveMovieAction = (genre, liked, movie) => (
   }
 };
 
-export const fetchMostPopularMoviesActions = () => (dispatch) => {
-  dispatch({
-    type: MOST_POPULAR_MOVIES,
-    status: PENDING,
-  });
+export const fetchMostPopularMoviesActions = () => (dispatch, getState) => {
+  const mostPopularMovies = selectMostPopularMoviesExists(getState());
 
-  return fetchMostPopularMovies()
-    .then((response) => response.text())
-    .then((text) => JSON.parse(text))
-    .then((mostPopularMovies) => {
-      const shuffledMovies = shuffleMovies(mostPopularMovies);
-      dispatch({
-        type: MOST_POPULAR_MOVIES,
-        status: SUCCESS,
-        payload: { mostPopularMovies: shuffledMovies },
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: MOST_POPULAR_MOVIES,
-        status: FAILURE,
-      });
+  // If we have already fetched successfully, don't do it again
+  if (!mostPopularMovies) {
+    dispatch({
+      type: MOST_POPULAR_MOVIES,
+      status: PENDING,
     });
+  
+    return fetchMostPopularMovies()
+      .then((response) => response.text())
+      .then((text) => JSON.parse(text))
+      .then((mostPopularMovies) => {
+        const shuffledMovies = shuffleMovies(mostPopularMovies);
+        dispatch({
+          type: MOST_POPULAR_MOVIES,
+          status: SUCCESS,
+          payload: { mostPopularMovies: shuffledMovies },
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: MOST_POPULAR_MOVIES,
+          status: FAILURE,
+        });
+      });
+  }
 };
 
 export const setCurrentMovieIdAction = (movieId) => (dispatch) => {

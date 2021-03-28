@@ -4,22 +4,14 @@ import {
   FlatList,
   StyleSheet,
   View,
-  Button,
   Text,
   StatusBar,
 } from 'react-native';
-import {
-  STREAMING_SERVICES_SCREEN,
-  SEARCH_MOVIE_SCREEN,
-  LOGIN,
-} from '../../constants/ROUTES';
 import {
   selectUserDisliked,
   selectUserId,
   selectUserIsLoggedIn,
 } from '../../state/auth/selectors';
-import { selectSearchResults } from '../../state/search/selectors';
-import { SET_DISLIKED } from '../../state/auth/constants';
 import { updateDislikedAction } from '../../state/auth/actions';
 
 const DislikedList = ({ navigation }) => {
@@ -32,7 +24,6 @@ const DislikedList = ({ navigation }) => {
     if (isLoggedIn) {
       updateDislikedAction(uid);
     }
-    console.log(disliked);
   };
 
   useEffect(() => {

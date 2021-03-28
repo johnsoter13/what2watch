@@ -6,7 +6,7 @@ import {
   Text,
   Button,
   Image,
-  TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
@@ -20,6 +20,7 @@ import { selectMatchAnimationFinished } from "../../state/animation/selectors";
 import { movieListIndexAction } from "../../state/movies/actions";
 import { setMatchedMovieIdAction } from "../../state/rooms/actions";
 import { setMatchAnimationAction } from "../../state/animation/actions";
+import MovieInfoSection from "../MovieInfoSection";
 
 const MovieMatch = ({genre}) => {
   const dispatch = useDispatch();
@@ -38,42 +39,9 @@ const MovieMatch = ({genre}) => {
             <Text>You have a new match!</Text>
           </View>
           <View style={styles.movieRowContainer}>
-            <View style={styles.infoContainer}>
-              <View style={styles.ratingContainer}>
-                <Image
-                  style={styles.imdbIcon}
-                  source={require('../../../assets/imdb.png')}
-                />
-                <Text style={styles.text}>Rating: {movie.movieRating}/10</Text>
-              </View>
-              <View>
-                <Text style={styles.text}>
-                  Release Date: {movie.movieReleaseDate}
-                </Text>
-                <Text style={styles.text}>
-                  Run Time: {movie.movieRunningTime} Minutes
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.text}>{movie.moviePlot}</Text>
-            </View>
-            <Text style={styles.movieRowAvailable}>Available on:</Text>
-            <View style={styles.movieStreamingServices}>
-              {sharedServices.map((streamingService) => (
-                <View
-                  key={streamingService.display_name}
-                  style={styles.movieStreamingService}
-                >
-                  <Button
-                    onPress={() => handleNavigateToLink(streamingService.url)}
-                    title={streamingService.display_name}
-                  />
-                </View>
-              ))}
-            </View>
-        </View>
-        <TouchableHighlight
+            <MovieInfoSection movie={movie} sharedServices={sharedServices} />
+          </View>
+        <TouchableOpacity
           style={styles.continueButton}
           onPress={() => {
             dispatch(movieListIndexAction(genre));
@@ -82,7 +50,7 @@ const MovieMatch = ({genre}) => {
           }}
         >
           <Text style={styles.continueButtonText}>Continue Swiping</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </>
       ) : (
         <MatchAnimationView moviePicture={movie.moviePicture}/>

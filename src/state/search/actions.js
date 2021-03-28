@@ -2,6 +2,7 @@ import { PENDING, SUCCESS, FAILURE } from '../constants';
 import { fetchMovieFromSearch, fetchMovieDetails } from '../../lib/sdk';
 
 import { MOVIE_FROM_SEARCH, SEARCH_QUERY } from './constants';
+import { STREAMING_SERVICES } from '../../components/StreamingServiceList/constants';
 
 export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
   dispatch({
@@ -23,9 +24,14 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
 
         if (fetchMovieDetailsResponse.ok) {
           const movieDetails = await fetchMovieDetailsResponse.json();
+          const movieStreamServices = movie?.locations?.map((location) => {
+            const displayName = STREAMING_SERVICES[location.name]?.displayName || location.display_name;
+
+            return {...location, display_name: displayName};
+          })
 
           sanitizedMovies.push({
-            movieStreamServices: movie?.locations,
+            movieStreamServices,
             movieTitle: movieDetails?.title?.title,
             moviePicture: movieDetails?.title?.image?.url,
             moviePlot: movieDetails?.plotOutline?.text,
