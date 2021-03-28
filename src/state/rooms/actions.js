@@ -26,7 +26,7 @@ export const updateRoomSize = (roomSize) => (dispatch) => {
   });
 };
 
-export const movieMatchAction = (genre) => (
+export const movieMatchAction = () => (
   dispatch,
   getState
 ) => {
@@ -38,7 +38,6 @@ export const movieMatchAction = (genre) => (
   if (currentRoomSize === 1 && !roomID) {
     dispatch(setMatchedMovieIdAction(currentMovieId));
   }
-  movieListIndexAction(genre);
 };
 
 export const setMatchedMovieIdAction = (movieId) => (dispatch) => {
