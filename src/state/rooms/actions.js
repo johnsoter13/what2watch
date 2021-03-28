@@ -6,6 +6,7 @@ import { SET_ROOM_STATE, SET_ROOM_SIZE, MATCH_FOUND } from './constants';
 import { selectCurrentRoomSize, selectRoomID } from './selectors';
 import { openModalAction } from '../modal/actions';
 import { selectCurrentMovieId } from '../movies/selectors';
+import { movieListIndexAction } from '../movies/actions';
 
 export const updateRoomAction = (roomID, roomKey, userName, roomUserID) => (
   dispatch
@@ -25,7 +26,7 @@ export const updateRoomSize = (roomSize) => (dispatch) => {
   });
 };
 
-export const movieMatchAction = () => (
+export const movieMatchAction = (genre) => (
   dispatch,
   getState
 ) => {
@@ -37,6 +38,7 @@ export const movieMatchAction = () => (
   if (currentRoomSize === 1 && !roomID) {
     dispatch(setMatchedMovieIdAction(currentMovieId));
   }
+  movieListIndexAction(genre);
 };
 
 export const setMatchedMovieIdAction = (movieId) => (dispatch) => {
