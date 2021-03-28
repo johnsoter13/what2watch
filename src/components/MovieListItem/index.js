@@ -10,18 +10,10 @@ import {
 } from 'react-native';
 
 import * as baseStyles from '../../styles/styles';
+import MovieInfoSection from '../MovieInfoSection';
 
 const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
   const [moreInfoToggle, setMoreInfoToggle] = useState(false);
-  const handleNavigateToLink = (url) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.log(`Don't know how to open URI: ${url}`);
-      }
-    });
-  };
 
   const movieStreamingServices = swipeCard
     ? sharedServices
@@ -47,40 +39,7 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
       >
         {moreInfoToggle ? (
           <View style={styles.movieRowContainer}>
-            <View style={styles.infoContainer}>
-              <View style={styles.ratingContainer}>
-                <Image
-                  style={styles.imdbIcon}
-                  source={require('../../../assets/imdb.png')}
-                />
-                <Text style={styles.text}>Rating: {movie.movieRating}/10</Text>
-              </View>
-              <View>
-                <Text style={styles.text}>
-                  Release Date: {movie.movieReleaseDate}
-                </Text>
-                <Text style={styles.text}>
-                  Run Time: {movie.movieRunningTime} Minutes
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.text}>{movie.moviePlot}</Text>
-            </View>
-            <Text style={styles.movieRowAvailable}>Available on:</Text>
-            <View style={styles.movieStreamingServices}>
-              {movieStreamingServices.map((streamingService) => {
-                return (<View
-                  key={streamingService.display_name}
-                  style={styles.movieStreamingService}
-                >
-                  <Button
-                    onPress={() => handleNavigateToLink(streamingService.url)}
-                    title={streamingService.display_name}
-                  />
-                </View>)
-              })}
-            </View>
+            <MovieInfoSection movie={movie} sharedServices={movieStreamingServices}/>
           </View>
         ) : (
           <View style={styles.imageContainer}>

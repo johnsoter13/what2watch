@@ -4,8 +4,11 @@ export const checkIfMovieIsAvailableToUser = (userStreamingServices, movie) => {
 
   movieStreamingServices.forEach((streamingService) => {
     if (userStreamingServices[streamingService]) {
+      // Have to overwrite display name locally for some streaming services, if we don't have it just use what's returned
+      const displayName = userStreamingServices[streamingService].displayName || movie.streamingServices[streamingService].display_name;
+
       sharedMovieStreamingServices.push(
-        movie.streamingServices[streamingService]
+        {...movie.streamingServices[streamingService], display_name: displayName}
       );
     }
   });
