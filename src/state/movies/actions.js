@@ -212,11 +212,11 @@ export const saveMovieAction = (genre, liked, movie) => (
     const movieObj = {
       movieName: movieName,
       users: [{ [roomUserID]: { [userName]: liked } }],
-      tests: [{ [userName]: liked }],
+      tests: { [userName]: liked },
     };
 
     let users = [];
-    let tests = [];
+    let tests = {};
     // let inDB = false;
 
     const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
@@ -237,14 +237,11 @@ export const saveMovieAction = (genre, liked, movie) => (
           let usersIndex = -1;
           if (users.indexOf(roomUserID) !== -1) {
             users[users.indexOf(roomUserID)] = liked;
-          }
-          let testsIndex = -1;
-          if (tests.indexOf(userName) !== -1) {
-            tests[tests.indexOf(userName)] = liked;
           } else {
             users.push({ [roomUserID]: { [userName]: liked } });
-            tests.push({ [userName]: liked });
           }
+
+          tests[userName] = liked;
 
           let found = true;
           // check if everyone is in the room
@@ -258,11 +255,11 @@ export const saveMovieAction = (genre, liked, movie) => (
 
           let testFound = true;
           if (roomSize !== 1 && tests.length === roomSize) {
-            tests.forEach((element) => {
-              if (!Object.values(element)[0]) {
-                found = false;
+            for (test in tests) {
+              if (!tests[test]) {
+                testFound = false;
               }
-            });
+            }
           }
 
           if (found) {
