@@ -1,23 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground } from 'react-native';
 
 import * as baseStyles from '../../styles/styles';
 import {
   fetchMovieGenresAction,
-  fetchMeetupsAction,
 } from '../../state/movies/actions';
 import {
-  STREAMING_SERVICES_SCREEN,
   SEARCH_MOVIE_SCREEN,
-  LOGIN,
-  DISLIKED_LIST,
-  CREATED_ROOM,
   EXPERIENCE_SELECT
 } from '../../constants/ROUTES';
 import { selectUserIsLoggedIn } from '../../state/auth/selectors';
 import { logUserOutAction } from '../../state/auth/actions';
-import { closeModalAction, openModalAction } from '../../state/modal/actions';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();

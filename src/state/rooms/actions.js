@@ -2,9 +2,10 @@ import React from 'react';
 
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import { FAILURE, SUCCESS } from '../constants';
-import { SET_ROOM_STATE, MOVIE_SWIPE, SET_ROOM_SIZE } from './constants';
+import { SET_ROOM_STATE, SET_ROOM_SIZE, MATCH_FOUND } from './constants';
 import { selectCurrentRoomSize, selectRoomID } from './selectors';
 import { openModalAction } from '../modal/actions';
+import { selectCurrentMovieId } from '../movies/selectors';
 
 export const updateRoomAction = (roomID, roomKey, userName, roomUserID) => (
   dispatch
@@ -24,20 +25,27 @@ export const updateRoomSize = (roomSize) => (dispatch) => {
   });
 };
 
-export const movieMatchAction = (movieId, rightSwipe) => (
+export const movieMatchAction = () => (
   dispatch,
   getState
 ) => {
   const currentRoomSize = selectCurrentRoomSize(getState());
   const roomID = selectRoomID(getState());
+  const currentMovieId = selectCurrentMovieId(getState());
 
   // room is size 1 and not in a group room
   if (currentRoomSize === 1 && !roomID) {
-    if (rightSwipe) {
-      dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
-    }
+    dispatch(setMatchedMovieIdAction(currentMovieId));
   }
 };
+
+export const setMatchedMovieIdAction = (movieId) => (dispatch) => {
+  dispatch({
+    type: MATCH_FOUND,
+    status: SUCCESS,
+    payload: { matchedMovieId: movieId },
+  });
+}
 
 // export const attachRoomSizeListenerAction = () => (dispatch) => {
 //   dispatch({

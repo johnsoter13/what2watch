@@ -1,0 +1,1 @@
+export const MATCH_ANIMATION = 'MATCH_ANIMATION';

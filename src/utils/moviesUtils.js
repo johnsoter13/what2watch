@@ -17,6 +17,11 @@ export const checkIfMovieIsAvailableToUser = (userStreamingServices, movie) => {
   return [];
 };
 
-// export const checkForPotentialMatch = (roomSize, numberOfMatches) => {
-  
-// }
+export const shuffleMovies = (movieArray) => {
+  let shuffledArray = movieArray
+    .map((a) => ({sort: Math.random(), value: a}))
+    .sort((a, b) => a.sort - b.sort)
+    .map((a) => a.value)
+
+  return shuffledArray;
+};

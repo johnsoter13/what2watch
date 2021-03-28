@@ -69,17 +69,17 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
             </View>
             <Text style={styles.movieRowAvailable}>Available on:</Text>
             <View style={styles.movieStreamingServices}>
-              {movieStreamingServices.map((streamingService) => (
-                <View
-                  key={streamingService}
+              {movieStreamingServices.map((streamingService) => {
+                return (<View
+                  key={streamingService.display_name}
                   style={styles.movieStreamingService}
                 >
                   <Button
                     onPress={() => handleNavigateToLink(streamingService.url)}
                     title={streamingService.display_name}
                   />
-                </View>
-              ))}
+                </View>)
+              })}
             </View>
           </View>
         ) : (

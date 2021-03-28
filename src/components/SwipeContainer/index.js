@@ -65,6 +65,7 @@ const SwipeContainer = ({ handleRightSwipe, handleLeftSwipe, components }) => {
     Animated.timing(position, {
       toValue: { x, y: 0 },
       duration: SWIPE_OUT_DURATION,
+      useNativeDriver: false,
     }).start(() => {
       onSwipeComplete(direction);
     });
@@ -73,6 +74,7 @@ const SwipeContainer = ({ handleRightSwipe, handleLeftSwipe, components }) => {
   const resetPosition = () => {
     Animated.spring(position, {
       toValue: { x: 0, y: 0 },
+      useNativeDriver: false,
     }).start();
   };
 

@@ -10,6 +10,7 @@ import {
 import {
   movieListIndexAction,
   fetchMovieStreamingServicesAction,
+  setCurrentMovieIdAction,
 } from '../state/movies/actions';
 import { selectUserStreamingServices } from '../state/streaming/selectors';
 import { checkIfMovieIsAvailableToUser } from '../utils/moviesUtils';
@@ -25,11 +26,11 @@ export const useMovie = (genre) => {
     selectMovieStreamingServicesById(state, movieId)
   );
 
-  const [sharedServices, setSharedServices] = useState([]);
+  const [sharedServices, setSharedServices] = useState({movieId: '', sharedServices: []});
 
   const userStreamingServices = useSelector(selectUserStreamingServices);
 
-  const movieLoadingComplete = !!(sharedServices.length > 0 && movie);
+  let movieLoadingComplete = !!(sharedServices.movieId === movieId && sharedServices.sharedServices?.length > 0 && movie);
 
   useEffect(() => {
     // if movies doesn't exit or index has surpassed the length of the array
@@ -51,7 +52,8 @@ export const useMovie = (genre) => {
 
       // if yes, set shared services
       if (sharedServicesForMovie.length) {
-        setSharedServices(sharedServicesForMovie);
+        setSharedServices({movieId, sharedServices: sharedServicesForMovie});
+        dispatch(setCurrentMovieIdAction(movieId));
         // skip to next movie
       } else {
         dispatch(movieListIndexAction(genre, false));
@@ -59,5 +61,5 @@ export const useMovie = (genre) => {
     }
   }, [movie, movies, movieId, dispatch, fetchMovieStreamingServicesAction]);
 
-  return [movieIndex, movie, movieLoadingComplete, sharedServices];
+  return [movieIndex, movie, movieLoadingComplete, sharedServices.sharedServices];
 };
