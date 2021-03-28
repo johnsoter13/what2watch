@@ -77,22 +77,22 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     });
 
     return fetchMoviesByGenre(endpoint)
-    .then((response) => response.text())
-    .then((text) => JSON.parse(text))
-    .then((moviesByGenre) => {
-      const shuffledMovies = shuffleMovies(moviesByGenre);
-      dispatch({
-        type: MOVIES_BY_GENRE,
-        status: SUCCESS,
-        payload: { genre, moviesByGenre: shuffledMovies },
+      .then((response) => response.text())
+      .then((text) => JSON.parse(text))
+      .then((moviesByGenre) => {
+        const shuffledMovies = shuffleMovies(moviesByGenre);
+        dispatch({
+          type: MOVIES_BY_GENRE,
+          status: SUCCESS,
+          payload: { genre, moviesByGenre: shuffledMovies },
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: MOVIES_BY_GENRE,
+          status: FAILURE,
+        });
       });
-    })
-    .catch(() => {
-      dispatch({
-        type: MOVIES_BY_GENRE,
-        status: FAILURE,
-      });
-    });
   }
 };
 
@@ -185,6 +185,7 @@ export const saveMovieAction = (genre, liked, movie) => (
     movie = selectMovieStreamingServicesById(getState(), movieId);
   }
 
+  // if user is logged in and disliked the movie, update database's list of disliked
   if (!liked && isUserLoggedIn) {
     const uid = selectUserId(getState());
 
@@ -295,7 +296,7 @@ export const fetchMostPopularMoviesActions = () => (dispatch, getState) => {
       type: MOST_POPULAR_MOVIES,
       status: PENDING,
     });
-  
+
     return fetchMostPopularMovies()
       .then((response) => response.text())
       .then((text) => JSON.parse(text))

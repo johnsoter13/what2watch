@@ -81,10 +81,10 @@ const CreatedRoom = ({ navigation }) => {
       .orderByChild('userName')
       .equalTo(userName)
       .once('value', function (snapshot) {
-        console.log('CHECKING IF ' + userName + ' EXISTS');
+        // console.log('CHECKING IF ' + userName + ' EXISTS');
         if (snapshot.exists()) {
           // name exists
-          console.log('NAME ALREADY EXIST IN ROOM');
+          // console.log('NAME ALREADY EXIST IN ROOM');
           setUserNameError('Name already exists');
         } else {
           // name does not exist
@@ -113,7 +113,7 @@ const CreatedRoom = ({ navigation }) => {
       checkFound(roomKey);
       const randomNumber = Math.floor(Math.random() * 1000);
       const roomUserID = hashids.encode(randomNumber);
-      console.log(roomUserID);
+      // console.log(roomUserID);
 
       // only update room state if name or roomID is changed
       if (stateUserName !== userName || stateRoomID !== roomID) {
@@ -133,7 +133,7 @@ const CreatedRoom = ({ navigation }) => {
   const checkRoomSize = (roomKey) => {
     db.ref('rooms/' + roomKey + '/roomSize').on('value', function (snapshot) {
       const changedSize = snapshot.val();
-      console.log('Room Size is now: ' + changedSize);
+      // console.log('Room Size is now: ' + changedSize);
       dispatch(updateRoomSize(changedSize));
     });
   };
@@ -142,7 +142,7 @@ const CreatedRoom = ({ navigation }) => {
   const checkFound = (roomKey) => {
     db.ref('rooms/' + roomKey + '/found').on('value', function (snapshot) {
       const movieId = snapshot.val();
-      console.log('Found?: ' + movieId);
+      // console.log('Found?: ' + movieId);
       if (movieId) {
         dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
       }
@@ -150,7 +150,7 @@ const CreatedRoom = ({ navigation }) => {
   };
 
   const handleGenerateRoom = () => {
-    console.log('handle generate room clicked');
+    // console.log('handle generate room clicked');
 
     // generating random roomID using date of the month and random number
     const date = new Date().getDate();
@@ -168,8 +168,8 @@ const CreatedRoom = ({ navigation }) => {
     });
     const roomKey = newRoomRef.key;
 
-    console.log('Key in the database: ' + roomKey);
-    console.log('Room ID: ' + roomID);
+    // console.log('Key in the database: ' + roomKey);
+    // console.log('Room ID: ' + roomID);
     setText(roomID);
   };
 
