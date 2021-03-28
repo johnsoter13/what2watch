@@ -10,3 +10,5 @@ export const selectCurrentRoomSize = (state) =>
 export const selectRoomUserID = (state) => state.rooms.roomUserID;
 
 export const selectRoomSize = (state) => state.rooms.roomSize;
+
+export const selectMatchedMovieId = (state) => state.rooms.matchedMovieId;

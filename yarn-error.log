@@ -1,11 +1,11 @@
 Arguments: 
-  /usr/local/bin/node /Users/jsoter/.yarn/bin/yarn.js remove react-native-swipe-cards
+  /usr/local/bin/node /Users/jsoter/.yarn/bin/yarn.js
 
 PATH: 
   /Users/jsoter/.yarn/bin:/Users/jsoter/.config/yarn/global/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:./node_modules/.bin
 
 Yarn version: 
-  1.19.0
+  1.22.5
 
 Node version: 
   14.15.4
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/Users/jsoter/what2watch/node_modules/expo-clipboard/.eslintrc.js'
+  Error: EACCES: permission denied, unlink '/Users/jsoter/what2watch/node_modules/expo-clipboard/CHANGELOG.md'
 
 npm manifest: 
   {
@@ -2636,11 +2636,6 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz"
     integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
-  
-  clamp@^1.0.1:
-    version "1.0.1"
-    resolved "https://registry.yarnpkg.com/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
-    integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
   
   class-utils@^0.3.5:
     version "0.3.6"
@@ -6770,14 +6765,6 @@ Lockfile:
     version "2.9.0"
     resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz"
     integrity sha512-5MaiUD6HA3nzY3JbVI8l3V7pKedtxQF3d8qktTVI0WmWXTI4QzqOU8r8fPVvfKo3MhOXwhWBjr+kQ7DZaIQQeg==
-  
-  react-native-swipe-cards@^0.1.1:
-    version "0.1.1"
-    resolved "https://registry.yarnpkg.com/react-native-swipe-cards/-/react-native-swipe-cards-0.1.1.tgz#25a31b450f2616f3a25a101c9fc37ccbb2deb3e2"
-    integrity sha1-JaMbRQ8mFvOiWhAcn8N8y7Les+I=
-    dependencies:
-      clamp "^1.0.1"
-      prop-types "^15.6.0"
   
   react-native-web@~0.11.7:
     version "0.11.7"

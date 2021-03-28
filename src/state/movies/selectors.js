@@ -35,3 +35,5 @@ export const selectMovieIdByIndex = (state, genre, index) => {
 };
 
 export const selectMostPopularMovies = (state, index = 0) => state.movies.mostPopularMovies?.[index];
+
+export const selectCurrentMovieId = (state) => state.movies.currentMovieId;

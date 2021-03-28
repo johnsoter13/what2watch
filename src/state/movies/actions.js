@@ -5,6 +5,7 @@ import {
   MOVIE_STREAMING_SERVICES,
   MOVIE_INDEX,
   MOST_POPULAR_MOVIES,
+  SET_CURRENT_MOVIE_ID,
 } from './constants';
 import { PENDING, SUCCESS, FAILURE } from '../constants';
 import {
@@ -31,11 +32,10 @@ import {
   selectRoomUserID,
   selectRoomSize,
 } from '../rooms/selectors';
-import { movieMatchAction } from '../rooms/actions';
 import { openModalAction } from '../modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
-import Firebase, { db } from '../../../config/Firebase';
 import { MOST_POPULAR } from '../../components/MovieList/constants';
+import { shuffleMovies } from '../../utils/moviesUtils';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -80,10 +80,11 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     .then((response) => response.text())
     .then((text) => JSON.parse(text))
     .then((moviesByGenre) => {
+      const shuffledMovies = shuffleMovies(moviesByGenre);
       dispatch({
         type: MOVIES_BY_GENRE,
         status: SUCCESS,
-        payload: { genre, moviesByGenre },
+        payload: { genre, moviesByGenre: shuffledMovies },
       });
     })
     .catch(() => {
@@ -268,10 +269,11 @@ export const fetchMostPopularMoviesActions = () => (dispatch) => {
     .then((response) => response.text())
     .then((text) => JSON.parse(text))
     .then((mostPopularMovies) => {
+      const shuffledMovies = shuffleMovies(mostPopularMovies);
       dispatch({
         type: MOST_POPULAR_MOVIES,
         status: SUCCESS,
-        payload: { mostPopularMovies },
+        payload: { mostPopularMovies: shuffledMovies },
       });
     })
     .catch(() => {
@@ -280,4 +282,12 @@ export const fetchMostPopularMoviesActions = () => (dispatch) => {
         status: FAILURE,
       });
     });
+};
+
+export const setCurrentMovieIdAction = (movieId) => (dispatch) => {
+  dispatch({
+    type: SET_CURRENT_MOVIE_ID,
+    status: SUCCESS,
+    payload: { movieId },
+  });
 };
