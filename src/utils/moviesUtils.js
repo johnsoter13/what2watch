@@ -1,5 +1,5 @@
 export const checkIfMovieIsAvailableToUser = (userStreamingServices, movie) => {
-  const movieStreamingServices = Object.keys(movie.streamingServices);
+  const movieStreamingServices = Object.keys(movie?.streamingServices);
   const sharedMovieStreamingServices = [];
 
   movieStreamingServices.forEach((streamingService) => {
