@@ -213,12 +213,12 @@ export const saveMovieAction = (genre, liked, movie) => (
   if (roomID && roomKey) {
     const movieObj = {
       movieName: movieName,
-      users: [{ [roomUserID]: { [userName]: liked } }],
-      tests: { [userName]: liked },
+      // tests: [{ [roomUserID]: { [userName]: liked } }],
+      users: { [userName]: liked },
     };
 
-    let users = [];
-    let tests = {};
+    let users = {};
+    // let tests = [];
     // let inDB = false;
 
     const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
@@ -229,37 +229,37 @@ export const saveMovieAction = (genre, liked, movie) => (
         if (snapshot.val()) {
           // inDB = true;
           users = snapshot.val().users;
-          tests = snapshot.val().tests;
-          // when there's only 1 user, it's not an array in firebase
-          if (!Array.isArray(users)) {
-            users = [users];
-          }
+          // tests = snapshot.val().tests;
+          // when there's only 1 test, it's not an array in firebase
+          // if (!Array.isArray(tests)) {
+          //   tests = [tests];
+          // }
 
           // search through users/tests and modify specific name
-          let usersIndex = -1;
-          if (users.indexOf(roomUserID) !== -1) {
-            users[users.indexOf(roomUserID)] = liked;
-          } else {
-            users.push({ [roomUserID]: { [userName]: liked } });
-          }
+          // let testsIndex = -1;
+          // if (tests.indexOf(roomUserID) !== -1) {
+          //   tests[tests.indexOf(roomUserID)] = liked;
+          // } else {
+          //   tests.push({ [roomUserID]: { [userName]: liked } });
+          // }
 
-          tests[userName] = liked;
+          users[userName] = liked;
+
+          // let testFound = true;
+          // // check if everyone is in the room
+          // if (roomSize !== 1 && tests.length === roomSize) {
+          //   tests.forEach((element) => {
+          //     if (!Object.values(Object.values(element)[0])[0]) {
+          //       testFound = false;
+          //     }
+          //   });
+          // }
 
           let found = true;
-          // check if everyone is in the room
           if (roomSize !== 1 && users.length === roomSize) {
-            users.forEach((element) => {
-              if (!Object.values(Object.values(element)[0])[0]) {
+            for (user in users) {
+              if (!users[user]) {
                 found = false;
-              }
-            });
-          }
-
-          let testFound = true;
-          if (roomSize !== 1 && tests.length === roomSize) {
-            for (test in tests) {
-              if (!tests[test]) {
-                testFound = false;
               }
             }
           }
@@ -269,21 +269,22 @@ export const saveMovieAction = (genre, liked, movie) => (
             fetchRoomsDatabase(roomKey).update({ found: movieId });
           }
 
-          if (testFound) {
-            console.log('Test has found a match');
-          }
+          // if (testFound) {
+          //   console.log('Test has found a match');
+          // }
 
           refMovieId.update({
             users: users,
-            tests: tests,
+            // tests: tests,
           });
         } else {
-          refMovieId.set(movieObj).then(() => console.log('Sent to room!'));
+          refMovieId.set(movieObj);
+          // .then(() => console.log('Sent to room!'));
         }
-      },
-      function (errorObject) {
-        console.log('The read failed: ' + errorObject.code);
       }
+      // function (errorObject) {
+      //   console.log('The read failed: ' + errorObject.code);
+      // }
     );
   }
 };
