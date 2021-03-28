@@ -211,9 +211,11 @@ export const saveMovieAction = (genre, liked, movie) => (
     const movieObj = {
       movieName: movieName,
       users: [{ [roomUserID]: { [userName]: liked } }],
+      tests: [{ [userName]: liked }],
     };
 
     let users = [];
+    let tests = [];
     // let inDB = false;
 
     const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
@@ -224,11 +226,24 @@ export const saveMovieAction = (genre, liked, movie) => (
         if (snapshot.val()) {
           // inDB = true;
           users = snapshot.val().users;
+          tests = snapshot.val().tests;
           // when there's only 1 user, it's not an array in firebase
           if (!Array.isArray(users)) {
             users = [users];
           }
-          users.push({ [roomUserID]: { [userName]: liked } });
+
+          // search through users/tests and modify specific name
+          let usersIndex = -1;
+          if (users.indexOf(roomUserID) !== -1) {
+            users[users.indexOf(roomUserID)] = liked;
+          }
+          let testsIndex = -1;
+          if (tests.indexOf(userName) !== -1) {
+            tests[tests.indexOf(userName)] = liked;
+          } else {
+            users.push({ [roomUserID]: { [userName]: liked } });
+            tests.push({ [userName]: liked });
+          }
 
           let found = true;
           // check if everyone is in the room
@@ -239,13 +254,28 @@ export const saveMovieAction = (genre, liked, movie) => (
               }
             });
           }
+
+          let testFound = true;
+          if (roomSize !== 1 && tests.length === roomSize) {
+            tests.forEach((element) => {
+              if (!Object.values(element)[0]) {
+                found = false;
+              }
+            });
+          }
+
           if (found) {
             dispatch(openModalAction(<MovieMatchModal movieId={movieId} />));
             fetchRoomsDatabase(roomKey).update({ found: movieId });
           }
 
+          if (testFound) {
+            console.log('Test has found a match');
+          }
+
           refMovieId.update({
             users: users,
+            tests: tests,
           });
         } else {
           refMovieId.set(movieObj).then(() => console.log('Sent to room!'));
