@@ -7,6 +7,7 @@ import {
   MOST_POPULAR_MOVIES,
   SET_CURRENT_MOVIE_ID,
   MOVIES_TO_FETCH_LIMIT,
+  SET_CURRENT_GENRE,
 } from './constants';
 import { PENDING, SUCCESS, FAILURE } from '../constants';
 import {
@@ -75,6 +76,12 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
     dispatch({
       type: MOVIES_BY_GENRE,
       status: PENDING,
+    });
+
+    dispatch({
+      type: SET_CURRENT_GENRE,
+      status: SUCCESS,
+      payload: {genre}
     });
 
     return fetchMoviesByGenre(endpoint)
@@ -296,6 +303,12 @@ export const fetchMostPopularMoviesActions = () => (dispatch, getState) => {
       type: MOST_POPULAR_MOVIES,
       status: PENDING,
     });
+
+    dispatch({
+      type: SET_CURRENT_GENRE,
+      status: SUCCESS,
+      payload: {genre: MOST_POPULAR}
+    });
   
     return fetchMostPopularMovies()
       .then((response) => response.text())
@@ -322,5 +335,13 @@ export const setCurrentMovieIdAction = (movieId) => (dispatch) => {
     type: SET_CURRENT_MOVIE_ID,
     status: SUCCESS,
     payload: { movieId },
+  });
+};
+
+export const setCurrentGenreAction = (genre) => (dispatch) => {
+  dispatch({
+    type: SET_CURRENT_GENRE,
+    status: SUCCESS,
+    payload: { genre },
   });
 };

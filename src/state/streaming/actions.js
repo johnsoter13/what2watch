@@ -15,12 +15,6 @@ export const updateStreamingServicesAction = (
     payload: { streamingServices },
   });
 
-  dispatch({
-    type: MOVIE_INDEX,
-    status: SUCCESS,
-    payload: { reset: true },
-  });
-
   if (isLoggedIn) {
     fetchUserDatabase(uid)
       .set(
