@@ -21,6 +21,7 @@ import { movieListIndexAction } from "../../state/movies/actions";
 import { setMatchedMovieIdAction } from "../../state/rooms/actions";
 import { setMatchAnimationAction } from "../../state/animation/actions";
 import MovieInfoSection from "../MovieInfoSection";
+import Loading from "../Loading";
 
 const MovieMatch = ({genre}) => {
   const dispatch = useDispatch();
@@ -29,9 +30,9 @@ const MovieMatch = ({genre}) => {
   const userStreamingServices = useSelector(selectUserStreamingServices);
   const animationFinished = useSelector(selectMatchAnimationFinished);
   
-  const sharedServices = checkIfMovieIsAvailableToUser(userStreamingServices, movie);
+  const sharedServices = movie && checkIfMovieIsAvailableToUser(userStreamingServices, movie);
 
-  return (
+  const renderMatch = () => (
     <View style={styles.container}>
       {animationFinished ? (
         <>
@@ -56,7 +57,9 @@ const MovieMatch = ({genre}) => {
         <MatchAnimationView moviePicture={movie.moviePicture}/>
       )}
     </View>
-  )
+  );
+
+  return movie ? renderMatch() : <Loading />
 };
 
 export default MovieMatch;

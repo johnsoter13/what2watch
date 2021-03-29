@@ -41,11 +41,10 @@ export const movieMatchAction = () => (
 };
 
 export const setMatchedMovieIdAction = (movieId) => (dispatch, getState) => {
-  const genre = selectCurrentGenre(getState());
   const movie = selectMovieStreamingServicesById(getState(), movieId);
 
   if (!movie) {
-    dispatch(fetchMovieStreamingServicesHelper(movieId));
+    dispatch(fetchMovieStreamingServicesHelper(movieId)).then();
   }
 
   dispatch({
