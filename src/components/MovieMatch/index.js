@@ -38,6 +38,7 @@ const MovieMatch = ({genre}) => {
         <>
           <View className="match-text-container" style={styles.matchTextContainer}>
             <Text>You have a new match!</Text>
+            <Text>{movie.movieTitle}</Text>
           </View>
           <View style={styles.movieRowContainer}>
             <MovieInfoSection movie={movie} sharedServices={sharedServices} />
