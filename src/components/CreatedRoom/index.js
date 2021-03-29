@@ -10,7 +10,11 @@ import {
 } from 'react-native';
 import Clipboard from 'expo-clipboard';
 
-import { setMatchedMovieIdAction, updateRoomAction, updateRoomSize } from '../../state/rooms/actions';
+import {
+  setMatchedMovieIdAction,
+  updateRoomAction,
+  updateRoomSize,
+} from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
 import Firebase, { db } from '../../../config/Firebase';
@@ -61,15 +65,9 @@ const CreatedRoom = ({ navigation }) => {
       .once('value', function (snapshot) {
         if (snapshot.val()) {
           const roomKey = Object.keys(snapshot.val())[0];
-          // Removed for now
           // Room exists, check if name is already used
-          // doesNameExist(roomKey);
-
-          const roomID = text;
-          let roomSize = 1;
-          joinRoom(roomKey, roomID, roomSize);
+          doesNameExist(roomKey);
         } else {
-          console.log('NO ROOM WITH THAT ID');
           setRoomError('No room was found by that ID');
         }
       });
@@ -81,39 +79,46 @@ const CreatedRoom = ({ navigation }) => {
       .orderByChild('userName')
       .equalTo(userName)
       .once('value', function (snapshot) {
-        // console.log('CHECKING IF ' + userName + ' EXISTS');
+        let rejoin = false;
         if (snapshot.exists()) {
           // name exists
           // console.log('NAME ALREADY EXIST IN ROOM');
-          setUserNameError('Name already exists');
-        } else {
-          // name does not exist
-          const roomID = text;
-          let roomSize = 1;
-          joinRoom(roomKey, roomID, roomSize);
+          // setUserNameError('Name already exists');
+          rejoin = true;
         }
+        const roomID = text;
+        let roomSize = 1;
+        joinRoom(roomKey, roomID, roomSize, rejoin);
       });
   };
 
   // join room with roomKey
-  const joinRoom = (roomKey, roomID, roomSize) => {
+  const joinRoom = (roomKey, roomID, roomSize, rejoin) => {
     db.ref('rooms/' + roomKey + '/roomSize').transaction(function (
       current_size
     ) {
-      // if (current_size === 0) {
-      //   let usersDB = db.ref('rooms/' + roomKey + '/users');
-      //   usersDB.remove().then(function () {
-      //     usersDB.push({ userName: userName });
-      //   });
-      // } else {
-      //   db.ref('rooms/' + roomKey + '/users').push({ userName: userName });
-      // }
-      roomSize = (current_size || 0) + 1;
+      // if no one is in the room, initialize by removing users
+      // then adding first user
+      let usersRef = db.ref('rooms/' + roomKey + '/users');
+      if (current_size === 0) {
+        usersRef.remove().then(function () {
+          usersRef.push({ userName: userName });
+        });
+      } else if (!rejoin) {
+        usersRef.push({ userName: userName });
+      }
+
+      // if rejoining, don't increment roomSize
+      if (!rejoin) {
+        roomSize = (current_size || 0) + 1;
+      } else {
+        roomSize = current_size;
+      }
+
       checkRoomSize(roomKey);
       checkFound(roomKey);
       const randomNumber = Math.floor(Math.random() * 1000);
       const roomUserID = hashids.encode(randomNumber);
-      // console.log(roomUserID);
 
       // only update room state if name or roomID is changed
       if (stateUserName !== userName || stateRoomID !== roomID) {
@@ -123,7 +128,6 @@ const CreatedRoom = ({ navigation }) => {
         // todo
         // send another dispatch with ref of both listeners?
       }
-      // console.log('about to navigate to streaming services');
       navigation.navigate(STREAMING_SERVICES_SCREEN);
       return roomSize;
     });
@@ -133,7 +137,6 @@ const CreatedRoom = ({ navigation }) => {
   const checkRoomSize = (roomKey) => {
     db.ref('rooms/' + roomKey + '/roomSize').on('value', function (snapshot) {
       const changedSize = snapshot.val();
-      // console.log('Room Size is now: ' + changedSize);
       dispatch(updateRoomSize(changedSize));
     });
   };
@@ -142,7 +145,6 @@ const CreatedRoom = ({ navigation }) => {
   const checkFound = (roomKey) => {
     db.ref('rooms/' + roomKey + '/found').on('value', function (snapshot) {
       const movieId = snapshot.val();
-      // console.log('Found?: ' + movieId);
       if (movieId) {
         dispatch(setMatchedMovieIdAction(movieId));
       }
@@ -150,8 +152,6 @@ const CreatedRoom = ({ navigation }) => {
   };
 
   const handleGenerateRoom = () => {
-    // console.log('handle generate room clicked');
-
     // generating random roomID using date of the month and random number
     const date = new Date().getDate();
     const randomNumber = Math.floor(Math.random() * 1000);
@@ -164,12 +164,8 @@ const CreatedRoom = ({ navigation }) => {
       roomID: roomID,
       roomSize: 0,
       found: false,
-      // users: ['0'],
     });
     const roomKey = newRoomRef.key;
-
-    // console.log('Key in the database: ' + roomKey);
-    // console.log('Room ID: ' + roomID);
     setText(roomID);
   };
 

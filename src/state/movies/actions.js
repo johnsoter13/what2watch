@@ -194,99 +194,79 @@ export const saveMovieAction = (genre, liked, movie) => (
     fetchUserDatabase(uid)
       .child('movies/disliked')
       .push(actualMovieId)
-      // ,
-      // (error) => {
-      //   if (error) {
-      //     console.log('failed! ' + error)
-      //   }
-      // }
       .then(() => console.log('Movie disliked!'));
   }
 
   const roomID = selectRoomID(getState());
   const roomKey = selectRoomKey(getState());
   const userName = selectUserName(getState());
-  const roomUserID = selectRoomUserID(getState());
   const movieName = movie.movieTitle;
 
   // saving user's like/dislike of the movie if in a room
   if (roomID && roomKey) {
-    const movieObj = {
-      movieName: movieName,
-      // tests: [{ [roomUserID]: { [userName]: liked } }],
-      users: { [userName]: liked },
-    };
-
-    let users = {};
-    // let tests = [];
-    // let inDB = false;
-
-    const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
-
-    refMovieId.once(
-      'value',
-      function (snapshot) {
-        if (snapshot.val()) {
-          // inDB = true;
-          users = snapshot.val().users;
-          // tests = snapshot.val().tests;
-          // when there's only 1 test, it's not an array in firebase
-          // if (!Array.isArray(tests)) {
-          //   tests = [tests];
-          // }
-
-          // search through users/tests and modify specific name
-          // let testsIndex = -1;
-          // if (tests.indexOf(roomUserID) !== -1) {
-          //   tests[tests.indexOf(roomUserID)] = liked;
-          // } else {
-          //   tests.push({ [roomUserID]: { [userName]: liked } });
-          // }
-
-          users[userName] = liked;
-
-          // let testFound = true;
-          // // check if everyone is in the room
-          // if (roomSize !== 1 && tests.length === roomSize) {
-          //   tests.forEach((element) => {
-          //     if (!Object.values(Object.values(element)[0])[0]) {
-          //       testFound = false;
-          //     }
-          //   });
-          // }
-
-          let found = true;
-          if (roomSize !== 1 && users.length === roomSize) {
-            for (user in users) {
-              if (!users[user]) {
-                found = false;
-              }
-            }
-          }
-
-          if (found) {
-            dispatch(setMatchedMovieIdAction(movieId));
-            fetchRoomsDatabase(roomKey).update({ found: movieId });
-          }
-
-          // if (testFound) {
-          //   console.log('Test has found a match');
-          // }
-
-          refMovieId.update({
-            users: users,
-            // tests: tests,
-          });
-        } else {
-          refMovieId.set(movieObj);
-          // .then(() => console.log('Sent to room!'));
-        }
-      }
-      // function (errorObject) {
-      //   console.log('The read failed: ' + errorObject.code);
-      // }
+    saveUserLike(
+      roomSize,
+      roomKey,
+      userName,
+      movieName,
+      movieId,
+      actualMovieId,
+      liked,
+      dispatch
     );
   }
+};
+
+const saveUserLike = (
+  roomSize,
+  roomKey,
+  userName,
+  movieName,
+  movieId,
+  actualMovieId,
+  liked,
+  dispatch
+) => {
+  const movieObj = {
+    movieName: movieName,
+    users: { [userName]: liked },
+  };
+
+  let users = {};
+
+  const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
+
+  // get users from server
+  refMovieId.once('value', function (snapshot) {
+    if (snapshot.val()) {
+      users = snapshot.val().users;
+
+      // set current user's pref
+      users[userName] = liked;
+
+      // check if everyone in the room likes the movie
+      let found = true;
+      if (roomSize !== 1 && Object.keys(users).length === roomSize) {
+        for (let user in users) {
+          if (!users[user]) {
+            found = false;
+          }
+        }
+      }
+
+      if (found) {
+        dispatch(setMatchedMovieIdAction(movieId));
+        fetchRoomsDatabase(roomKey).update({ found: movieId });
+      }
+
+      // update users in server
+      refMovieId.update({
+        users: users,
+      });
+    } else {
+      refMovieId.set(movieObj);
+    }
+  });
 };
 
 export const fetchMostPopularMoviesActions = () => (dispatch, getState) => {

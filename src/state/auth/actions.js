@@ -29,7 +29,6 @@ export const createUserAction = (email, password) => (dispatch) => {
   return createUserWithEmailAndPassword(email, password)
     .then((account) => {
       account.user.getIdToken().then((idToken) => {
-        // console.log(account);
         const uid = account.user.uid;
         dispatch({
           type: SET_LOGIN_STATE,
