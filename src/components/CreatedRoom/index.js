@@ -26,6 +26,8 @@ import {
 } from '../../state/rooms/selectors';
 import { openModalAction } from '../../state/modal/actions';
 import MovieMatchModal from '../../components/Modals/MovieMatchModal';
+import { movieListIndexAction } from '../../state/movies/actions';
+import { selectCurrentGenre } from '../../state/movies/selectors';
 
 const CreatedRoom = ({ navigation }) => {
   // change "text" to room related name
@@ -38,6 +40,7 @@ const CreatedRoom = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const stateUserName = useSelector(selectUserName);
   const stateRoomID = useSelector(selectRoomID);
+  const currentGenre = useSelector(selectCurrentGenre);
 
   const handleEnterRoom = () => {
     if (!userName) {
@@ -49,7 +52,7 @@ const CreatedRoom = ({ navigation }) => {
     if (userName && text) {
       setUserNameError('');
       setRoomError('');
-
+      dispatch(movieListIndexAction(currentGenre, true));
       // todo
       // remove listeners if roomKey exists in store
 

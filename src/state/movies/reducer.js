@@ -6,8 +6,10 @@ import {
   MOVIE_INDEX,
   MOST_POPULAR_MOVIES,
   SET_CURRENT_MOVIE_ID,
+  SET_CURRENT_GENRE,
 } from './constants';
 import { FAILURE, PENDING, SUCCESS } from '../constants';
+import { MOST_POPULAR } from '../../components/MovieList/constants';
 
 const initialState = {
   genres: {},
@@ -19,6 +21,7 @@ const initialState = {
   movieIndexes: {},
   mostPopularMovies: [],
   currentMovieId: '',
+  currentGenre: MOST_POPULAR,
 };
 
 const createGenresObj = (genres) => {
@@ -138,6 +141,15 @@ export default produce((draft, action) => {
             const {movieId} = action.payload;
   
             draft.currentMovieId = movieId;
+            break;
+        }
+      break;
+      case SET_CURRENT_GENRE:
+        switch (action.status) {
+          case SUCCESS: 
+            const {genre} = action.payload;
+  
+            draft.currentGenre = genre;
             break;
         }
       break;
