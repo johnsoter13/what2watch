@@ -5,8 +5,8 @@ import { FAILURE, SUCCESS } from '../constants';
 import { SET_ROOM_STATE, SET_ROOM_SIZE, MATCH_FOUND } from './constants';
 import { selectCurrentRoomSize, selectRoomID } from './selectors';
 import { openModalAction } from '../modal/actions';
-import { selectCurrentMovieId } from '../movies/selectors';
-import { movieListIndexAction } from '../movies/actions';
+import { selectCurrentGenre, selectCurrentMovieId, selectMoviesByGenre, selectMovieStreamingServicesById } from '../movies/selectors';
+import { fetchMovieStreamingServicesHelper, movieListIndexAction } from '../movies/actions';
 
 export const updateRoomAction = (roomID, roomKey, userName, roomUserID) => (
   dispatch
@@ -40,7 +40,14 @@ export const movieMatchAction = () => (
   }
 };
 
-export const setMatchedMovieIdAction = (movieId) => (dispatch) => {
+export const setMatchedMovieIdAction = (movieId) => (dispatch, getState) => {
+  const genre = selectCurrentGenre(getState());
+  const movie = selectMovieStreamingServicesById(getState(), movieId);
+
+  if (!movie) {
+    dispatch(fetchMovieStreamingServicesHelper(movieId));
+  }
+
   dispatch({
     type: MATCH_FOUND,
     status: SUCCESS,

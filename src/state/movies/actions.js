@@ -104,6 +104,45 @@ export const fetchMoviesByGenreAction = (genre, endpoint) => (
   }
 };
 
+export const fetchMovieStreamingServicesHelper = (movieId) => async (dispatch) => {
+  const actualMovieId = movieId.slice(
+    movieId.indexOf('tt'),
+    movieId.lastIndexOf('/')
+  );
+
+  const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
+    actualMovieId
+  );
+
+  if (fetchMovieStreamingServicesResponse.ok) {
+    const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
+
+    const fetchMovieDetailsResponse = await fetchMovieDetails(
+      actualMovieId
+    );
+
+    if (fetchMovieDetailsResponse.ok) {
+      const movieDetails = await fetchMovieDetailsResponse.json();
+
+      dispatch({
+        type: MOVIE_STREAMING_SERVICES,
+        status: SUCCESS,
+        payload: {
+          movieId,
+          movieStreamServices: movieStreamServices?.collection?.locations,
+          movieTitle: movieDetails?.title?.title,
+          moviePicture: movieDetails?.title?.image?.url,
+          moviePlot: movieDetails?.plotOutline?.text,
+          movieRating: movieDetails?.ratings?.rating,
+          movieReleaseDate: movieDetails?.releaseDate,
+          movieReleaseYear: movieDetails?.title?.year,
+          movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
+        },
+      });
+    }
+  }
+}
+
 export const fetchMovieStreamingServicesAction = (
   genre = MOST_POPULAR
 ) => async (dispatch, getState) => {
@@ -117,42 +156,7 @@ export const fetchMovieStreamingServicesAction = (
     for (let i = movieIndex; i < movieIndex + MOVIES_TO_FETCH_LIMIT; i++) {
       const movieId = selectMovieIdByIndex(getState(), genre, i);
 
-      const actualMovieId = movieId.slice(
-        movieId.indexOf('tt'),
-        movieId.lastIndexOf('/')
-      );
-
-      const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
-        actualMovieId
-      );
-
-      if (fetchMovieStreamingServicesResponse.ok) {
-        const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
-
-        const fetchMovieDetailsResponse = await fetchMovieDetails(
-          actualMovieId
-        );
-
-        if (fetchMovieDetailsResponse.ok) {
-          const movieDetails = await fetchMovieDetailsResponse.json();
-
-          dispatch({
-            type: MOVIE_STREAMING_SERVICES,
-            status: SUCCESS,
-            payload: {
-              movieId,
-              movieStreamServices: movieStreamServices?.collection?.locations,
-              movieTitle: movieDetails?.title?.title,
-              moviePicture: movieDetails?.title?.image?.url,
-              moviePlot: movieDetails?.plotOutline?.text,
-              movieRating: movieDetails?.ratings?.rating,
-              movieReleaseDate: movieDetails?.releaseDate,
-              movieReleaseYear: movieDetails?.title?.year,
-              movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
-            },
-          });
-        }
-      }
+      dispatch(fetchMovieStreamingServicesHelper(movieId));
     }
   } catch (err) {
     console.log(err);
