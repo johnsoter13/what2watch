@@ -2,7 +2,7 @@
   "expo": {
     "name": "What 2 Watch",
     "slug": "what-2-watch",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -21,7 +21,8 @@
     },
     "android": {
       "package": "com.ssodaandseung.what2watch",
-      "versionCode": 2
+      "versionCode": 6,
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"
