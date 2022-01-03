@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
 } from 'react-native';
-import Clipboard from 'expo-clipboard';
+import * as Clipboard from 'expo-clipboard';
 
 import {
   setMatchedMovieIdAction,
@@ -17,7 +17,7 @@ import {
 } from '../../state/rooms/actions';
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES';
 import Hashids from 'hashids';
-import Firebase, { db } from '../../../config/Firebase';
+import { db } from '../../../config/Firebase';
 import * as baseStyles from '../../styles/styles';
 import {
   selectRoomUserID,

@@ -40,6 +40,7 @@ import MovieMatchModal from '../../components/Modals/MovieMatchModal';
 import { MOST_POPULAR } from '../../components/MovieList/constants';
 import { shuffleMovies } from '../../utils/moviesUtils';
 import { setMatchedMovieIdAction } from '../rooms/actions';
+import { sleep } from '../../utils/sleep';
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -116,6 +117,8 @@ export const fetchMovieStreamingServicesHelper = (movieId) => async (dispatch) =
 
   if (fetchMovieStreamingServicesResponse.ok) {
     const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
+
+    await sleep(250);
 
     const fetchMovieDetailsResponse = await fetchMovieDetails(
       actualMovieId

@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   serviceButtonContainer: {
-    height: '5%',
+    height: '15%',
     marginBottom: 20,
   },
   serviceButton: {

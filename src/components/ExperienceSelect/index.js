@@ -18,9 +18,13 @@ const ExperienceSelect = ({navigation}) => {
           Solo
         </Text>
       </TouchableOpacity>
+      <Text style={styles.comingSoonText}>
+        Feature in Developement, coming soon!
+      </Text>
       <TouchableOpacity
-        style={styles.experienceButton}
+        style={styles.disabledExperienceButton}
         onPress={() => navigation.navigate(CREATED_ROOM)}
+        disabled={true}
       >
         <Text style={styles.experienceButtonText}>
           Group
@@ -55,10 +59,22 @@ const styles = StyleSheet.create({
     borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
     marginBottom: 50,
   },
+  disabledExperienceButton: {
+    maxHeight: '20%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: baseStyles.DISABLED_BUTTON_COLOR,
+    borderRadius: baseStyles.BUTTON_BORDER_RADIUS,
+    marginBottom: 50,
+  },
   experienceButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
     fontSize: 28
   },
+  comingSoonText: {
+    textAlign: 'center',
+  }
 });
 
 export default ExperienceSelect;

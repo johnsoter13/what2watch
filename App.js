@@ -28,7 +28,6 @@ import {
   DISLIKED_LIST,
   CREATED_ROOM,
   EXPERIENCE_SELECT,
-  SWIPE_BY_GENRE_MODAL,
 } from './src/constants/ROUTES';
 
 const store = createStore();
@@ -43,7 +42,7 @@ export default function App() {
             <Stack.Screen
               name={HOME_SCREEN}
               component={Home}
-              options={{ title: 'What 2 Watch' }}
+              options={{ title: 'picsure' }}
             />
             <Stack.Screen
               name={STREAMING_SERVICES_SCREEN}
@@ -58,7 +57,7 @@ export default function App() {
             <Stack.Screen
               name={MOVIE_SCREEN}
               component={MovieList}
-              options={{ title: 'What 2 Watch' }}
+              options={{ title: 'picsure' }}
             />
             <Stack.Screen
               name={SEARCH_MOVIE_SCREEN}
@@ -68,12 +67,12 @@ export default function App() {
             <Stack.Screen
               name={LOGIN}
               component={Login}
-              options={{ title: 'What 2 Watch Login' }}
+              options={{ title: 'picsure Login' }}
             />
             <Stack.Screen
               name={DISLIKED_LIST}
               component={DislikedList}
-              options={{ title: 'What 2 Watch' }}
+              options={{ title: 'picsure' }}
             />
             <Stack.Screen
               name={CREATED_ROOM}

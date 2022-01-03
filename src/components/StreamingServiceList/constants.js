@@ -31,20 +31,5 @@ export const STREAMING_SERVICES = {
     name: 'DisneyPlusIVAUS',
     displayName: 'Disney Plus',
   },
-  HuluIVAUS: {
-    name: 'HuluIVAUS',
-    displayName: 'Hulu',
-  },
-  HBOMaxIVAUS: {
-    name: 'HBOMaxIVAUS',
-    displayName: 'HBO',
-  },
-  FandangoMoviesIVAUS: {
-    name: 'FandangoMoviesIVAUS',
-    displayName: 'Fandango Movies',
-  },
-  NBCIVAUS: {
-    name: 'NBCIVAUS',
-    displayName: 'NBC',
-  },
+  // can't acess showtime, hbomax, hulu, cbs all access, peacock, or tubi on current subscription
 };
