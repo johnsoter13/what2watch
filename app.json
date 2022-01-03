@@ -19,6 +19,10 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "package": "com.ssodaandseung.what2watch",
+      "versionCode": 2
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
