@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   GENRES,
   MOVIES_BY_GENRE,
@@ -8,17 +8,17 @@ import {
   SET_CURRENT_MOVIE_ID,
   MOVIES_TO_FETCH_LIMIT,
   SET_CURRENT_GENRE,
-} from './constants';
-import { PENDING, SUCCESS, FAILURE } from '../constants';
+} from './constants'
+import { PENDING, SUCCESS, FAILURE } from '../constants'
 import {
   fetchMovieGenres,
   fetchMoviesByGenre,
   fetchMovieStreamingServices,
   fetchUserDatabase,
-  fetchMovieDetails,
+  fetchmovie,
   fetchRoomsDatabase,
   fetchMostPopularMovies,
-} from '../../lib/sdk';
+} from '../../lib/sdk'
 
 import {
   selectMostPopularMoviesExists,
@@ -26,195 +26,169 @@ import {
   selectMovieIndex,
   selectMoviesByGenreExists,
   selectMovieStreamingServicesById,
-} from './selectors';
-import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors';
+} from './selectors'
+import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors'
 import {
   selectRoomID,
   selectRoomKey,
   selectUserName,
   selectRoomUserID,
   selectRoomSize,
-} from '../rooms/selectors';
-import { openModalAction } from '../modal/actions';
-import MovieMatchModal from '../../components/Modals/MovieMatchModal';
-import { MOST_POPULAR } from '../../components/MovieList/constants';
-import { shuffleMovies } from '../../utils/moviesUtils';
-import { setMatchedMovieIdAction } from '../rooms/actions';
-import { sleep } from '../../utils/sleep';
+} from '../rooms/selectors'
+import { openModalAction } from '../modal/actions'
+import MovieMatchModal from '../../components/Modals/MovieMatchModal'
+import { MOST_POPULAR } from '../../components/MovieList/constants'
+import { shuffleMovies } from '../../utils/moviesUtils'
+import { setMatchedMovieIdAction } from '../rooms/actions'
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
     type: GENRES,
     status: PENDING,
-  });
+  })
   return fetchMovieGenres()
     .then((response) => response.text())
     .then((text) => {
-      const genres = JSON.parse(text);
+      const genres = JSON.parse(text)
 
       dispatch({
         type: GENRES,
         status: SUCCESS,
         payload: genres,
-      });
+      })
     })
     .catch(() => {
       dispatch({
         type: GENRES,
         status: FAILURE,
-      });
-    });
-};
-
-export const fetchMoviesByGenreAction = (genre, endpoint) => (
-  dispatch,
-  getState
-) => {
-  const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre);
-
-  // If movies in this genre already exist, don't fetch again
-  if (!moviesByGenreExist) {
-    dispatch({
-      type: MOVIES_BY_GENRE,
-      status: PENDING,
-    });
-
-    dispatch({
-      type: SET_CURRENT_GENRE,
-      status: SUCCESS,
-      payload: {genre}
-    });
-
-    return fetchMoviesByGenre(endpoint)
-      .then((response) => response.text())
-      .then((text) => JSON.parse(text))
-      .then((moviesByGenre) => {
-        const shuffledMovies = shuffleMovies(moviesByGenre);
-        dispatch({
-          type: MOVIES_BY_GENRE,
-          status: SUCCESS,
-          payload: { genre, moviesByGenre: shuffledMovies },
-        });
       })
-      .catch(() => {
-        dispatch({
-          type: MOVIES_BY_GENRE,
-          status: FAILURE,
-        });
-      });
-  }
-};
+    })
+}
 
-export const fetchMovieStreamingServicesHelper = (movieId) => async (dispatch) => {
-  const actualMovieId = movieId.slice(
-    movieId.indexOf('tt'),
-    movieId.lastIndexOf('/')
-  );
+// export const fetchMoviesByGenreAction = (genre, endpoint) => (
+//   dispatch,
+//   getState
+// ) => {
+//   const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre);
 
+//   // If movies in this genre already exist, don't fetch again
+//   if (!moviesByGenreExist) {
+//     dispatch({
+//       type: MOVIES_BY_GENRE,
+//       status: PENDING,
+//     });
+
+//     dispatch({
+//       type: SET_CURRENT_GENRE,
+//       status: SUCCESS,
+//       payload: {genre}
+//     });
+
+//     return fetchMoviesByGenre(endpoint)
+//       .then((response) => response.text())
+//       .then((text) => JSON.parse(text))
+//       .then((moviesByGenre) => {
+//         const shuffledMovies = shuffleMovies(moviesByGenre);
+//         dispatch({
+//           type: MOVIES_BY_GENRE,
+//           status: SUCCESS,
+//           payload: { genre, moviesByGenre: shuffledMovies },
+//         });
+//       })
+//       .catch(() => {
+//         dispatch({
+//           type: MOVIES_BY_GENRE,
+//           status: FAILURE,
+//         });
+//       });
+//   }
+// };
+
+export const fetchMovieStreamingServicesHelper = (movieId) => async (
+  dispatch
+) => {
   const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
-    actualMovieId
-  );
+    movieId
+  )
 
   if (fetchMovieStreamingServicesResponse.ok) {
-    const movieStreamServices = await fetchMovieStreamingServicesResponse.json();
+    const movieStreamServices = await fetchMovieStreamingServicesResponse.json()
 
-    await sleep(250);
-
-    const fetchMovieDetailsResponse = await fetchMovieDetails(
-      actualMovieId
-    );
-
-    if (fetchMovieDetailsResponse.ok) {
-      const movieDetails = await fetchMovieDetailsResponse.json();
-
-      dispatch({
-        type: MOVIE_STREAMING_SERVICES,
-        status: SUCCESS,
-        payload: {
-          movieId,
-          movieStreamServices: movieStreamServices?.collection?.locations,
-          movieTitle: movieDetails?.title?.title,
-          moviePicture: movieDetails?.title?.image?.url,
-          moviePlot: movieDetails?.plotOutline?.text,
-          movieRating: movieDetails?.ratings?.rating,
-          movieReleaseDate: movieDetails?.releaseDate,
-          movieReleaseYear: movieDetails?.title?.year,
-          movieRunningTime: movieDetails?.title?.runningTimeInMinutes,
-        },
-      });
-    }
+    dispatch({
+      type: MOVIE_STREAMING_SERVICES,
+      status: SUCCESS,
+      payload: {
+        movieId,
+        streamingServices: movieStreamServices?.collection?.locations,
+      },
+    })
   }
 }
 
-export const fetchMovieStreamingServicesAction = (
-  genre = MOST_POPULAR
-) => async (dispatch, getState) => {
+export const fetchMovieStreamingServicesAction = (movieId) => async (
+  dispatch
+) => {
   dispatch({
     type: MOVIE_STREAMING_SERVICES,
     status: PENDING,
-  });
-  const movieIndex = selectMovieIndex(getState(), genre);
+  })
 
   try {
-    for (let i = movieIndex; i < movieIndex + MOVIES_TO_FETCH_LIMIT; i++) {
-      const movieId = selectMovieIdByIndex(getState(), genre, i);
-
-      dispatch(fetchMovieStreamingServicesHelper(movieId));
-    }
+    dispatch(fetchMovieStreamingServicesHelper(movieId))
   } catch (err) {
-    console.log(err);
+    console.log(err)
     dispatch({
       type: MOVIE_STREAMING_SERVICES,
       status: FAILURE,
-    });
+    })
   }
-};
+}
 
 export const movieListIndexAction = (genre = MOST_POPULAR, reset) => (
   dispatch,
   getState
 ) => {
-  const currentGenreIndex = selectMovieIndex(getState(), genre);
+  const currentGenreIndex = selectMovieIndex(getState(), genre)
 
   dispatch({
     type: MOVIE_INDEX,
     status: SUCCESS,
     payload: { genre, newIndex: reset ? 0 : currentGenreIndex + 1 },
-  });
-};
+  })
+}
 
 export const saveMovieAction = (genre, liked, movie) => (
   dispatch,
   getState
 ) => {
-  const isUserLoggedIn = selectUserIsLoggedIn(getState());
-  const movieIndex = selectMovieIndex(getState(), genre);
-  const movieId = selectMovieIdByIndex(getState(), genre, movieIndex);
+  const isUserLoggedIn = selectUserIsLoggedIn(getState())
+  const movieIndex = selectMovieIndex(getState(), genre)
+  const movieId = selectMovieIdByIndex(getState(), genre, movieIndex)
   const actualMovieId = movieId.slice(
     movieId.indexOf('tt'),
     movieId.lastIndexOf('/')
-  );
-  const roomSize = selectRoomSize(getState());
+  )
+  const roomSize = selectRoomSize(getState())
 
   if (!movie) {
-    movie = selectMovieStreamingServicesById(getState(), movieId);
+    movie = selectMovieStreamingServicesById(getState(), movieId)
   }
 
   // if user is logged in and disliked the movie, update database's list of disliked
   if (!liked && isUserLoggedIn) {
-    const uid = selectUserId(getState());
+    const uid = selectUserId(getState())
 
     // this is overriding the database
     fetchUserDatabase(uid)
       .child('movies/disliked')
       .push(actualMovieId)
-      .then(() => console.log('Movie disliked!'));
+      .then(() => console.log('Movie disliked!'))
   }
 
-  const roomID = selectRoomID(getState());
-  const roomKey = selectRoomKey(getState());
-  const userName = selectUserName(getState());
-  const movieName = movie.movieTitle;
+  const roomID = selectRoomID(getState())
+  const roomKey = selectRoomKey(getState())
+  const userName = selectUserName(getState())
+  const movieName = movie.movieTitle
 
   // saving user's like/dislike of the movie if in a room
   if (roomID && roomKey) {
@@ -227,9 +201,9 @@ export const saveMovieAction = (genre, liked, movie) => (
       actualMovieId,
       liked,
       dispatch
-    );
+    )
   }
-};
+}
 
 const saveUserLike = (
   roomSize,
@@ -244,93 +218,111 @@ const saveUserLike = (
   const movieObj = {
     movieName: movieName,
     users: { [userName]: liked },
-  };
+  }
 
-  let users = {};
+  let users = {}
 
-  const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId);
+  const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId)
 
   // get users from server
   refMovieId.once('value', function (snapshot) {
     if (snapshot.val()) {
-      users = snapshot.val().users;
+      users = snapshot.val().users
 
       // set current user's pref
-      users[userName] = liked;
+      users[userName] = liked
 
       // check if everyone in the room likes the movie
-      let found = true;
+      let found = true
       if (roomSize !== 1 && Object.keys(users).length === roomSize) {
         for (let user in users) {
           if (!users[user]) {
-            found = false;
+            found = false
           }
         }
       }
 
       if (found) {
-        dispatch(setMatchedMovieIdAction(movieId));
-        fetchRoomsDatabase(roomKey).update({ found: movieId });
+        dispatch(setMatchedMovieIdAction(movieId))
+        fetchRoomsDatabase(roomKey).update({ found: movieId })
       }
 
       // update users in server
       refMovieId.update({
         users: users,
-      });
+      })
     } else {
-      refMovieId.set(movieObj);
+      refMovieId.set(movieObj)
     }
-  });
-};
+  })
+}
 
 export const fetchMostPopularMoviesActions = () => (dispatch, getState) => {
-  const mostPopularMovies = selectMostPopularMoviesExists(getState());
+  const mostPopularMovies = selectMostPopularMoviesExists(getState())
 
   // If we have already fetched successfully, don't do it again
   if (!mostPopularMovies) {
     dispatch({
       type: MOST_POPULAR_MOVIES,
       status: PENDING,
-    });
+    })
 
     dispatch({
       type: SET_CURRENT_GENRE,
       status: SUCCESS,
-      payload: {genre: MOST_POPULAR}
-    });
-  
+      payload: { genre: MOST_POPULAR },
+    })
+
     return fetchMostPopularMovies()
       .then((response) => response.text())
       .then((text) => JSON.parse(text))
-      .then((mostPopularMovies) => {
-        const shuffledMovies = shuffleMovies(mostPopularMovies);
+      .then((movies) => {
+        const mostPopularMovieIds = []
+        const mostPopularMovies = movies.reduce((acc, movie) => {
+          mostPopularMovieIds.push(movie.id)
+
+          return {
+            ...acc,
+            [movie.id]: {
+              movieId: movie?.id,
+              movieTitle: movie?.primaryTitle,
+              moviePicture: movie?.primaryImage,
+              moviePlot: movie?.description,
+              movieRating: movie?.averageRating,
+              movieReleaseDate: movie?.releaseDate,
+              movieReleaseYear: movie?.startYear,
+              movieRunningTime: movie?.runtimeMinutes,
+            },
+          }
+        }, {})
+        const mostPopularMovieIdsShuffled = shuffleMovies(mostPopularMovieIds)
         dispatch({
           type: MOST_POPULAR_MOVIES,
           status: SUCCESS,
-          payload: { mostPopularMovies: shuffledMovies },
-        });
+          payload: { mostPopularMovies, mostPopularMovieIdsShuffled },
+        })
       })
       .catch(() => {
         dispatch({
           type: MOST_POPULAR_MOVIES,
           status: FAILURE,
-        });
-      });
+        })
+      })
   }
-};
+}
 
 export const setCurrentMovieIdAction = (movieId) => (dispatch) => {
   dispatch({
     type: SET_CURRENT_MOVIE_ID,
     status: SUCCESS,
     payload: { movieId },
-  });
-};
+  })
+}
 
 export const setCurrentGenreAction = (genre) => (dispatch) => {
   dispatch({
     type: SET_CURRENT_GENRE,
     status: SUCCESS,
     payload: { genre },
-  });
-};
+  })
+}

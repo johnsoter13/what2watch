@@ -1,42 +1,33 @@
-import { MOST_POPULAR } from "../../components/MovieList/constants";
+import { MOST_POPULAR } from '../../components/MovieList/constants'
 
-export const selectMovieGenres = (state) => state.movies.genres;
-export const selectMoviesByGenre = (state, genre) => {
-  if (genre !== MOST_POPULAR) {
-    return state.movies.moviesByGenre[genre] || [];
-  } else {
-    return state.movies.mostPopularMovies;
-  }
-}
+export const selectMovieGenres = (state) => state.movies.genres
+export const selectMovies = (state) => state.movies.movies
+export const selectMovie = (state, movieId) => state.movies.movies[movieId]
+export const selectMoviesByGenre = (state, genre) =>
+  state.movies.moviesByGenre[genre] || []
 
-export const selectMostPopularMoviesExists = (state) => state.movies.mostPopularMovies?.length > 0;
+export const selectMostPopularMoviesExists = (state) =>
+  state.movies.mostPopularMovies?.length > 0
 export const selectMoviesByGenreExists = (state, genre) =>
-  state.movies.moviesByGenre[genre]?.length > 0;
+  state.movies.moviesByGenre[genre]?.length > 0
 export const selectMovieStreamingServices = (state) =>
-  state.movies.movieStreamingServices;
+  state.movies.movieStreamingServices
 
 export const selectMovieStreamingServicesById = (state, movieId) =>
-  state.movies.movieStreamingServices[movieId];
+  state.movies.movieStreamingServices[movieId]
 
 export const selectMovieIndex = (state, genre) =>
-  state.movies.movieIndexes[genre] || 0;
+  state.movies.movieIndexes[genre] || 0
 export const selectMoviesByGenreLoadingStatus = (state) =>
-  state.movies.moviesByGenreLoadingStatus;
+  state.movies.moviesByGenreLoadingStatus
 export const selectMovieStreamingServicesLoadingStatus = (state) =>
-  state.movies.movieStreamingServicesLoadingStatus;
+  state.movies.movieStreamingServicesLoadingStatus
 
-export const selectMovieIdByIndex = (state, genre, index) => {
-  if (genre !== MOST_POPULAR) {
-    return state.movies.moviesByGenre[genre]
-    ? state.movies.moviesByGenre[genre][index]
-    : null;
-  } else {
-    return state.movies.mostPopularMovies?.[index]
-  }
+export const selectMovieIdByIndex = (state, genre, index) =>
+  state.movies.moviesByGenre[genre][index]
 
-};
+export const selectMostPopularMovies = (state, index = 0) =>
+  state.movies.mostPopularMovies?.[index]
 
-export const selectMostPopularMovies = (state, index = 0) => state.movies.mostPopularMovies?.[index];
-
-export const selectCurrentMovieId = (state) => state.movies.currentMovieId;
-export const selectCurrentGenre = (state) => state.movies.currentGenre;
+export const selectCurrentMovieId = (state) => state.movies.currentMovieId
+export const selectCurrentGenre = (state) => state.movies.currentGenre

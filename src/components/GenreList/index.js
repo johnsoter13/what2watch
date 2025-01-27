@@ -1,43 +1,47 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+} from 'react-native'
 
-import { selectMovieGenres } from '../../state/movies/selectors';
-import { fetchMoviesByGenreAction } from '../../state/movies/actions';
-import { MOVIE_SCREEN } from '../../constants/ROUTES';
-import * as baseStyles from '../../styles/styles';
+import { selectMovieGenres } from '../../state/movies/selectors'
+import { fetchMoviesByGenreAction } from '../../state/movies/actions'
+import { MOVIE_SCREEN } from '../../constants/ROUTES'
+import * as baseStyles from '../../styles/styles'
 
 const GenreList = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const movieGenres = useSelector(selectMovieGenres);
+  const dispatch = useDispatch()
+  const movieGenres = useSelector(selectMovieGenres)
 
   const handleStreamingServiceSelection = (genre) => {
-    dispatch(
-      fetchMoviesByGenreAction(
-        movieGenres[genre].description,
-        movieGenres[genre].endpoint
-      )
-    );
-    navigation.navigate(MOVIE_SCREEN, { genre });
-  };
+    // dispatch(
+    //   fetchMoviesByGenreAction(
+    //     movieGenres[genre].description,
+    //     movieGenres[genre].endpoint
+    //   )
+    // );
+    navigation.navigate(MOVIE_SCREEN, { genre })
+  }
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.genreContainer}>
-        {Object.keys(movieGenres).map((genre) => (
+        {movieGenres.map((genre) => (
           <TouchableOpacity
             style={styles.genreButtonContainer}
             onPress={() => handleStreamingServiceSelection(genre)}
           >
-            <Text style={styles.genreButtonText}>
-              {movieGenres[genre].description}
-            </Text>
+            <Text style={styles.genreButtonText}>{genre}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -61,6 +65,6 @@ const styles = StyleSheet.create({
   genreButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
   },
-});
+})
 
-export default GenreList;
+export default GenreList

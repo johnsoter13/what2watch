@@ -1,4 +1,4 @@
-import { produce } from 'immer';
+import { produce } from 'immer'
 import {
   GENRES,
   MOVIES_BY_GENRE,
@@ -7,152 +7,154 @@ import {
   MOST_POPULAR_MOVIES,
   SET_CURRENT_MOVIE_ID,
   SET_CURRENT_GENRE,
-} from './constants';
-import { FAILURE, PENDING, SUCCESS } from '../constants';
-import { MOST_POPULAR } from '../../components/MovieList/constants';
+} from './constants'
+import { FAILURE, PENDING, SUCCESS } from '../constants'
+import { MOST_POPULAR } from '../../components/MovieList/constants'
 
 const initialState = {
   genres: {},
+  movies: {},
   moviesByGenre: {},
   genreLoadingStatus: null,
   moviesByGenreLoadingStatus: null,
   movieStreamingServices: {},
   movieStreamingServicesLoadingStatus: null,
   movieIndexes: {},
-  mostPopularMovies: [],
   currentMovieId: '',
   currentGenre: MOST_POPULAR,
-};
-
-const createGenresObj = (genres) => {
-  const genresObj = {};
-
-  // eslint-disable-next-line no-return-assign
-  genres.map((genre) => (genresObj[genre.description] = genre));
-
-  return genresObj;
-};
+}
 
 const createMovieStreamingServiceObj = (streamingServices) => {
-  const movieStreamingServicesObj = {};
+  const movieStreamingServicesObj = {}
 
   // eslint-disable-next-line array-callback-return
   streamingServices.map((streamingService) => {
-    movieStreamingServicesObj[streamingService?.name] = streamingService;
-  });
+    movieStreamingServicesObj[streamingService?.name] = streamingService
+  })
 
-  return movieStreamingServicesObj;
-};
+  return movieStreamingServicesObj
+}
 
 export default produce((draft, action) => {
   switch (action.type) {
     case GENRES:
       switch (action.status) {
         case PENDING:
-          draft.genreLoadingStatus = PENDING;
-          break;
+          draft.genreLoadingStatus = PENDING
+          break
         case SUCCESS:
-          draft.genres = createGenresObj(action.payload?.genres);
-          draft.genreLoadingStatus = SUCCESS;
-          break;
+          draft.genres = action.payload
+          draft.genreLoadingStatus = SUCCESS
+          break
         default:
-          draft.genreLoadingStatus = PENDING;
+          draft.genreLoadingStatus = PENDING
       }
-      break;
+      break
     case MOVIE_INDEX:
       switch (action.status) {
         case SUCCESS:
-          const { genre, newIndex, reset } = action.payload;
+          const { genre, newIndex, reset } = action.payload
 
           if (reset) {
-            draft.movieIndexes = {};
+            draft.movieIndexes = {}
           } else {
-            draft.movieIndexes[genre] = newIndex;
+            draft.movieIndexes[genre] = newIndex
           }
-          break;
+          break
       }
-      break;
+      break
     case MOVIES_BY_GENRE:
       switch (action.status) {
         case PENDING:
-          draft.moviesByGenreLoadingStatus = PENDING;
-          break;
+          draft.moviesByGenreLoadingStatus = PENDING
+          break
         case SUCCESS:
           draft.moviesByGenre[action.payload?.genre] =
-            action.payload?.moviesByGenre;
-          draft.moviesByGenreLoadingStatus = SUCCESS;
-          break;
+            action.payload?.moviesByGenre
+          draft.moviesByGenreLoadingStatus = SUCCESS
+          break
         default:
-          draft.moviesByGenreLoadingStatus = PENDING;
+          draft.moviesByGenreLoadingStatus = PENDING
       }
-      break;
+      break
     case MOVIE_STREAMING_SERVICES:
       switch (action.status) {
         case PENDING:
-          draft.movieStreamingServicesLoadingStatus = PENDING;
-          break;
-        case SUCCESS:
+          draft.movieStreamingServicesLoadingStatus = PENDING
+          break
+        case SUCCESS: {
           const {
             movieId,
-            movieStreamServices,
-            movieTitle,
-            moviePicture,
-            moviePlot,
-            movieRating,
-            movieReleaseDate,
-            movieReleaseYear,
-            movieRunningTime,
-          } = action.payload;
-          if (movieStreamServices) {
-            draft.movieStreamingServices[movieId] = {
-              movieId,
-              movieTitle,
-              moviePicture,
+            streamingServices,
+            // movieTitle,
+            // moviePicture,
+            // moviePlot,
+            // movieRating,
+            // movieReleaseDate,
+            // movieReleaseYear,
+            // movieRunningTime,
+          } = action.payload
+          if (streamingServices) {
+            draft.movies[movieId] = {
+              ...draft.movies[movieId],
               streamingServices: createMovieStreamingServiceObj(
-                movieStreamServices
+                streamingServices
               ),
-              moviePlot,
-              movieRating,
-              movieReleaseDate,
-              movieReleaseYear,
-              movieRunningTime,
-            };
+            }
+            // draft.movieStreamingServices[movieId] = {
+            // movieId,
+            // movieTitle,
+            // moviePicture,
+            // streamingServices: createMovieStreamingServiceObj(
+            //   movieStreamServices
+            // ),
+            // moviePlot,
+            // movieRating,
+            // movieReleaseDate,
+            // movieReleaseYear,
+            // movieRunningTime,
+            //}
           } else {
-            draft.movieStreamingServices[movieId] = 'not available';
+            draft.movies[movieId] = 'not available'
           }
-          draft.movieStreamingServicesLoadingStatus = SUCCESS;
-          break;
+          draft.movieStreamingServicesLoadingStatus = SUCCESS
+          break
+        }
         default:
-          draft.movieStreamingServicesLoadingStatus = FAILURE;
+          draft.movieStreamingServicesLoadingStatus = FAILURE
       }
-      break;
+      break
     case MOST_POPULAR_MOVIES:
       switch (action.status) {
-        case SUCCESS: 
-          const {mostPopularMovies} = action.payload;
+        case SUCCESS:
+          const {
+            mostPopularMovies,
+            mostPopularMovieIdsShuffled,
+          } = action.payload
 
-          draft.mostPopularMovies = mostPopularMovies;
-          break;
+          draft.movies = { ...draft.movies, ...mostPopularMovies }
+          draft.moviesByGenre[MOST_POPULAR] = mostPopularMovieIdsShuffled
+          break
       }
-      break;
-      case SET_CURRENT_MOVIE_ID:
-        switch (action.status) {
-          case SUCCESS: 
-            const {movieId} = action.payload;
-  
-            draft.currentMovieId = movieId;
-            break;
-        }
-      break;
-      case SET_CURRENT_GENRE:
-        switch (action.status) {
-          case SUCCESS: 
-            const {genre} = action.payload;
-  
-            draft.currentGenre = genre;
-            break;
-        }
-      break;
+      break
+    case SET_CURRENT_MOVIE_ID:
+      switch (action.status) {
+        case SUCCESS:
+          const { movieId } = action.payload
+
+          draft.currentMovieId = movieId
+          break
+      }
+      break
+    case SET_CURRENT_GENRE:
+      switch (action.status) {
+        case SUCCESS:
+          const { genre } = action.payload
+
+          draft.currentGenre = genre
+          break
+      }
+      break
     default:
   }
-}, initialState);
+}, initialState)

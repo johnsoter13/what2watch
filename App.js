@@ -1,22 +1,19 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
+import React from 'react'
+import { Provider } from 'react-redux'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { StyleSheet, View } from 'react-native'
 
-import createStore from './src/state/store';
-import Home from './src/components/Home';
-import StreamingServiceList from './src/components/StreamingServiceList';
-import GenreList from './src/components/GenreList';
-import MovieList from './src/components/MovieList';
-import Search from './src/components/Search';
-import Login from './src/components/Login';
-import DislikedList from './src/components/DislikedList';
-import CreatedRoom from './src/components/CreatedRoom';
-import ExperienceSelect from './src/components/ExperienceSelect';
+import createStore from './src/state/store'
+import Home from './src/components/Home'
+import StreamingServiceList from './src/components/StreamingServiceList'
+import GenreList from './src/components/GenreList'
+import MovieList from './src/components/MovieList'
+import Search from './src/components/Search'
+import Login from './src/components/Login'
+import DislikedList from './src/components/DislikedList'
+import CreatedRoom from './src/components/CreatedRoom'
+import ExperienceSelect from './src/components/ExperienceSelect'
 import ModalContainer from './src/components/ModalContainer'
 import {
   HOME_SCREEN,
@@ -28,10 +25,10 @@ import {
   DISLIKED_LIST,
   CREATED_ROOM,
   EXPERIENCE_SELECT,
-} from './src/constants/ROUTES';
+} from './src/constants/ROUTES'
 
-const store = createStore();
-const Stack = createStackNavigator();
+const store = createStore()
+const Stack = createStackNavigator()
 
 export default function App() {
   return (
@@ -42,7 +39,7 @@ export default function App() {
             <Stack.Screen
               name={HOME_SCREEN}
               component={Home}
-              options={{ title: 'picsure' }}
+              options={{ title: 'What 2 Watch' }}
             />
             <Stack.Screen
               name={STREAMING_SERVICES_SCREEN}
@@ -57,7 +54,7 @@ export default function App() {
             <Stack.Screen
               name={MOVIE_SCREEN}
               component={MovieList}
-              options={{ title: 'picsure' }}
+              options={{ title: 'What 2 Watch' }}
             />
             <Stack.Screen
               name={SEARCH_MOVIE_SCREEN}
@@ -67,12 +64,12 @@ export default function App() {
             <Stack.Screen
               name={LOGIN}
               component={Login}
-              options={{ title: 'picsure Login' }}
+              options={{ title: 'What 2 Watch Login' }}
             />
             <Stack.Screen
               name={DISLIKED_LIST}
               component={DislikedList}
-              options={{ title: 'picsure' }}
+              options={{ title: 'What 2 Watch' }}
             />
             <Stack.Screen
               name={CREATED_ROOM}
@@ -89,7 +86,7 @@ export default function App() {
         </View>
       </NavigationContainer>
     </Provider>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -97,4 +94,4 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
   },
-});
+})

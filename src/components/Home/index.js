@@ -1,30 +1,32 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground } from 'react-native';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  StyleSheet,
+  View,
+  Button,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
+} from 'react-native'
 
-import * as baseStyles from '../../styles/styles';
-import {
-  fetchMovieGenresAction,
-} from '../../state/movies/actions';
-import {
-  SEARCH_MOVIE_SCREEN,
-  EXPERIENCE_SELECT
-} from '../../constants/ROUTES';
-import { selectUserIsLoggedIn } from '../../state/auth/selectors';
-import { logUserOutAction } from '../../state/auth/actions';
+import * as baseStyles from '../../styles/styles'
+import { fetchMovieGenresAction } from '../../state/movies/actions'
+import { SEARCH_MOVIE_SCREEN, EXPERIENCE_SELECT } from '../../constants/ROUTES'
+import { selectUserIsLoggedIn } from '../../state/auth/selectors'
+import { logUserOutAction } from '../../state/auth/actions'
 
 const Home = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
+  const dispatch = useDispatch()
+  const isUserLoggedIn = useSelector(selectUserIsLoggedIn)
 
   // logs user out
   const logOut = () => {
-    dispatch(logUserOutAction());
-  };
+    dispatch(logUserOutAction())
+  }
 
   useEffect(() => {
-    dispatch(fetchMovieGenresAction());
-  }, []);
+    dispatch(fetchMovieGenresAction())
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -46,11 +48,12 @@ const Home = ({ navigation }) => {
             onPress={() => navigation.navigate(EXPERIENCE_SELECT)}
           >
             <View style={styles.imageContainer}>
-              <ImageBackground style={styles.movieImage} source={require('../../../assets/find-movie.jpg')} >
+              <ImageBackground
+                style={styles.movieImage}
+                source={require('../../../assets/find-movie.jpg')}
+              >
                 <View>
-                  <Text style={styles.movieImageText}>
-                    Find a Movie!
-                  </Text>
+                  <Text style={styles.movieImageText}>Find a Movie!</Text>
                 </View>
               </ImageBackground>
             </View>
@@ -58,8 +61,8 @@ const Home = ({ navigation }) => {
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -67,7 +70,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingVertical: 20,
-
   },
   searchContainer: {
     width: '100%',
@@ -82,14 +84,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingLeft: 10,
     paddingRight: 10,
-
   },
   actionsButtonContainer: {
     width: '100%',
     height: '75%',
     borderStyle: 'solid',
     borderWidth: 5,
-    borderColor: baseStyles.BUTTON_COLOR
+    borderColor: baseStyles.BUTTON_COLOR,
   },
   actionsButton: {
     height: '100%',
@@ -120,13 +121,12 @@ const styles = StyleSheet.create({
   movieImage: {
     width: '100%',
     height: '100%',
-
   },
   movieImageText: {
     fontSize: 28,
     alignSelf: 'center',
-    marginTop: 100
+    marginTop: 100,
   },
-});
+})
 
-export default Home;
+export default Home
