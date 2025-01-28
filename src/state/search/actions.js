@@ -10,43 +10,55 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
     status: PENDING,
   })
   try {
-    // const searchResponse = await fetchMovieFromSearch(query)
-    const searchResponse = RESULT
+    const searchResponse = await fetchMovieFromSearch({ query })
     const sanitizedMovies = []
 
-    // if (searchResponse.ok) {
-    // const searchMovies = await searchResponse.json()
+    if (searchResponse.ok) {
+      const searchMovies = await searchResponse.json()
 
-    for (let i = 0; i < searchMovies.results.length; i++) {
-      const movie = searchMovies.results[i]
-      const fetchMovieDetailsResponse = await fetchMovieDetails(
-        movie.external_ids.imdb.id
-      )
+      for (let i = 0; i < searchMovies.length; i++) {
+        const movie = searchMovies[i]
+        const fetchMovieDetailsResponse = await fetchMovieDetails(movie.imdbId)
 
-      if (fetchMovieDetailsResponse.ok) {
-        const movieDetails = await fetchMovieDetailsResponse.json()
-        const movieStreamServices = movie?.locations?.map((location) => {
-          const displayName =
-            STREAMING_SERVICES[location.name]?.displayName ||
-            location.display_name
+        if (fetchMovieDetailsResponse.ok) {
+          const movieDetails = await fetchMovieDetailsResponse.json()
 
-          return { ...location, display_name: displayName }
-        })
+          const movieStreamServices =
+            Object.values(movie.streamingOptions)?.[0] || []
+          const subscription = []
+          const rent = []
+          const buy = []
+          const free = []
 
-        sanitizedMovies.push({
-          movieStreamServices,
-          movieId: movieDetails?.id,
-          movieTitle: movieDetails?.primaryTitle,
-          moviePicture: movieDetails?.primaryImage,
-          moviePlot: movieDetails?.description,
-          movieRating: movieDetails?.averageRating,
-          movieReleaseDate: movieDetails?.releaseDate,
-          movieReleaseYear: movieDetails?.startYear,
-          movieRunningTime: movieDetails?.runtimeMinutes,
-        })
+          movieStreamServices.forEach((movieStreamingService) => {
+            if (movieStreamingService.type === 'rent') {
+              rent.push(movieStreamingService)
+            } else if (movieStreamingService.type === 'buy') {
+              buy.push(movieStreamingService)
+            } else if (movieStreamingService.type === 'subscription') {
+              subscription.push(movieStreamingService)
+            } else {
+              free.push(movieStreamingService)
+            }
+          })
+
+          if (movieDetails?.primaryImage) {
+            sanitizedMovies.push({
+              movieStreamServices: [...free, ...subscription, ...rent, ...buy],
+              movieId: movie?.imdbId,
+              movieTitle: movie?.title,
+              moviePicture: movieDetails?.primaryImage,
+              moviePlot: movie?.overview,
+              movieRating: movie?.rating,
+              movieReleaseDate: movieDetails?.releaseDate,
+              movieReleaseYear: movie?.releaseYear,
+              movieRunningTime: movieDetails?.runtimeMinutes,
+            })
+          }
+        }
       }
     }
-    // }
+
     const sortedMovies = sanitizedMovies.sort(
       (a, b) => b.movieReleaseYear - a.movieReleaseYear
     )

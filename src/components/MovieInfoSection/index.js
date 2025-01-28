@@ -1,5 +1,5 @@
-import React from "react";
-import {useSelector} from 'react-redux';
+import React from 'react'
+import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -7,20 +7,20 @@ import {
   Image,
   TouchableOpacity,
   Linking,
-} from "react-native";
+} from 'react-native'
 
 import * as baseStyles from '../../styles/styles'
 
-const MovieInfoSection = ({sharedServices, movie}) => {
+const MovieInfoSection = ({ sharedServices, movie }) => {
   const handleNavigateToLink = (url) => {
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
-        Linking.openURL(url);
+        Linking.openURL(url)
       } else {
-        console.log(`Don't know how to open URI: ${url}`);
+        console.log(`Don't know how to open URI: ${url}`)
       }
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -49,18 +49,33 @@ const MovieInfoSection = ({sharedServices, movie}) => {
         {sharedServices.map((streamingService) => (
           <TouchableOpacity
             style={styles.streamingServiceButton}
-            key={streamingService.display_name}
-            className="streaming-service-button"
-            onPress={() => handleNavigateToLink(streamingService.url)}
-            title={streamingService.display_name}
+            key={streamingService.service.name}
+            className='streaming-service-button'
+            onPress={() => handleNavigateToLink(streamingService.link)}
+            title={streamingService.service.name}
           >
-            <Text style={styles.StreamingServiceButtonText} className="streaming-service-button--text">{streamingService.display_name}</Text>
+            <View>
+              <Text
+                style={styles.StreamingServiceButtonText}
+                className='streaming-service-button--text'
+              >
+                {streamingService.service.name}
+              </Text>
+              {streamingService.price && (
+                <Text
+                  style={styles.StreamingServiceButtonText}
+                  className='streaming-service-button--text'
+                >
+                  {`${streamingService.type}: ${streamingService.price.formatted}`}
+                </Text>
+              )}
+            </View>
           </TouchableOpacity>
         ))}
       </View>
     </>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   infoContainer: {
@@ -104,6 +119,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     color: baseStyles.BUTTON_COLOR,
   },
-});
+})
 
-export default MovieInfoSection;
+export default MovieInfoSection

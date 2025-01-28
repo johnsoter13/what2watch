@@ -29,10 +29,19 @@ export const fetchMovieStreamingServices = (movieId) =>
     }
   )
 
-export const fetchMovieFromSearch = (query) =>
-  fetch(`${LOCAL_HOST}/fetchMediaFromSearch?country=us&term=${query}`, {
-    method: 'GET',
-  })
+export const fetchMovieFromSearch = ({
+  country = 'us',
+  seriesGranularity = 'show',
+  showType = 'movie',
+  outputLanguage = 'en',
+  query,
+}) =>
+  fetch(
+    `${LOCAL_HOST}/fetchMediaFromSearch?country=${country}&title=${query}&series_granularity=${seriesGranularity}&show_type=${showType}&output_language=${outputLanguage}`,
+    {
+      method: 'GET',
+    }
+  )
 
 export const fetchMostPopularMovies = () =>
   fetch(`${LOCAL_HOST}/fetchMostPopular`, {
