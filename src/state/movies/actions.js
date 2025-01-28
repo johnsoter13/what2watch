@@ -104,22 +104,49 @@ export const fetchMovieGenresAction = () => (dispatch) => {
 //   }
 // };
 
-export const fetchMovieStreamingServicesHelper = (movieId) => async (
-  dispatch
-) => {
+export const fetchMovieStreamingServicesHelper = (
+  movieId,
+  country = 'us'
+) => async (dispatch) => {
   const fetchMovieStreamingServicesResponse = await fetchMovieStreamingServices(
-    movieId
+    { movieId }
   )
 
   if (fetchMovieStreamingServicesResponse.ok) {
-    const movieStreamServices = await fetchMovieStreamingServicesResponse.json()
+    const movie = await fetchMovieStreamingServicesResponse.json()
+
+    const movieStreamServices = movie?.streamingOptions?.[country] || []
+    const subscription = []
+    const rent = []
+    const buy = []
+    const free = []
+
+    movieStreamServices.forEach((movieStreamingService) => {
+      if (movieStreamingService.type === 'rent') {
+        rent.push(movieStreamingService)
+      } else if (movieStreamingService.type === 'buy') {
+        buy.push(movieStreamingService)
+      } else if (movieStreamingService.type === 'subscription') {
+        subscription.push(movieStreamingService)
+      } else if (movieStreamingService.type !== 'addon') {
+        free.push(movieStreamingService)
+      }
+    })
 
     dispatch({
       type: MOVIE_STREAMING_SERVICES,
       status: SUCCESS,
       payload: {
         movieId,
-        streamingServices: movieStreamServices?.collection?.locations,
+        movieStreamServices: [...free, ...subscription, ...rent, ...buy],
+      },
+    })
+  } else {
+    dispatch({
+      type: MOVIE_STREAMING_SERVICES,
+      status: SUCCESS,
+      payload: {
+        movieId,
       },
     })
   }

@@ -21,9 +21,14 @@ export const fetchMovieDetails = (movieId) =>
 //     }
 //   );
 
-export const fetchMovieStreamingServices = (movieId) =>
+export const fetchMovieStreamingServices = ({
+  movieId,
+  seriesGranularity = 'show',
+  outputLanguage = 'en',
+  country = 'us',
+}) =>
   fetch(
-    `${LOCAL_HOST}/fetchStreamingServices?country=us&source_id=${movieId}&source=imdb`,
+    `${LOCAL_HOST}/fetchMediaFromMovieId/${movieId}?series_granularity=${seriesGranularity}&output_language=${outputLanguage}&country=${country}`,
     {
       method: 'GET',
     }

@@ -32,9 +32,9 @@ export const useMovie = (genre) => {
   const userStreamingServices = useSelector(selectUserStreamingServices)
 
   let movieLoadingComplete = !!(
-    sharedServices.movieId === movieId &&
-    sharedServices.sharedServices?.length > 0 &&
-    movie?.streamingServices
+    // sharedServices.movieId === movieId &&
+    // sharedServices.sharedServices?.length > 0 &&
+    movie?.movieStreamServices
   )
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const useMovie = (genre) => {
     if (movie === 'not available') {
       dispatch(movieListIndexAction(genre, false))
       // check if we have shared streaming services
-    } else if (!movie?.streamingServices) {
+    } else if (!movie?.movieStreamServices) {
       dispatch(fetchMovieStreamingServicesAction(movieId))
       // sometimes endpoint errors, skip to next movie
     } else {

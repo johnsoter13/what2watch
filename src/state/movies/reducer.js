@@ -24,16 +24,16 @@ const initialState = {
   currentGenre: MOST_POPULAR,
 }
 
-const createMovieStreamingServiceObj = (streamingServices) => {
-  const movieStreamingServicesObj = {}
+// const createMovieStreamingServiceObj = (streamingServices) => {
+//   const movieStreamingServicesObj = {}
 
-  // eslint-disable-next-line array-callback-return
-  streamingServices.map((streamingService) => {
-    movieStreamingServicesObj[streamingService?.name] = streamingService
-  })
+//   // eslint-disable-next-line array-callback-return
+//   streamingServices.map((streamingService) => {
+//     movieStreamingServicesObj[streamingService?.name] = streamingService
+//   })
 
-  return movieStreamingServicesObj
-}
+//   return movieStreamingServicesObj
+// }
 
 export default produce((draft, action) => {
   switch (action.type) {
@@ -83,37 +83,12 @@ export default produce((draft, action) => {
           draft.movieStreamingServicesLoadingStatus = PENDING
           break
         case SUCCESS: {
-          const {
-            movieId,
-            streamingServices,
-            // movieTitle,
-            // moviePicture,
-            // moviePlot,
-            // movieRating,
-            // movieReleaseDate,
-            // movieReleaseYear,
-            // movieRunningTime,
-          } = action.payload
-          if (streamingServices) {
+          const { movieId, movieStreamServices } = action.payload
+          if (movieStreamServices) {
             draft.movies[movieId] = {
               ...draft.movies[movieId],
-              streamingServices: createMovieStreamingServiceObj(
-                streamingServices
-              ),
+              movieStreamServices,
             }
-            // draft.movieStreamingServices[movieId] = {
-            // movieId,
-            // movieTitle,
-            // moviePicture,
-            // streamingServices: createMovieStreamingServiceObj(
-            //   movieStreamServices
-            // ),
-            // moviePlot,
-            // movieRating,
-            // movieReleaseDate,
-            // movieReleaseYear,
-            // movieRunningTime,
-            //}
           } else {
             draft.movies[movieId] = 'not available'
           }

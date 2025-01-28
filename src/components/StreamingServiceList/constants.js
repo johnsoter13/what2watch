@@ -1,35 +1,46 @@
 export const STREAMING_SERVICES = {
-  NetflixIVAUS: {
-    name: 'NetflixIVAUS',
+  netflix: {
+    id: 'netflix',
     displayName: 'Netflix',
   },
-  AmazonPrimeVideoIVAUS: {
-    name: 'AmazonPrimeVideoIVAUS',
+  prime: {
+    name: 'prime',
     displayName: 'Amazon Prime Video',
   },
-  AmazonInstantVideoIVAUS: {
-    name: 'AmazonInstantVideoIVAUS',
-    displayName: 'Amazon Instant Video',
+  apple: {
+    id: 'apple',
+    displayName: 'Apple TV',
   },
-  AppleTvPlusIVAUS: {
-    name: 'AppleTvPlusIVAUS',
-    displayName: 'Apple TV+',
+  disney: {
+    name: 'disney',
+    displayName: 'Disney+',
   },
-  GooglePlayIVAUS: {
-    name: 'GooglePlayIVAUS',
-    displayName: 'Google Play',
+  hbo: {
+    id: 'hbo',
+    displayName: 'Max',
   },
-  iTunesIVAUS: {
-    name: 'iTunesIVAUS',
-    displayName: 'iTunes',
+  hulu: {
+    id: 'hulu',
+    displayName: 'Hulu',
   },
-  YoutubePremiumIVAUS: {
-    name: 'YoutubePremiumIVAUS',
-    displayName: 'YouTube Premium',
+  peacock: {
+    id: 'peacock',
+    displayName: 'Peacock',
   },
-  DisneyPlusIVAUS: {
-    name: 'DisneyPlusIVAUS',
-    displayName: 'Disney Plus',
+  paramount: {
+    id: 'paramount',
+    displayName: 'Paramount+',
   },
-  // can't acess showtime, hbomax, hulu, cbs all access, peacock, or tubi on current subscription
-};
+  starz: {
+    id: 'starz',
+    displayName: 'Starz',
+  },
+  tubi: {
+    id: 'tubi',
+    displayName: 'Tubi',
+  },
+  plutotv: {
+    id: 'plutotv',
+    displayName: 'Pluto TV',
+  },
+}

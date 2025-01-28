@@ -4,7 +4,9 @@ import { fetchMovieFromSearch, fetchMovieDetails } from '../../lib/sdk'
 import { MOVIE_FROM_SEARCH, RESULT, SEARCH_QUERY } from './constants'
 import { STREAMING_SERVICES } from '../../components/StreamingServiceList/constants'
 
-export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
+export const fetchMovieFromSearchAction = (query, country = 'us') => async (
+  dispatch
+) => {
   dispatch({
     type: MOVIE_FROM_SEARCH,
     status: PENDING,
@@ -23,8 +25,7 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
         if (fetchMovieDetailsResponse.ok) {
           const movieDetails = await fetchMovieDetailsResponse.json()
 
-          const movieStreamServices =
-            Object.values(movie.streamingOptions)?.[0] || []
+          const movieStreamServices = movie.streamingOptions?.[country] || []
           const subscription = []
           const rent = []
           const buy = []
@@ -49,7 +50,7 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
               movieTitle: movie?.title,
               moviePicture: movieDetails?.primaryImage,
               moviePlot: movie?.overview,
-              movieRating: movie?.rating,
+              movieRating: movieDetails?.averageRating,
               movieReleaseDate: movieDetails?.releaseDate,
               movieReleaseYear: movie?.releaseYear,
               movieRunningTime: movieDetails?.runtimeMinutes,
