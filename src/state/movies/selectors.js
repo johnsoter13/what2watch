@@ -1,5 +1,3 @@
-import { MOST_POPULAR } from '../../components/MovieList/constants'
-
 export const selectMovieGenres = (state) => state.movies.genres
 export const selectMovies = (state) => state.movies.movies
 export const selectMovie = (state, movieId) => state.movies.movies[movieId]

@@ -68,11 +68,19 @@ export default produce((draft, action) => {
         case PENDING:
           draft.moviesByGenreLoadingStatus = PENDING
           break
-        case SUCCESS:
-          draft.moviesByGenre[action.payload?.genre] =
-            action.payload?.moviesByGenre
+        case SUCCESS: {
+          const {
+            genre,
+            moviesByGenre,
+            hasMore,
+            nextCuror,
+            movieIds,
+          } = action.payload
+          draft.movies = { ...draft.movies, ...moviesByGenre }
+          draft.moviesByGenre[genre] = movieIds
           draft.moviesByGenreLoadingStatus = SUCCESS
           break
+        }
         default:
           draft.moviesByGenreLoadingStatus = PENDING
       }

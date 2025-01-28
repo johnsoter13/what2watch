@@ -13,13 +13,21 @@ export const fetchMovieDetails = (movieId) =>
     method: 'GET',
   })
 
-// export const fetchMoviesByGenre = (genre) =>
-//   fetch(
-//     `${LOCAL_HOST}/fetchMoviesByGenre?genre=${genre}`,
-//     {
-//       method: 'GET',
-//     }
-//   );
+export const fetchMoviesByGenre = ({
+  orderDirection = 'desc',
+  orderBy = 'rating',
+  genre,
+  country = 'us',
+  seriesGranularity = 'show',
+  showType = 'movie',
+  outputLanguage = 'en',
+}) =>
+  fetch(
+    `${LOCAL_HOST}/fetchMoviesByGenre?genre=${genre}&?series_granularity=${seriesGranularity}&output_language=${outputLanguage}&country=${country}&show_type=${showType}&order_direction=${orderDirection}&order_by=${orderBy}`,
+    {
+      method: 'GET',
+    }
+  )
 
 export const fetchMovieStreamingServices = ({
   movieId,

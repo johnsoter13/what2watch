@@ -45,10 +45,10 @@ const MovieInfoSection = ({ sharedServices, movie }) => {
       </View>
       <Text style={styles.movieRowAvailable}>Available on:</Text>
       <View style={styles.movieStreamingServices}>
-        {sharedServices.map((streamingService) => (
+        {sharedServices.map((streamingService, index) => (
           <TouchableOpacity
             style={styles.streamingServiceButton}
-            key={streamingService.service.name}
+            key={`${streamingService.service.name}-${index}`}
             className='streaming-service-button'
             onPress={() => handleNavigateToLink(streamingService.link)}
             title={streamingService.service.name}

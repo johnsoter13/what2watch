@@ -18,13 +18,8 @@ const GenreList = ({ navigation }) => {
   const movieGenres = useSelector(selectMovieGenres)
 
   const handleStreamingServiceSelection = (genre) => {
-    // dispatch(
-    //   fetchMoviesByGenreAction(
-    //     movieGenres[genre].description,
-    //     movieGenres[genre].endpoint
-    //   )
-    // );
-    navigation.navigate(MOVIE_SCREEN, { genre })
+    dispatch(fetchMoviesByGenreAction(genre.id))
+    navigation.navigate(MOVIE_SCREEN, { genre: genre.id })
   }
 
   return (
@@ -32,10 +27,11 @@ const GenreList = ({ navigation }) => {
       <ScrollView style={styles.genreContainer}>
         {movieGenres.map((genre) => (
           <TouchableOpacity
+            key={genre.id}
             style={styles.genreButtonContainer}
             onPress={() => handleStreamingServiceSelection(genre)}
           >
-            <Text style={styles.genreButtonText}>{genre}</Text>
+            <Text style={styles.genreButtonText}>{genre.name}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>

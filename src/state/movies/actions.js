@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   GENRES,
   MOVIES_BY_GENRE,
@@ -6,7 +5,6 @@ import {
   MOVIE_INDEX,
   MOST_POPULAR_MOVIES,
   SET_CURRENT_MOVIE_ID,
-  MOVIES_TO_FETCH_LIMIT,
   SET_CURRENT_GENRE,
 } from './constants'
 import { PENDING, SUCCESS, FAILURE } from '../constants'
@@ -15,9 +13,9 @@ import {
   fetchMoviesByGenre,
   fetchMovieStreamingServices,
   fetchUserDatabase,
-  fetchmovie,
   fetchRoomsDatabase,
   fetchMostPopularMovies,
+  fetchMovieDetails,
 } from '../../lib/sdk'
 
 import {
@@ -65,44 +63,110 @@ export const fetchMovieGenresAction = () => (dispatch) => {
     })
 }
 
-// export const fetchMoviesByGenreAction = (genre, endpoint) => (
-//   dispatch,
-//   getState
-// ) => {
-//   const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre);
+export const fetchMoviesByGenreAction = (genre, country = 'us') => async (
+  dispatch,
+  getState
+) => {
+  const moviesByGenreExist = selectMoviesByGenreExists(getState(), genre)
 
-//   // If movies in this genre already exist, don't fetch again
-//   if (!moviesByGenreExist) {
-//     dispatch({
-//       type: MOVIES_BY_GENRE,
-//       status: PENDING,
-//     });
+  // If movies in this genre already exist, don't fetch again
+  if (!moviesByGenreExist) {
+    dispatch({
+      type: MOVIES_BY_GENRE,
+      status: PENDING,
+    })
 
-//     dispatch({
-//       type: SET_CURRENT_GENRE,
-//       status: SUCCESS,
-//       payload: {genre}
-//     });
+    dispatch({
+      type: SET_CURRENT_GENRE,
+      status: SUCCESS,
+      payload: { genre },
+    })
 
-//     return fetchMoviesByGenre(endpoint)
-//       .then((response) => response.text())
-//       .then((text) => JSON.parse(text))
-//       .then((moviesByGenre) => {
-//         const shuffledMovies = shuffleMovies(moviesByGenre);
-//         dispatch({
-//           type: MOVIES_BY_GENRE,
-//           status: SUCCESS,
-//           payload: { genre, moviesByGenre: shuffledMovies },
-//         });
-//       })
-//       .catch(() => {
-//         dispatch({
-//           type: MOVIES_BY_GENRE,
-//           status: FAILURE,
-//         });
-//       });
-//   }
-// };
+    try {
+      const searchResponse = await fetchMoviesByGenre({ genre })
+      const sanitizedMovies = []
+      const movieIds = []
+
+      if (searchResponse.ok) {
+        const searchMoviesJSON = await searchResponse.json()
+        const { shows, hasMore, nextCursor } = searchMoviesJSON
+
+        for (let i = 0; i < shows.length; i++) {
+          const movie = shows[i]
+          movieIds.push(movie.imdbId)
+          const fetchMovieDetailsResponse = await fetchMovieDetails(
+            movie.imdbId
+          )
+
+          if (fetchMovieDetailsResponse.ok) {
+            const movieDetails = await fetchMovieDetailsResponse.json()
+
+            const movieStreamServices = movie.streamingOptions?.[country] || []
+            const subscription = []
+            const rent = []
+            const buy = []
+            const free = []
+
+            movieStreamServices.forEach((movieStreamingService) => {
+              if (movieStreamingService.type === 'rent') {
+                rent.push(movieStreamingService)
+              } else if (movieStreamingService.type === 'buy') {
+                buy.push(movieStreamingService)
+              } else if (movieStreamingService.type === 'subscription') {
+                subscription.push(movieStreamingService)
+              } else if (movieStreamingService.type !== 'addon') {
+                free.push(movieStreamingService)
+              }
+            })
+
+            if (movieDetails?.primaryImage) {
+              sanitizedMovies.push({
+                movieStreamServices: [
+                  ...free,
+                  ...subscription,
+                  ...rent,
+                  ...buy,
+                ],
+                movieId: movie?.imdbId,
+                movieTitle: movie?.title,
+                moviePicture: movieDetails?.primaryImage,
+                moviePlot: movie?.overview,
+                movieRating: movieDetails?.averageRating,
+                movieReleaseDate: movieDetails?.releaseDate,
+                movieReleaseYear: movie?.releaseYear,
+                movieRunningTime: movieDetails?.runtimeMinutes,
+              })
+            }
+          }
+        }
+
+        const moviesByGenre = sanitizedMovies.reduce((acc, val) => {
+          return {
+            ...acc,
+            [val.movieId]: val,
+          }
+        }, {})
+
+        dispatch({
+          type: MOVIES_BY_GENRE,
+          status: SUCCESS,
+          payload: {
+            genre,
+            moviesByGenre,
+            hasMore,
+            nextCursor,
+            movieIds,
+          },
+        })
+      }
+    } catch {
+      dispatch({
+        type: MOVIES_BY_GENRE,
+        status: FAILURE,
+      })
+    }
+  }
+}
 
 export const fetchMovieStreamingServicesHelper = (
   movieId,
