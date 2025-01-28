@@ -37,7 +37,7 @@ export const fetchMovieFromSearchAction = (query) => async (dispatch) => {
               buy.push(movieStreamingService)
             } else if (movieStreamingService.type === 'subscription') {
               subscription.push(movieStreamingService)
-            } else {
+            } else if (movieStreamingService.type !== 'addon') {
               free.push(movieStreamingService)
             }
           })

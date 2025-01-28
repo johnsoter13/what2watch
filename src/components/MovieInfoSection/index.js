@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -118,6 +117,10 @@ const styles = StyleSheet.create({
   StreamingServiceButtonText: {
     alignSelf: 'center',
     color: baseStyles.BUTTON_COLOR,
+  },
+  movieStreamingServices: {
+    overflowY: 'auto',
+    flex: 1,
   },
 })
 
