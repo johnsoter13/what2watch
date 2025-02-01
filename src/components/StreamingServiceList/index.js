@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -7,42 +7,36 @@ import {
   Alert,
   TouchableHighlight,
   ScrollView,
-} from 'react-native';
-import { cloneDeep } from 'lodash';
+} from 'react-native'
+import { cloneDeep } from 'lodash'
 
-import { updateStreamingServicesAction } from '../../state/streaming/actions';
-import { selectUserStreamingServices } from '../../state/streaming/selectors';
-import { GENRE_SCREEN, MOVIE_SCREEN } from '../../constants/ROUTES';
-import * as baseStyles from '../../styles/styles';
+import { updateStreamingServicesAction } from '../../state/streaming/actions'
+import { selectUserStreamingServices } from '../../state/streaming/selectors'
+import { MOVIE_SCREEN } from '../../constants/ROUTES'
+import * as baseStyles from '../../styles/styles'
 
-import { STREAMING_SERVICES } from './constants';
-import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors';
-import { fetchMostPopularMoviesActions } from '../../state/movies/actions';
+import { STREAMING_SERVICES } from './constants'
+import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors'
+import { fetchMostPopularMoviesActions } from '../../state/movies/actions'
 
 const StreamingServiceList = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const userStreamingServices = useSelector(selectUserStreamingServices);
+  const dispatch = useDispatch()
+  const userStreamingServices = useSelector(selectUserStreamingServices)
   const [selectedStreamingServices, setSelectedStreamingServices] = useState(
     userStreamingServices
-  );
-  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
-  const uid = useSelector(selectUserId);
+  )
+  const isUserLoggedIn = useSelector(selectUserIsLoggedIn)
+  const uid = useSelector(selectUserId)
 
   const saveStreamingServices = () => {
     if (Object.keys(selectedStreamingServices).length !== 0) {
-      dispatch(
-        updateStreamingServicesAction(
-          selectedStreamingServices,
-          isUserLoggedIn,
-          uid
-        )
-      );
-      dispatch(fetchMostPopularMoviesActions());
-      navigation.navigate(MOVIE_SCREEN);
+      dispatch(updateStreamingServicesAction(selectedStreamingServices))
+      dispatch(fetchMostPopularMoviesActions())
+      navigation.navigate(MOVIE_SCREEN)
     } else {
-      console.log('SELECT SOMETHING');
+      console.log('SELECT SOMETHING')
     }
-  };
+  }
 
   const noStreamingServiceAlert = () => {
     Alert.alert(
@@ -61,22 +55,22 @@ const StreamingServiceList = ({ navigation }) => {
         },
       ],
       { cancelable: false }
-    );
-  };
+    )
+  }
 
   const handleStreamingServiceSelection = (streamingService) => {
     if (selectedStreamingServices[streamingService]) {
-      const stateCopy = cloneDeep(selectedStreamingServices);
+      const stateCopy = cloneDeep(selectedStreamingServices)
 
-      delete stateCopy[streamingService];
-      setSelectedStreamingServices(stateCopy);
+      delete stateCopy[streamingService]
+      setSelectedStreamingServices(stateCopy)
     } else {
       setSelectedStreamingServices({
         ...selectedStreamingServices,
         [streamingService]: STREAMING_SERVICES[streamingService],
-      });
+      })
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -107,8 +101,8 @@ const StreamingServiceList = ({ navigation }) => {
         </TouchableHighlight>
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -150,6 +144,6 @@ const styles = StyleSheet.create({
     height: '10%',
     justifyContent: 'center',
   },
-});
+})
 
-export default StreamingServiceList;
+export default StreamingServiceList

@@ -1,10 +1,6 @@
 const PROD_URL = 'http://ec2-13-59-211-123.us-east-2.compute.amazonaws.com:3000'
 const LOCAL_HOST = 'http://localhost:3000'
 
-export const login = (tokenId) => {
-  fetch(`${LOCAL_HOST}/login?${tokenId}`, { method: 'GET' })
-}
-
 export const fetchMovieGenres = () =>
   fetch(`${LOCAL_HOST}/fetchGenres`, {
     method: 'GET',

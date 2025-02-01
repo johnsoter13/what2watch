@@ -4,7 +4,6 @@ import { StyleSheet, View, Button, TextInput } from 'react-native'
 import { HOME_SCREEN } from '../../constants/ROUTES'
 import { createUserAction, loginUserAction } from '../../state/auth/actions'
 import { selectUserIsLoggedIn } from '../../state/auth/selectors'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 const Login = ({ navigation }) => {
   const dispatch = useDispatch()
   const isUserLoggedIn = useSelector(selectUserIsLoggedIn)

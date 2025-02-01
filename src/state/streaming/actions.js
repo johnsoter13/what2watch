@@ -1,32 +1,14 @@
-import { SUCCESS } from '../constants';
-import { MOVIE_INDEX } from '../movies/constants';
+import { SUCCESS } from '../constants'
+import { MOVIE_INDEX } from '../movies/constants'
 
-import { UPDATE_STREAMING_SERVICES } from './constants';
-import { fetchUserDatabase } from '../../lib/sdk';
+import { UPDATE_STREAMING_SERVICES } from './constants'
 
-export const updateStreamingServicesAction = (
-  streamingServices,
-  isLoggedIn = false,
-  uid = ''
-) => (dispatch) => {
+export const updateStreamingServicesAction = (streamingServices) => (
+  dispatch
+) => {
   dispatch({
     type: UPDATE_STREAMING_SERVICES,
     status: SUCCESS,
     payload: { streamingServices },
-  });
-
-  if (isLoggedIn) {
-    fetchUserDatabase(uid)
-      .set(
-        {
-          streaming_services: streamingServices,
-        },
-        (error) => {
-          if (error) {
-            console.log('failed! ' + error);
-          }
-        }
-      )
-      .then(() => console.log('Streaming Servies saved!'));
-  }
-};
+  })
+}

@@ -1,18 +1,6 @@
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin'
-
 import { FAILURE, SUCCESS } from '../constants'
 
 import { SET_DISLIKED, SET_LOGIN_STATE } from './constants'
-import {
-  createUserWithEmailAndPassword,
-  fetchUserDatabase,
-  login,
-} from '../../lib/sdk'
-import { UPDATE_STREAMING_SERVICES } from '../streaming/constants'
-import { values } from 'lodash'
 
 const loginPayload = (isLoggedIn, uid = '', idToken = '') => {
   return {
