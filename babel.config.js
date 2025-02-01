@@ -1,14 +1,14 @@
 module.exports = function (api) {
-  api.cache(true);
+  api.cache(true)
   return {
-    presets: ["babel-preset-expo"],
+    presets: ['babel-preset-expo'],
     plugins: [
-      "react-native-classname-to-style",
+      'react-native-classname-to-style',
       [
-        "react-native-platform-specific-extensions",
-        { extensions: ["scss", "sass"] },
+        'react-native-platform-specific-extensions',
+        { extensions: ['scss', 'sass'] },
       ],
-      "module:react-native-dotenv",
+      'module:react-native-dotenv',
     ],
-  };
-};
+  }
+}
