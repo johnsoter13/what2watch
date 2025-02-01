@@ -49,12 +49,3 @@ export const setMatchedMovieIdAction = (movieId) => (dispatch, getState) => {
     payload: { matchedMovieId: movieId },
   })
 }
-
-export const updateMoviePayloadAction = (movieId, userName, roomId, liked) => (
-  dispatch
-) => {
-  dispatch({
-    type: SET_MOVIE_PAYLOAD,
-    payload: { movieId, userName, roomId, liked },
-  })
-}

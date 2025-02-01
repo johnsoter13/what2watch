@@ -24,10 +24,6 @@ import {
 import { selectRoomId, selectUserName } from '../rooms/selectors'
 import { MOST_POPULAR } from '../../components/MovieList/constants'
 import { shuffleMovies } from '../../utils/moviesUtils'
-import {
-  setMatchedMovieIdAction,
-  updateMoviePayloadAction,
-} from '../rooms/actions'
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -242,60 +238,63 @@ export const saveMovieAction = (liked, movieId) => (dispatch, getState) => {
   const roomId = selectRoomId(getState())
   const userName = selectUserName(getState())
 
-  dispatch(updateMoviePayloadAction(movieId, userName, roomId, liked))
-}
-
-const saveUserLike = (
-  roomSize,
-  roomKey,
-  userName,
-  movieName,
-  movieId,
-  actualMovieId,
-  liked,
-  dispatch
-) => {
-  const movieObj = {
-    movieName: movieName,
-    users: { [userName]: liked },
-  }
-
-  let users = {}
-
-  const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId)
-
-  // get users from server
-  refMovieId.once('value', function (snapshot) {
-    if (snapshot.val()) {
-      users = snapshot.val().users
-
-      // set current user's pref
-      users[userName] = liked
-
-      // check if everyone in the room likes the movie
-      let found = true
-      if (roomSize !== 1 && Object.keys(users).length === roomSize) {
-        for (let user in users) {
-          if (!users[user]) {
-            found = false
-          }
-        }
-      }
-
-      if (found) {
-        dispatch(setMatchedMovieIdAction(movieId))
-        fetchRoomsDatabase(roomKey).update({ found: movieId })
-      }
-
-      // update users in server
-      refMovieId.update({
-        users: users,
-      })
-    } else {
-      refMovieId.set(movieObj)
-    }
+  dispatch({
+    type: SET_MOVIE_PAYLOAD,
+    payload: { movieId, userName, roomId, liked },
   })
 }
+
+// const saveUserLike = (
+//   roomSize,
+//   roomKey,
+//   userName,
+//   movieName,
+//   movieId,
+//   actualMovieId,
+//   liked,
+//   dispatch
+// ) => {
+//   const movieObj = {
+//     movieName: movieName,
+//     users: { [userName]: liked },
+//   }
+
+//   let users = {}
+
+//   const refMovieId = fetchRoomsDatabase(roomKey + '/movies/' + actualMovieId)
+
+//   // get users from server
+//   refMovieId.once('value', function (snapshot) {
+//     if (snapshot.val()) {
+//       users = snapshot.val().users
+
+//       // set current user's pref
+//       users[userName] = liked
+
+//       // check if everyone in the room likes the movie
+//       let found = true
+//       if (roomSize !== 1 && Object.keys(users).length === roomSize) {
+//         for (let user in users) {
+//           if (!users[user]) {
+//             found = false
+//           }
+//         }
+//       }
+
+//       if (found) {
+//         dispatch(setMatchedMovieIdAction(movieId))
+//         fetchRoomsDatabase(roomKey).update({ found: movieId })
+//       }
+
+//       // update users in server
+//       refMovieId.update({
+//         users: users,
+//       })
+//     } else {
+//       refMovieId.set(movieObj)
+//     }
+//   })
+// }
 
 export const fetchMostPopularMoviesActions = () => (dispatch, getState) => {
   const mostPopularMovies = selectMostPopularMoviesExists(getState())
