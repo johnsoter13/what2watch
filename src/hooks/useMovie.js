@@ -2,10 +2,8 @@ import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import {
-  selectMostPopularMovies,
   selectMovieIndex,
   selectMoviesByGenre,
-  selectMovieStreamingServicesById,
   selectMovie,
 } from '../state/movies/selectors'
 import {
@@ -32,8 +30,8 @@ export const useMovie = (genre) => {
   const userStreamingServices = useSelector(selectUserStreamingServices)
 
   let movieLoadingComplete = !!(
-    // sharedServices.movieId === movieId &&
-    // sharedServices.sharedServices?.length > 0 &&
+    sharedServices.movieId === movieId &&
+    sharedServices.sharedServices?.length > 0 &&
     movie?.movieStreamServices
   )
 

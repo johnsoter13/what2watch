@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { StyleSheet, View } from 'react-native'
+import { registerRootComponent } from 'expo'
 
 import createStore from './src/state/store'
 import Home from './src/components/Home'
@@ -36,6 +37,11 @@ export default function App() {
       <NavigationContainer>
         <View style={styles.container}>
           <Stack.Navigator>
+            {/* <Stack.Screen
+              name={LOGIN}
+              component={Login}
+              options={{ title: 'What 2 Watch Login' }}
+            /> */}
             <Stack.Screen
               name={HOME_SCREEN}
               component={Home}
@@ -60,11 +66,6 @@ export default function App() {
               name={SEARCH_MOVIE_SCREEN}
               component={Search}
               options={{ title: 'Search Movies' }}
-            />
-            <Stack.Screen
-              name={LOGIN}
-              component={Login}
-              options={{ title: 'What 2 Watch Login' }}
             />
             <Stack.Screen
               name={DISLIKED_LIST}
@@ -95,3 +96,5 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 })
+
+registerRootComponent(App)

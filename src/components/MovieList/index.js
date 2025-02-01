@@ -29,13 +29,13 @@ const MovieList = ({ navigation, route }) => {
   const handleRightSwipe = () => {
     // Reset on a right swipe
     setLeftSwipeStreak(0)
-    dispatch(saveMovieAction(genre, true, movie))
+    dispatch(saveMovieAction(true, movie.movieId))
     dispatch(movieMatchAction())
     dispatch(movieListIndexAction(genre))
   }
 
   const handleLeftSwipe = () => {
-    dispatch(saveMovieAction(genre, false, movie))
+    dispatch(saveMovieAction(false, movie.movieId))
     dispatch(movieListIndexAction(genre))
     setLeftSwipeStreak(leftSwipeStreak + 1)
   }

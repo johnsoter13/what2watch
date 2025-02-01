@@ -1,5 +1,5 @@
-import React from "react";
-import {useSelector} from 'react-redux';
+import React from 'react'
+import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -7,68 +7,72 @@ import {
   Button,
   Image,
   TouchableOpacity,
-} from "react-native";
-import { useDispatch } from "react-redux";
+} from 'react-native'
+import { useDispatch } from 'react-redux'
 
 import * as baseStyles from '../../styles/styles'
-import {selectMovieStreamingServicesById} from '../../state/movies/selectors';
-import { checkIfMovieIsAvailableToUser } from "../../utils/moviesUtils";
-import { selectUserStreamingServices } from "../../state/streaming/selectors";
-import { selectMatchedMovieId } from "../../state/rooms/selectors";
-import MatchAnimationView from '../MatchAnimationView';
-import { selectMatchAnimationFinished } from "../../state/animation/selectors";
-import { movieListIndexAction } from "../../state/movies/actions";
-import { setMatchedMovieIdAction } from "../../state/rooms/actions";
-import { setMatchAnimationAction } from "../../state/animation/actions";
-import MovieInfoSection from "../MovieInfoSection";
-import Loading from "../Loading";
+import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils'
+import { selectUserStreamingServices } from '../../state/streaming/selectors'
+import { selectMatchedMovieId } from '../../state/rooms/selectors'
+import MatchAnimationView from '../MatchAnimationView'
+import { selectMatchAnimationFinished } from '../../state/animation/selectors'
+import { movieListIndexAction } from '../../state/movies/actions'
+import { setMatchedMovieIdAction } from '../../state/rooms/actions'
+import { setMatchAnimationAction } from '../../state/animation/actions'
+import MovieInfoSection from '../MovieInfoSection'
+import Loading from '../Loading'
+import { selectMovie } from '../../state/movies/selectors'
 
-const MovieMatch = ({genre}) => {
-  const dispatch = useDispatch();
-  const matchedMovieId = useSelector(selectMatchedMovieId);
-  const movie = useSelector((state) => selectMovieStreamingServicesById(state, matchedMovieId));
-  const userStreamingServices = useSelector(selectUserStreamingServices);
-  const animationFinished = useSelector(selectMatchAnimationFinished);
-  
-  const sharedServices = movie && checkIfMovieIsAvailableToUser(userStreamingServices, movie);
+const MovieMatch = ({ genre }) => {
+  const dispatch = useDispatch()
+  const matchedMovieId = useSelector(selectMatchedMovieId)
+  const movie = useSelector((state) => selectMovie(state, matchedMovieId))
+  const userStreamingServices = useSelector(selectUserStreamingServices)
+  const animationFinished = useSelector(selectMatchAnimationFinished)
+
+  const sharedServices =
+    movie && checkIfMovieIsAvailableToUser(userStreamingServices, movie)
 
   const renderMatch = () => (
     <View style={styles.container}>
       {animationFinished ? (
         <>
-          <View className="match-text-container" style={styles.matchTextContainer}>
+          <View
+            className='match-text-container'
+            style={styles.matchTextContainer}
+          >
             <Text>You have a new match!</Text>
             <Text>{movie.movieTitle}</Text>
           </View>
           <View style={styles.movieRowContainer}>
             <MovieInfoSection movie={movie} sharedServices={sharedServices} />
           </View>
-        <TouchableOpacity
-          style={styles.continueButton}
-          onPress={() => {
-            dispatch(movieListIndexAction(genre));
-            dispatch(setMatchedMovieIdAction(''));
-            dispatch(setMatchAnimationAction(false))
-          }}
-        >
-          <Text style={styles.continueButtonText}>Continue Swiping</Text>
-        </TouchableOpacity>
-      </>
+          <TouchableOpacity
+            style={styles.continueButton}
+            onPress={() => {
+              dispatch(movieListIndexAction(genre))
+              dispatch(setMatchedMovieIdAction(''))
+              dispatch(setMatchAnimationAction(false))
+            }}
+          >
+            <Text style={styles.continueButtonText}>Continue Swiping</Text>
+          </TouchableOpacity>
+        </>
       ) : (
-        <MatchAnimationView moviePicture={movie.moviePicture}/>
+        <MatchAnimationView moviePicture={movie.moviePicture} />
       )}
     </View>
-  );
+  )
 
   return movie ? renderMatch() : <Loading />
-};
+}
 
-export default MovieMatch;
+export default MovieMatch
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%', 
-    height: '100%', 
+    width: '100%',
+    height: '100%',
     padding: 10,
     paddingBottom: 30,
   },
@@ -115,7 +119,7 @@ const styles = StyleSheet.create({
   matchTextContainer: {
     height: '5%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   continueButton: {
     margin: 10,
@@ -126,6 +130,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   continueButtonText: {
-    color: baseStyles.BUTTON_TEXT_COLOR
-  }
-});
+    color: baseStyles.BUTTON_TEXT_COLOR,
+  },
+})

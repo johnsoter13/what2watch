@@ -17,7 +17,6 @@ const initialState = {
   moviesByGenre: {},
   genreLoadingStatus: null,
   moviesByGenreLoadingStatus: null,
-  movieStreamingServices: {},
   movieStreamingServicesLoadingStatus: null,
   movieIndexes: {},
   currentMovieId: '',

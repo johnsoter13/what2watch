@@ -12,32 +12,22 @@ import {
   fetchMovieGenres,
   fetchMoviesByGenre,
   fetchMovieStreamingServices,
-  fetchUserDatabase,
-  fetchRoomsDatabase,
   fetchMostPopularMovies,
   fetchMovieDetails,
 } from '../../lib/sdk'
 
 import {
   selectMostPopularMoviesExists,
-  selectMovieIdByIndex,
   selectMovieIndex,
   selectMoviesByGenreExists,
-  selectMovieStreamingServicesById,
 } from './selectors'
-import { selectUserIsLoggedIn, selectUserId } from '../auth/selectors'
-import {
-  selectRoomID,
-  selectRoomKey,
-  selectUserName,
-  selectRoomUserID,
-  selectRoomSize,
-} from '../rooms/selectors'
-import { openModalAction } from '../modal/actions'
-import MovieMatchModal from '../../components/Modals/MovieMatchModal'
+import { selectRoomId, selectUserName } from '../rooms/selectors'
 import { MOST_POPULAR } from '../../components/MovieList/constants'
 import { shuffleMovies } from '../../utils/moviesUtils'
-import { setMatchedMovieIdAction } from '../rooms/actions'
+import {
+  setMatchedMovieIdAction,
+  updateMoviePayloadAction,
+} from '../rooms/actions'
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({
@@ -248,52 +238,11 @@ export const movieListIndexAction = (genre = MOST_POPULAR, reset) => (
   })
 }
 
-export const saveMovieAction = (genre, liked, movie) => (
-  dispatch,
-  getState
-) => {
-  const isUserLoggedIn = selectUserIsLoggedIn(getState())
-  const movieIndex = selectMovieIndex(getState(), genre)
-  const movieId = selectMovieIdByIndex(getState(), genre, movieIndex)
-  const actualMovieId = movieId.slice(
-    movieId.indexOf('tt'),
-    movieId.lastIndexOf('/')
-  )
-  const roomSize = selectRoomSize(getState())
-
-  if (!movie) {
-    movie = selectMovieStreamingServicesById(getState(), movieId)
-  }
-
-  // if user is logged in and disliked the movie, update database's list of disliked
-  if (!liked && isUserLoggedIn) {
-    const uid = selectUserId(getState())
-
-    // this is overriding the database
-    fetchUserDatabase(uid)
-      .child('movies/disliked')
-      .push(actualMovieId)
-      .then(() => console.log('Movie disliked!'))
-  }
-
-  const roomID = selectRoomID(getState())
-  const roomKey = selectRoomKey(getState())
+export const saveMovieAction = (liked, movieId) => (dispatch, getState) => {
+  const roomId = selectRoomId(getState())
   const userName = selectUserName(getState())
-  const movieName = movie.movieTitle
 
-  // saving user's like/dislike of the movie if in a room
-  if (roomID && roomKey) {
-    saveUserLike(
-      roomSize,
-      roomKey,
-      userName,
-      movieName,
-      movieId,
-      actualMovieId,
-      liked,
-      dispatch
-    )
-  }
+  dispatch(updateMoviePayloadAction(movieId, userName, roomId, liked))
 }
 
 const saveUserLike = (

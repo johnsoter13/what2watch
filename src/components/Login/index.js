@@ -1,34 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, Button, TextInput } from 'react-native';
-import { HOME_SCREEN } from '../../constants/ROUTES';
-import { createUserAction, loginUserAction } from '../../state/auth/actions';
-import { selectUserIsLoggedIn } from '../../state/auth/selectors';
-
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { StyleSheet, View, Button, TextInput } from 'react-native'
+import { HOME_SCREEN } from '../../constants/ROUTES'
+import { createUserAction, loginUserAction } from '../../state/auth/actions'
+import { selectUserIsLoggedIn } from '../../state/auth/selectors'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
 const Login = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const isUserLoggedIn = useSelector(selectUserIsLoggedIn);
+  const dispatch = useDispatch()
+  const isUserLoggedIn = useSelector(selectUserIsLoggedIn)
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
 
-  const handleSignup = () => {
-    dispatch(createUserAction(email, password));
-  };
+  // const handleSignup = () => {
+  //   dispatch(createUserAction(email, password));
+  // };
 
   const handleLogin = () => {
-    dispatch(loginUserAction(email, password));
-  };
+    dispatch(loginUserAction())
+  }
 
   useEffect(() => {
     if (isUserLoggedIn) {
-      navigation.navigate(HOME_SCREEN);
+      navigation.navigate(HOME_SCREEN)
     }
-  }, [isUserLoggedIn]);
+  }, [isUserLoggedIn])
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: process.env.GOOGLE_CLIENT_ID, // Replace with your client ID
+    })
+  }, [])
 
   return (
     <View>
-      <View style={styles.actionField}>
+      {/* <View style={styles.actionField}>
         <TextInput
           style={StyleSheet.TextInput}
           placeholder='Email'
@@ -46,16 +52,16 @@ const Login = ({ navigation }) => {
           secureTextEntry
           onChangeText={(passwordText) => setPassword(passwordText)}
         />
-      </View>
-      <View style={styles.actionButton}>
+      </View> */}
+      {/* <View style={styles.actionButton}>
         <Button onPress={handleSignup} title='Create Account' />
-      </View>
+      </View> */}
       <View style={styles.actionButton}>
-        <Button onPress={handleLogin} title='Login' />
+        <Button onPress={handleLogin} title='Sign in with GOogle' />
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   actionField: {
@@ -79,6 +85,6 @@ const styles = StyleSheet.create({
     height: 30,
     marginBottom: 30,
   },
-});
+})
 
-export default Login;
+export default Login

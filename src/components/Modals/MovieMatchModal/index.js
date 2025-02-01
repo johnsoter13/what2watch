@@ -1,5 +1,5 @@
-import React from "react";
-import {useSelector} from 'react-redux';
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 import {
   Alert,
@@ -7,40 +7,47 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
-} from "react-native";
-import { useDispatch } from "react-redux";
-import {closeModalAction} from '../../../state/modal/actions';
+  View,
+} from 'react-native'
+import { useDispatch } from 'react-redux'
+import { closeModalAction } from '../../../state/modal/actions'
 import * as baseStyles from '../../../styles/styles'
-import {selectMovieStreamingServicesById} from '../../../state/movies/selectors';
-import { checkIfMovieIsAvailableToUser } from "../../../utils/moviesUtils";
-import { selectUserStreamingServices } from "../../../state/streaming/selectors";
-import MovieListItem from '../../MovieListItem';
+import { checkIfMovieIsAvailableToUser } from '../../../utils/moviesUtils'
+import { selectUserStreamingServices } from '../../../state/streaming/selectors'
+import MovieListItem from '../../MovieListItem'
+import { selectMovie } from '../../../state/movies/selectors'
 
-const MovieMatchModal = ({movieId}) => {
-  const dispatch = useDispatch();
-  const movie = useSelector((state) => selectMovieStreamingServicesById(state, movieId));
-  const userStreamingServices = useSelector(selectUserStreamingServices);
-  
-  const sharedServices = checkIfMovieIsAvailableToUser(userStreamingServices, movie);
+const MovieMatchModal = ({ movieId }) => {
+  const dispatch = useDispatch()
+  const movie = useSelector((state) => selectMovie(state, movieId))
+  const userStreamingServices = useSelector(selectUserStreamingServices)
+
+  const sharedServices = checkIfMovieIsAvailableToUser(
+    userStreamingServices,
+    movie
+  )
 
   return (
     <View>
       <Modal
         style={baseStyles.MODAL_STYLES}
-        animationType="slide"
+        animationType='slide'
         transparent={true}
         visible={true}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          Alert.alert('Modal has been closed.')
         }}
       >
         <Text style={styles.title}>You have a new match!</Text>
-        <MovieListItem movie={movie} sharedServices={sharedServices} swipeCard />
+        <MovieListItem
+          movie={movie}
+          sharedServices={sharedServices}
+          swipeCard
+        />
         <TouchableHighlight
           style={styles.continueButton}
           onPress={() => {
-            dispatch(closeModalAction());
+            dispatch(closeModalAction())
           }}
         >
           <Text style={styles.continueButtonText}>Continue Swiping</Text>
@@ -48,9 +55,9 @@ const MovieMatchModal = ({movieId}) => {
       </Modal>
     </View>
   )
-};
+}
 
-export default MovieMatchModal;
+export default MovieMatchModal
 
 const styles = StyleSheet.create({
   title: {
@@ -60,7 +67,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 5,
     borderStyle: 'solid',
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
   continueButton: {
     margin: 10,
@@ -71,6 +78,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   continueButtonText: {
-    color: '#fff'
-  }
-});
+    color: '#fff',
+  },
+})

@@ -1,12 +1,9 @@
-import React, {useState} from 'react'
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import {
-  CREATED_ROOM,
-  STREAMING_SERVICES_SCREEN,
-} from '../../constants/ROUTES';
-import * as baseStyles from '../../styles/styles';
+import React, { useState } from 'react'
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { CREATED_ROOM, STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES'
+import * as baseStyles from '../../styles/styles'
 
-const ExperienceSelect = ({navigation}) => {
+const ExperienceSelect = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
@@ -14,26 +11,18 @@ const ExperienceSelect = ({navigation}) => {
           style={styles.experienceButton}
           onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
         >
-        <Text style={styles.experienceButtonText}>
-          Solo
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.comingSoonText}>
-        Feature in Developement, coming soon!
-      </Text>
-      <TouchableOpacity
-        style={styles.disabledExperienceButton}
-        onPress={() => navigation.navigate(CREATED_ROOM)}
-        disabled={true}
-      >
-        <Text style={styles.experienceButtonText}>
-          Group
-        </Text>
-      </TouchableOpacity>
+          <Text style={styles.experienceButtonText}>Solo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.experienceButton}
+          onPress={() => navigation.navigate(CREATED_ROOM)}
+        >
+          <Text style={styles.experienceButtonText}>Group</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
   )
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -41,14 +30,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     paddingVertical: 20,
-
   },
   buttonContainer: {
     width: '100%',
     height: '100%',
     paddingLeft: 10,
     paddingRight: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   experienceButton: {
     maxHeight: '20%',
@@ -70,11 +58,11 @@ const styles = StyleSheet.create({
   },
   experienceButtonText: {
     color: baseStyles.BUTTON_TEXT_COLOR,
-    fontSize: 28
+    fontSize: 28,
   },
   comingSoonText: {
     textAlign: 'center',
-  }
-});
+  },
+})
 
-export default ExperienceSelect;
+export default ExperienceSelect

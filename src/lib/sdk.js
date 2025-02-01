@@ -1,7 +1,9 @@
-import Firebase, { db } from '../../config/Firebase'
-
 const PROD_URL = 'http://ec2-13-59-211-123.us-east-2.compute.amazonaws.com:3000'
 const LOCAL_HOST = 'http://localhost:3000'
+
+export const login = (tokenId) => {
+  fetch(`${LOCAL_HOST}/login?${tokenId}`, { method: 'GET' })
+}
 
 export const fetchMovieGenres = () =>
   fetch(`${LOCAL_HOST}/fetchGenres`, {
@@ -60,13 +62,3 @@ export const fetchMostPopularMovies = () =>
   fetch(`${LOCAL_HOST}/fetchMostPopular`, {
     method: 'GET',
   })
-
-export const createUserWithEmailAndPassword = (email, password) =>
-  Firebase.auth().createUserWithEmailAndPassword(email, password)
-
-export const loginUserWithEmailandPassword = (email, password) =>
-  Firebase.auth().signInWithEmailAndPassword(email, password)
-
-export const fetchUserDatabase = (uid) => db.ref('/users/' + uid)
-
-export const fetchRoomsDatabase = (rid) => db.ref('/rooms/' + rid)

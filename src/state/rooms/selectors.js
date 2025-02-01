@@ -1,14 +1,15 @@
-export const selectRoomID = (state) => state.rooms.roomID;
+export const selectRoomId = (state) => state.rooms.roomId
 
-export const selectRoomKey = (state) => state.rooms.roomKey;
+export const selectUserName = (state) => state.rooms.userName
 
-export const selectUserName = (state) => state.rooms.userName;
+export const selectRoomSize = (state) => state.rooms.roomSize
 
-export const selectCurrentRoomSize = (state) =>
-  state.rooms.currentRoomSize || 1;
+export const selectMatchedMovieId = (state) => state.rooms.matchedMovieId
 
-export const selectRoomUserID = (state) => state.rooms.roomUserID;
+export const selectMoviePayload = (state) => state.rooms.moviePayload
 
-export const selectRoomSize = (state) => state.rooms.roomSize;
+export const selectIsThereARoomMatch = (state) => {
+  const likedMovies = state.rooms.likedMovies
 
-export const selectMatchedMovieId = (state) => state.rooms.matchedMovieId;
+  // Object.entries([movieId, users]).
+}

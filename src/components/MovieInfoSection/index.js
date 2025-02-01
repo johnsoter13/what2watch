@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Linking,
+  ScrollView,
 } from 'react-native'
 
 import * as baseStyles from '../../styles/styles'
@@ -44,7 +45,7 @@ const MovieInfoSection = ({ sharedServices, movie }) => {
         <Text style={styles.text}>{movie.moviePlot}</Text>
       </View>
       <Text style={styles.movieRowAvailable}>Available on:</Text>
-      <View style={styles.movieStreamingServices}>
+      <ScrollView style={styles.movieStreamingServices}>
         {sharedServices.map((streamingService, index) => (
           <TouchableOpacity
             style={styles.streamingServiceButton}
@@ -71,7 +72,7 @@ const MovieInfoSection = ({ sharedServices, movie }) => {
             </View>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     </>
   )
 }
@@ -119,7 +120,6 @@ const styles = StyleSheet.create({
     color: baseStyles.BUTTON_COLOR,
   },
   movieStreamingServices: {
-    overflowY: 'auto',
     flex: 1,
   },
 })
