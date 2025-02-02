@@ -2,19 +2,25 @@ import { SUCCESS } from '../constants'
 import {
   SET_ROOM_STATE,
   SET_ROOM_SIZE,
-  MATCH_FOUND,
-  SET_MOVIE_PAYLOAD,
+  REMOVE_LIKED_MOVIE,
+  RESET_ROOM,
+  RECEIVE_MESSAGE,
 } from './constants'
-import { selectRoomId, selectRoomSize } from './selectors'
-import { selectCurrentMovieId, selectMovie } from '../movies/selectors'
-import { fetchMovieStreamingServicesHelper } from '../movies/actions'
+import { selectExperience, selectRoomId } from './selectors'
 
-export const updateRoomAction = (roomId, userName) => (dispatch) => {
+export const updateRoomAction = (roomId, userName) => (dispatch, getState) => {
+  const currentRoomId = selectRoomId(getState())
+  const currentExperience = selectExperience(getState())
+
   dispatch({
     type: SET_ROOM_STATE,
     status: SUCCESS,
     payload: { roomId, userName },
   })
+
+  if (currentRoomId !== roomId) {
+    dispatch(resetRoomAction(currentExperience))
+  }
 }
 
 export const updateRoomSize = (roomSize) => (dispatch) => {
@@ -25,27 +31,23 @@ export const updateRoomSize = (roomSize) => (dispatch) => {
   })
 }
 
-export const movieMatchAction = () => (dispatch, getState) => {
-  const roomSize = selectRoomSize(getState())
-  const roomId = selectRoomId(getState())
-  const currentMovieId = selectCurrentMovieId(getState())
-
-  // room is size 1 and not in a group room
-  if (roomSize === 1 && !roomId) {
-    dispatch(setMatchedMovieIdAction(currentMovieId))
-  }
+export const removeLikedMovieAction = (movieId) => (dispatch) => {
+  dispatch({
+    type: REMOVE_LIKED_MOVIE,
+    payload: { movieId },
+  })
 }
 
-export const setMatchedMovieIdAction = (movieId) => (dispatch, getState) => {
-  const movie = selectMovie(getState(), movieId)
-
-  if (!movie) {
-    dispatch(fetchMovieStreamingServicesHelper(movieId)).then()
-  }
-
+export const resetRoomAction = (experience) => (dispatch) => {
   dispatch({
-    type: MATCH_FOUND,
-    status: SUCCESS,
-    payload: { matchedMovieId: movieId },
+    type: RESET_ROOM,
+    payload: { experience },
+  })
+}
+
+export const receiveMessageAction = (payload) => (dispatch) => {
+  dispatch({
+    type: RECEIVE_MESSAGE,
+    payload,
   })
 }

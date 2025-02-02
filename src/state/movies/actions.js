@@ -24,6 +24,7 @@ import {
 import { selectRoomId, selectUserName } from '../rooms/selectors'
 import { MOST_POPULAR } from '../../components/MovieList/constants'
 import { shuffleMovies } from '../../utils/moviesUtils'
+import { SET_MOVIE_PAYLOAD } from '../rooms/constants'
 
 export const fetchMovieGenresAction = () => (dispatch) => {
   dispatch({

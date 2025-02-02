@@ -3,17 +3,19 @@ import { SUCCESS } from '../constants'
 import {
   SET_ROOM_STATE,
   SET_ROOM_SIZE,
-  MATCH_FOUND,
   SET_MOVIE_PAYLOAD,
+  REMOVE_LIKED_MOVIE,
+  RESET_ROOM,
+  RECEIVE_MESSAGE,
 } from './constants'
 
 const initialState = {
   roomId: '',
   userName: '',
   roomSize: 1,
-  matchedMovieId: '',
   moviePayload: {},
   likedMovies: {},
+  experience: '',
 }
 
 export default produce((draft, action) => {
@@ -33,28 +35,46 @@ export default produce((draft, action) => {
           break
       }
       break
-    case MATCH_FOUND:
-      switch (action.status) {
-        case SUCCESS:
-          draft.matchedMovieId = action.payload.matchedMovieId
-          break
-      }
-      break
     case SET_MOVIE_PAYLOAD:
       {
-        const { movieId, userName } = action.payload
+        const { movieId, userName, liked } = action.payload
 
         if (draft.likedMovies[movieId]) {
           draft.likedMovies[movieId] = {
             ...draft.likedMovies[movieId],
-            [userName]: true,
+            [userName]: liked,
           }
         } else {
-          draft.likedMovies[movieId] = { [userName]: true }
+          draft.likedMovies[movieId] = { [userName]: liked }
         }
 
         draft.moviePayload = action.payload
       }
       break
+    case REMOVE_LIKED_MOVIE:
+      delete draft.likedMovies[action.payload.movieId]
+      break
+    case RESET_ROOM:
+      draft.likedMovies = {}
+      draft.experience = action.payload.experience
+      break
+    case RECEIVE_MESSAGE: {
+      const { movieId, userName, liked, roomSize } = action.payload
+
+      if (roomSize !== draft.roomSize) {
+        draft.roomSize = roomSize
+      }
+
+      if (draft.likedMovies[movieId]) {
+        draft.likedMovies[movieId] = {
+          ...draft.likedMovies[movieId],
+          [userName]: liked,
+        }
+      } else {
+        draft.likedMovies[movieId] = { [userName]: liked }
+      }
+
+      break
+    }
   }
 }, initialState)

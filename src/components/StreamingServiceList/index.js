@@ -16,7 +16,6 @@ import { MOVIE_SCREEN } from '../../constants/ROUTES'
 import * as baseStyles from '../../styles/styles'
 
 import { STREAMING_SERVICES } from './constants'
-import { selectUserId, selectUserIsLoggedIn } from '../../state/auth/selectors'
 import { fetchMostPopularMoviesActions } from '../../state/movies/actions'
 
 const StreamingServiceList = ({ navigation }) => {
@@ -25,8 +24,6 @@ const StreamingServiceList = ({ navigation }) => {
   const [selectedStreamingServices, setSelectedStreamingServices] = useState(
     userStreamingServices
   )
-  const isUserLoggedIn = useSelector(selectUserIsLoggedIn)
-  const uid = useSelector(selectUserId)
 
   const saveStreamingServices = () => {
     if (Object.keys(selectedStreamingServices).length !== 0) {

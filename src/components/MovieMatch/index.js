@@ -13,20 +13,21 @@ import { useDispatch } from 'react-redux'
 import * as baseStyles from '../../styles/styles'
 import { checkIfMovieIsAvailableToUser } from '../../utils/moviesUtils'
 import { selectUserStreamingServices } from '../../state/streaming/selectors'
-import { selectMatchedMovieId } from '../../state/rooms/selectors'
 import MatchAnimationView from '../MatchAnimationView'
 import { selectMatchAnimationFinished } from '../../state/animation/selectors'
 import { movieListIndexAction } from '../../state/movies/actions'
-import { setMatchedMovieIdAction } from '../../state/rooms/actions'
+import {
+  removeLikedMovieAction,
+  setMatchedMovieIdAction,
+} from '../../state/rooms/actions'
 import { setMatchAnimationAction } from '../../state/animation/actions'
 import MovieInfoSection from '../MovieInfoSection'
 import Loading from '../Loading'
 import { selectMovie } from '../../state/movies/selectors'
 
-const MovieMatch = ({ genre }) => {
+const MovieMatch = ({ genre, movieMatchId }) => {
   const dispatch = useDispatch()
-  const matchedMovieId = useSelector(selectMatchedMovieId)
-  const movie = useSelector((state) => selectMovie(state, matchedMovieId))
+  const movie = useSelector((state) => selectMovie(state, movieMatchId))
   const userStreamingServices = useSelector(selectUserStreamingServices)
   const animationFinished = useSelector(selectMatchAnimationFinished)
 
@@ -51,8 +52,8 @@ const MovieMatch = ({ genre }) => {
             style={styles.continueButton}
             onPress={() => {
               dispatch(movieListIndexAction(genre))
-              dispatch(setMatchedMovieIdAction(''))
               dispatch(setMatchAnimationAction(false))
+              dispatch(removeLikedMovieAction(movieMatchId))
             }}
           >
             <Text style={styles.continueButtonText}>Continue Swiping</Text>

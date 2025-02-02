@@ -2,20 +2,37 @@ import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import { CREATED_ROOM, STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES'
 import * as baseStyles from '../../styles/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectExperience } from '../../state/rooms/selectors'
+import { EXPERIENCES } from '../../state/rooms/constants'
+import { resetRoomAction } from '../../state/rooms/actions'
 
 const ExperienceSelect = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const currentExperience = useSelector(selectExperience)
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.experienceButton}
-          onPress={() => navigation.navigate(STREAMING_SERVICES_SCREEN)}
+          onPress={() => {
+            if (currentExperience !== EXPERIENCES.SOLO) {
+              dispatch(resetRoomAction(EXPERIENCES.SOLO))
+            }
+            navigation.navigate(STREAMING_SERVICES_SCREEN)
+          }}
         >
           <Text style={styles.experienceButtonText}>Solo</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.experienceButton}
-          onPress={() => navigation.navigate(CREATED_ROOM)}
+          onPress={() => {
+            if (currentExperience !== EXPERIENCES.GROUP) {
+              dispatch(resetRoomAction(EXPERIENCES.GROUP))
+            }
+            navigation.navigate(CREATED_ROOM)
+          }}
         >
           <Text style={styles.experienceButtonText}>Group</Text>
         </TouchableOpacity>

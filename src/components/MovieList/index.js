@@ -10,27 +10,24 @@ import * as baseStyles from '../../styles/styles'
 import Loading from '../Loading'
 import { useMovie } from '../../hooks/useMovie'
 import MovieListItem from '../MovieListItem'
-import { movieMatchAction } from '../../state/rooms/actions'
 import SwipeContainer from '../SwipeContainer'
 import { MOST_POPULAR, MOVIES_ARRAY_MAX_LENGTH } from './constants'
 import { GENRE_SCREEN } from '../../constants/ROUTES'
-import { selectMatchedMovieId } from '../../state/rooms/selectors'
 import MovieMatch from '../MovieMatch'
+import { selectIsThereARoomMatch } from '../../state/rooms/selectors'
 
 const MovieList = ({ navigation, route }) => {
   const dispatch = useDispatch()
   const genre = route?.params?.genre || MOST_POPULAR
   const [leftSwipeStreak, setLeftSwipeStreak] = useState(0)
-  const [movieIndex, movie, movieLoadingComplete, sharedServices] = useMovie(
-    genre
-  )
-  const matchedMovieId = useSelector(selectMatchedMovieId)
+  const [movieIndex, movie, movieLoadingComplete, sharedServices] =
+    useMovie(genre)
+  const movieMatchId = useSelector(selectIsThereARoomMatch)
 
   const handleRightSwipe = () => {
     // Reset on a right swipe
     setLeftSwipeStreak(0)
     dispatch(saveMovieAction(true, movie.movieId))
-    dispatch(movieMatchAction())
     dispatch(movieListIndexAction(genre))
   }
 
@@ -41,7 +38,7 @@ const MovieList = ({ navigation, route }) => {
   }
 
   const renderMatchedMovie = () => {
-    return <MovieMatch genre={genre} />
+    return <MovieMatch genre={genre} movieMatchId={movieMatchId} />
   }
 
   const renderMovieList = () => {
@@ -175,7 +172,7 @@ const MovieList = ({ navigation, route }) => {
     )
   }
 
-  return matchedMovieId ? renderMatchedMovie() : renderMovieList()
+  return movieMatchId ? renderMatchedMovie() : renderMovieList()
 }
 
 const styles = StyleSheet.create({

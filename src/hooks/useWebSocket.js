@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateRoomAction } from '../state/rooms/actions'
+import { receiveMessageAction, updateRoomAction } from '../state/rooms/actions'
 import { selectMoviePayload, selectRoomId } from '../state/rooms/selectors'
 
 const useWebSocket = () => {
   const [ws, setWs] = useState(null)
   const dispatch = useDispatch()
-  const [receivedMessages, setReceivedMessages] = useState([])
   const moviePayload = useSelector(selectMoviePayload)
   const roomId = useSelector(selectRoomId)
 
@@ -20,10 +19,10 @@ const useWebSocket = () => {
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data)
-      const { roomSize, userName, content } = data
+      const { roomSize, userName, movieId, roomId, liked } = data
       console.log(data)
-      if (data.content) {
-        setReceivedMessages((prevMessages) => [...prevMessages, data.content])
+      if (movieId) {
+        dispatch(receiveMessageAction({ roomSize, userName, movieId, liked }))
       }
     }
 
