@@ -7,6 +7,7 @@ import {
   Alert,
   TouchableHighlight,
   ScrollView,
+  Image,
 } from 'react-native'
 import { cloneDeep } from 'lodash'
 
@@ -72,22 +73,32 @@ const StreamingServiceList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <ScrollView>
-        {Object.keys(STREAMING_SERVICES).map((streamingService) => (
-          <View key={streamingService} style={styles.serviceButtonContainer}>
-            <TouchableHighlight
-              style={
-                selectedStreamingServices[streamingService]
-                  ? styles.serviceButtonActive
-                  : styles.serviceButton
-              }
-              onPress={() => handleStreamingServiceSelection(streamingService)}
-            >
-              <Text style={styles.buttonText}>
-                {STREAMING_SERVICES[streamingService].displayName}
-              </Text>
-            </TouchableHighlight>
-          </View>
-        ))}
+        <View style={styles.listContainer}>
+          {Object.keys(STREAMING_SERVICES).map((streamingService) => (
+            <View key={streamingService} style={styles.serviceButtonContainer}>
+              <TouchableHighlight
+                style={
+                  selectedStreamingServices[streamingService]
+                    ? styles.serviceButtonActive
+                    : styles.serviceButton
+                }
+                onPress={() =>
+                  handleStreamingServiceSelection(streamingService)
+                }
+              >
+                <View style={styles.streamingServiceContainer}>
+                  <Image
+                    style={styles.icon}
+                    source={require(`../../../assets/${STREAMING_SERVICES[streamingService].icon}`)}
+                  />
+                  <Text style={styles.buttonText}>
+                    {STREAMING_SERVICES[streamingService].displayName}
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          ))}
+        </View>
       </ScrollView>
       <View style={styles.submitButtonContainer}>
         <TouchableHighlight
@@ -103,14 +114,26 @@ const StreamingServiceList = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    flex: '1 1 0',
     paddingVertical: 20,
     paddingLeft: 20,
     paddingRight: 20,
   },
+  listContainer: {
+    display: 'flex',
+    width: '100%',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+  },
+  streamingServiceContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   serviceButtonContainer: {
-    height: '15%',
-    marginBottom: 20,
+    padding: 20,
+    width: '50%',
   },
   serviceButton: {
     flex: 1,
@@ -140,6 +163,10 @@ const styles = StyleSheet.create({
   submitButtonContainer: {
     height: '10%',
     justifyContent: 'center',
+  },
+  icon: {
+    width: '144px',
+    height: '144px',
   },
 })
 
