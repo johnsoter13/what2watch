@@ -11,6 +11,7 @@ import {
 
 import * as baseStyles from '../../styles/styles';
 import MovieInfoSection from '../MovieInfoSection';
+import { Images } from '../../../assets/assets';
 
 const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
   const [moreInfoToggle, setMoreInfoToggle] = useState(false);
@@ -26,7 +27,7 @@ const MovieListItem = ({ movie, swipeCard, sharedServices }) => {
         <TouchableOpacity onPress={() => setMoreInfoToggle(!moreInfoToggle)}>
           <Image
             style={styles.infoIcon}
-            source={require('../../../assets/info.png')}
+            source={Images.INFO}
           />
         </TouchableOpacity>
       </View>

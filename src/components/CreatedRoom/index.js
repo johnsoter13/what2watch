@@ -8,7 +8,6 @@ import {
   TextInput,
   Image,
 } from 'react-native'
-import * as Clipboard from 'expo-clipboard'
 
 import { STREAMING_SERVICES_SCREEN } from '../../constants/ROUTES'
 import Hashids from 'hashids'
@@ -59,7 +58,7 @@ const CreatedRoom = ({ navigation }) => {
       <View style={styles.roomContainer}>
         <View style={styles.copyButtonContainer}>
           <Text style={styles.roomText}>Room ID</Text>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.copyButton}
             onPress={() => Clipboard.setString(roomId)}
           >
@@ -67,7 +66,7 @@ const CreatedRoom = ({ navigation }) => {
               style={styles.copyButtonImage}
               source={require('../../../assets/copyButton.svg')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <TextInput
           style={styles.roomInputText}

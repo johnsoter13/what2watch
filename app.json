@@ -27,15 +27,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "packagerOpts": {
-      "config": "metro.config.js",
-      "sourceExts": [
-        "js",
-        "jsx",
-        "scss",
-        "sass"
-      ]
-    },
     "description": "Trying to figure out which movie to watch tonight? Let us help you!\n\nAll you have to do is select your streaming services and get watching!"
   }
 }

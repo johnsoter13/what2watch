@@ -87,10 +87,10 @@ const StreamingServiceList = ({ navigation }) => {
                 }
               >
                 <View style={styles.streamingServiceContainer}>
-                  <Image
+                  {/* <Image
                     style={styles.icon}
                     source={require(`../../../assets/${STREAMING_SERVICES[streamingService].icon}`)}
-                  />
+                  /> */}
                   <Text style={styles.buttonText}>
                     {STREAMING_SERVICES[streamingService].displayName}
                   </Text>

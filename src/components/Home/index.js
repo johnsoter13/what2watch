@@ -13,6 +13,7 @@ import { fetchMovieGenresAction } from '../../state/movies/actions'
 import { SEARCH_MOVIE_SCREEN, EXPERIENCE_SELECT } from '../../constants/ROUTES'
 import { selectUserIsLoggedIn } from '../../state/auth/selectors'
 import { logUserOutAction } from '../../state/auth/actions'
+import { Images } from '../../../assets/assets'
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -49,7 +50,7 @@ const Home = ({ navigation }) => {
             <View style={styles.imageContainer}>
               <ImageBackground
                 style={styles.movieImage}
-                source={require('../../../assets/find-movie.jpg')}
+                source={Images.FIND_MOVIE}
               >
                 <View>
                   <Text style={styles.movieImageText}>Find a Movie!</Text>
